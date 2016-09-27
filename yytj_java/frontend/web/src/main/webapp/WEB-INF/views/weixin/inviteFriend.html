@@ -1,0 +1,195 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no"/>
+<title>邀请好友  奖励规则</title>
+<style>
+html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+body{margin:0;}
+img {width:100%;}
+p {margin:0;padding:0;}
+ul, li {list-style:none;margin:0;padding:0;}
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }   
+.clearfix { zoom:1; }  
+ 
+
+.pageWrapper {background:#fff;}
+.content {padding-bottom:100px;}
+.topTab li {float:left;width:50%;text-align:center;padding:10px 0;font-size:14px;color:#000;border-bottom:2px solid #fff;}
+.topTab li.curTab {color:#db2e23;border-color:#db2e23;}
+
+.rule {width:90%;padding:3% 5%;color:#000;font-size:12px;line-height:24px;background:#f8f8f8;border-bottom:1px solid #dedede;}
+.colorRed {color:#e23723;}
+.recommendLabel {font-size:16px;color:#20b0ec;text-align:center;padding:10px 0;border-bottom:1px solid #dedede;}
+.methodLabel {display: inline-block;margin: 15px 0;background: #2a9dec;font-size: 14px;color: #fff;border-top-right-radius: 50px;border-bottom-right-radius: 50px;padding: 8px 15px;}
+
+.method p {font-size:12px;color:#000;width:90%;padding:0 5%;line-height:20px;}
+.qrImg {width:40%;margin:5px 30%;}
+.qrDesc {font-size:12px;color:#999;text-align:center;padding:5px 0;}
+
+.investmentBtn {position:fixed;bottom:0;left:0;width:100%;background:#fff;border-top:1px solid #dedede;}
+.investmentBtn a {display:inline-block;width:80%;margin:3% 10%;background:#e23723;font-size:14px;color:#fff;border-radius:3px;text-align:center;padding:10px 0;}
+
+
+/*浏览器打开提示 beigin*/
+.explorTips {
+	position: fixed;
+	top: 2%;
+	right: 4%;
+	z-index: 100;
+	text-align: right;
+	display: none;
+}
+
+.explorTipsArrow {
+	display: inline-block;
+	margin-right: 10px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #000;
+	opacity: 0.7;
+}
+
+.explorTipsContent {
+	background:
+	url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/maskBg.png")
+	center;
+	-webkit-background-size: 100% 100%;
+	border-radius: 5px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+.explorTipsBox {
+	font-size: 0;
+	padding-bottom: 15px;
+}
+
+.explorTipsBox>div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.explorIcon {
+	width: 14%;
+	margin-right: 5px;
+}
+
+.explorDesc {
+	font-size: 14px;
+	color: #fff;
+}
+/*浏览器打开提示 end*/
+
+@media only screen 
+and (min-device-height : 480px){
+	
+}
+
+</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<ul class="topTab clearfix">
+		<li class="curTab">奖励规则</li>
+		<a href="/innerPage/inviteRecord"><li>邀请记录</li></a>
+	</ul>
+	<div class="content">
+		<div class="rule">
+			<p>成功推荐好友，好友可获得<span class="colorRed">5元</span>现金红包。您可以获得<span class="colorRed">3元</span>邀请奖励。</p>
+			<p>成功推荐好友的标准：</p>
+			<p class="colorRed">1、好友使用的是苹果手机，之前没有关注过应用淘金。</p>
+			<p class="colorRed">2、好友通过扫描您的专属二维码，关注应用淘金</p>
+			<p class="colorRed">3、好友完成一个APP体验任务</p>
+		</div>
+		<div class="recommendMethod">
+			<div class="recommendLabel">推荐方法</div>
+			<div class="method">
+				<div class="methodLabel">方法1</div>
+				<p>点击底部按钮"立即邀请好友"，按提示选择您要推荐的好友，发送推荐信息给他。</p>
+			</div>
+			<div class="method">
+				<div class="methodLabel">方法2</div>
+				<p>长按二维码图片，保存到手机相册，发送二维码给您的好友，告诉好友扫描二维码关注应用淘金，教好友体验一个APP任务</p>
+				<div class="qrImg"><img src="$!{qrcode}" /></div>
+				<div class="qrDesc">(您的专属二维码)</div>
+			</div>
+		</div>
+
+		<!--浏览器打开提示 beigin-->
+		<div class="explorTips">
+			<div class="explorTipsArrow"></div>
+			<div class="explorTipsContent">
+				<div class="explorTipsBox ">
+					<div class="explorIcon">
+						<img
+								src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p10_1.png" />
+					</div>
+					<div class="explorDesc">1、点击右上角图标</div>
+				</div>
+				<div class="explorTipsBox">
+					<div class="explorIcon">
+						<img
+								src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/quan@2x.png" />
+					</div>
+					<div class="explorDesc">2、分享到朋友圈</div>
+				</div>
+			</div>
+		</div>
+		<!--浏览器打开提示 end-->
+		
+	</div>
+	<div class="investmentBtn" id="btnInvite"><a>立即邀请好友</a></div>
+
+	<input type="hidden" id="currentRequestURI" value="$!currentRequestURI">
+	<input type="hidden" id="inviteFriendTitle" value="$!inviteFriendTitle">
+	<input type="hidden" id="weiXinShareUrl" value="$!weiXinShareUrl">
+	<input type="hidden" id="appId" value="$!appId">
+</div>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jweixin-1.0.0.js"></script>
+
+
+<script>
+	$(document).ready(function(){
+		
+		$("#btnInvite").click(function () {
+			$(".explorTips").show();
+		});
+
+		$(".content").click(function(){
+			$(".explorTips").hide();
+		});
+	});
+</script>
+		<script>
+		var url = $("#weiXinShareUrl").val();
+		var title = $("#inviteFriendTitle").val();
+	
+		var imgUrl =  "$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p1_1.jpg";
+
+		var obj = {
+			title : title,
+			link : url,
+			imgUrl : imgUrl,
+			trigger : function(res) {
+				//alert('用户点击分享到朋友圈');
+			},
+			success : function(res) {
+				//alert('已分享');
+			},
+			cancel : function(res) {
+				alert('已取消');
+			},
+			fail : function(res) {
+				alert(JSON.stringify(res));
+			}
+		}
+	</script>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/wxconfig.js"></script>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/wx-api.js"></script>
+</body>
+</html>

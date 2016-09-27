@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.BindBankMapper">
+    <resultMap id="BaseResultMap" type="com.hongbao.dal.model.BindBank">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <!--  钱给谁就用谁的userId -->
+        <result column="userId" property="userId" jdbcType="BIGINT" />
+        <result column="bankName" property="bankName" jdbcType="VARCHAR" />
+        <result column="bankNo" property="bankNo" jdbcType="VARCHAR" />
+        <result column="secName" property="secName" jdbcType="VARCHAR" />
+        <result column="thirdName" property="thirdName" jdbcType="VARCHAR" />
+        <result column="realName" property="realName" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="isDefault" property="isDefault" jdbcType="INTEGER" />
+        <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updatedAt" property="updatedAt" jdbcType="TIMESTAMP" />
+        <result column="titleImg" property="titleImg" jdbcType="VARCHAR" />
+        <result column="fullName" property="fullName" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    
+   
+    <sql id="Base_Column_List"> id,userId,bankName,bankNo,secName,thirdName,realName,createdAt,updatedAt,type,isDefault,titleImg,fullName
+    </sql>
+    
+    <sql id="Base_Table_Name"> bindBank
+    </sql>
+    
+  <sql id="Base_Where">
+        <if test="id != null">and  id = #{id} </if>
+        <if test="userId != null">and  userId = #{userId} </if>  
+  </sql>
+  
+       <select id="findById" resultMap="BaseResultMap">
+        select
+          <!--  钱给谁就用谁的userId -->
+        <include refid="Base_Column_List" />
+        from
+        <include refid="Base_Table_Name" />
+        <where> id = #{id}
+        </where>
+    </select>
+    
+     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hongbao.dal.model.BindBank">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into
+        <include refid="Base_Table_Name" />
+        (userId,bankName,bankNo,secName,thirdName,realName,createdAt,updatedAt,type,isDefault,titleImg,fullName)
+        values
+        (#{userId},#{bankName},#{bankNo},#{secName},#{thirdName},#{realName},now(),now(),#{type},#{isDefault},#{titleImg},fullName)
+    </insert>    
+     
+     <select id="findListByCondition" parameterType="Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> from <include refid="Base_Table_Name" />
+        <where>
+            <include refid="Base_Where"/>
+        </where>
+    
+      <if test="orderColumn != null ">
+            order by #{orderColumn} desc
+      </if>
+      <if test="orderColumn == null ">
+            order by createdAt desc
+      </if>
+     <if test="pageInfo != null ">
+          limit #{pageInfo.offset}, #{pageInfo.pageSize}
+    </if>
+    </select>
+    
+    <select id="findCountByCondition" parameterType="Map" resultType="java.lang.Integer">
+        SELECT count(*) from <include refid="Base_Table_Name" />
+        <where>
+            <include refid="Base_Where"/>
+        </where>
+    </select>
+    
+
+   
+
+   
+      
+</mapper>

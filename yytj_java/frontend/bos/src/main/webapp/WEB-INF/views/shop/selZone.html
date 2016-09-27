@@ -1,0 +1,22 @@
+#set( $layout = "include/content_tpl.html" )
+<!--<link rel="stylesheet" href="${rc.getContextPath()}/_resources/js/zTree/css/demo.css" type="text/css">-->
+<link rel="stylesheet" href="${rc.getContextPath()}/_resources/js/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<div>
+    <div style="margin-top: 20px;margin-left: 25px;text-align: left">
+            <input type="hidden" name="id" id="id" value="$!id" />
+                <span style="color: #747474;">关键字：</span><input type="text"  id="keyword"    >
+                <input type="button" class="btn   btn-danger"  id="btnSearch" value="搜索" style="height: 30px; width: 60px;" />
+                <span style="color: gray;font-size: 13px">请双击区县区域确认选择</span>
+    </div>
+    <div style="margin-top: 20px;margin-left: 25px;">
+        <div id="treeDiv" class="ztree"></div>
+    </div>
+</div>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/zTree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/zTree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/module/selZone.js"></script>
+
+
+
+
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.hongbao.dal.mapper.UserDuobaoMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserDuobao" >
+	<id column="id" property="id" jdbcType="BIGINT"    />
+	<result column="userId" property="userId"    jdbcType="BIGINT"   />
+	<result column="duobaoId" property="duobaoId"    jdbcType="BIGINT"    />
+	<result column="score" property="score" jdbcType="INTEGER" />
+	<result column="win" property="win" jdbcType="INTEGER" />
+	<result column="created_at" property="createdAt"  jdbcType="TIMESTAMP" />
+	<result column="updated_at" property="updatedAt"  jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+	    id, userId,duobaoId,score,win,created_at,updated_at
+  </sql>
+  
+  <select id="findByDuobaoIdAndUserId"  resultMap="BaseResultMap">
+  select * from UserDuobao where duobaoId = #{duobaoId} and userId = #{userId} and archive = false
+  </select>
+  <select id="findByDuobaoId"  resultMap="BaseResultMap">
+  select * from UserDuobao where duobaoId = #{duobaoId} and archive = false order by created_at desc 
+  </select>
+  <select id="findByUserId"  resultMap="BaseResultMap">
+    select * from UserDuobao where  userId = #{userId} and archive = false
+  </select>
+  <update id="addScore">
+  update UserDuobao set score = ifnull(score,0)  + #{score} where id = #{id}
+  </update>
+  <insert id="insert">
+    <selectKey resultType="String" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into UserDuobao(userId,duobaoId,score,win,archive,created_at,updated_at)
+        values (#{userId}, #{duobaoId}, #{score}, #{win},0,now(),now()) 
+  </insert>
+  
+  
+  <update id="updateWinStatus">
+  update UserDuobao set win = #{winStatus} where id = #{id}
+  </update>
+  
+  
+</mapper>

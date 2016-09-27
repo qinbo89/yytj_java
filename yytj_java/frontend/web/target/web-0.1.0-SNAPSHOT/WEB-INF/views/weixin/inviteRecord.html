@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no"/>
+<title>邀请好友  邀请记录</title>
+<style>
+html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+body{margin:0;background:#f8f8f8;}
+img {width:100%;}
+p {margin:0;padding:0;}
+ul, li {list-style:none;margin:0;padding:0;}
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }   
+.clearfix { zoom:1; }  
+ 
+.pageWrapper {background:#f8f8f8;}
+.content {padding-bottom:100px;}
+.tip {text-align:center;padding-top:20%;}
+.topTab {background:#fff;}
+.topTab li {float:left;width:50%;text-align:center;padding:10px 0;font-size:14px;color:#000;border-bottom:2px solid #fff;}
+.topTab li.curTab {color:#db2e23;border-color:#db2e23;}
+
+.appBox {width:86%;padding:10px 2%;margin:3% 5% 0 5%;background:#fff;border:1px solid #ededed;}
+.appBox > div {display:table-cell;vertical-align:middle;}
+.boxIcon {width:15%;}
+.boxIcon img {border-radius:50%;}
+.boxInfo {position:relative;top:0;left:5%;width:50%;}
+.boxName {position:absolute;top:0;left:0;font-size:14px;color:#000;}
+.boxStatus {position:absolute;bottom:0;left:0;}
+.boxStatus > div {float:left;font-size:12px;}
+.boxTime {width:30%;font-size:12px;color:#999;}
+.colorYellow {color:#ffd030;}
+.colorBlue{color:#4a90e2;}
+.colorGreen{color:#88ca5f;}
+.icon {display:inline-block;width:16%;margin-bottom:10px;}
+.noTask p {font-size:14px;color:#999;line-height:30px;}
+.homeBtn {padding-top:20px;}
+.homeBtn a {display:inline-block;font-size:14px;color:#fff;padding:10px 20px;background:#e23723;border-radius:2px;}
+@media only screen 
+and (min-device-height : 480px){
+	
+}
+
+</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<ul class="topTab clearfix">
+		<a href="/innerPage/inviteFriend"><li>奖励规则</li></a>
+		<li class="curTab">邀请记录</li>
+	</ul>
+	<div class="content">
+	    #set ($i=0)
+		#foreach($item in $!inviteFriendList)
+		   #set($i=$i+1)
+			<div class="appBox">
+				<div class="boxIcon"><img src="$!{item.imgUrl}" /></div>
+				<div class="boxInfo">
+					<div class="boxName colorBlue">$!{item.userName}</div>
+					<!--<div class="boxStatus clearfix">-->
+						<!--<div class="colorGreen boxTop">邀请成功，获得3元奖励</div>-->
+					<!--</div>-->
+				</div>
+				<div class="boxTime">$!date.format('MM月dd日 HH:mm',$!item.relationTime)</div>
+			</div>
+		#end
+		#if($i==0)
+		   <div class="tip">
+			<div class="icon"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/p4_1.png" /></div>
+			<div class="noTask">
+				<p>亲，您还没收徒弟，快去收徒弟赚钱</p>
+			</div>
+			<div class="homeBtn" id="btnIndex"><a>收徒弟</a></div>
+	     </div>
+       #end
+	</div>
+	
+</div>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+	<script>
+	$(function(){
+		$("#btnIndex").bind("click",function(){
+			window.location="/innerPage/inviteFriend"
+		})
+
+	})
+
+</script>
+
+</body>
+</html>

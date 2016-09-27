@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserRelation" >
+    <id column="id" property="id"  jdbcType="BIGINT" />
+    <result column="user_id" property="userId"  />
+    <result column="open_id" property="openId"  jdbcType="VARCHAR" />
+    <result column="parent_user_id" property="parentUserId"  />
+    <result column="parent_open_id" property="parentOpenId"   jdbcType="VARCHAR"/>
+    <result column="archive" property="archive" jdbcType="TINYINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id,open_id, parent_user_id,parent_open_id, created_at, updated_at
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user_relation
+    where archive=false and id = #{id}
+  </select>
+ 
+ <!-- 这里插入的没有徒弟的用户编号 -->
+  <insert id="insert" parameterType="com.hongbao.dal.model.UserRelation" >
+    <selectKey resultType="long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+	    insert into vdlm_user_relation (user_id,parent_user_id,open_id, parent_open_id, archive, created_at, updated_at)
+	    values (#{userId},#{parentUserId},#{openId,jdbcType=VARCHAR}, #{parentOpenId,jdbcType=VARCHAR}, 0,now(), now())
+  </insert>
+  
+  <select id="getAllApprenticesByPuserId" resultMap="BaseResultMap" >
+ select 
+    ur.*
+    from vdlm_user_relation ur , vdlm_user u
+     where 
+     ur.user_id = u.id
+     and ur.archive=false
+     and u.archive = false
+     and ur.parent_user_id=#{parentUserId}
+     order by ur.id desc
+ </select>
+ 
+  <select id="getApprenticeNewByPuserId" resultMap="BaseResultMap" >
+   select 
+    ur.*
+    from vdlm_user_relation ur , vdlm_user u
+     where 
+     ur.user_id = u.id
+     and ur.archive=false
+     and u.archive = false
+     and ur.parent_user_id=#{parentUserId}
+     order by ur.id desc
+     limit 0,1
+ </select>
+ 
+ 
+ <!-- 根据  已经存在司徒关系 -->
+ <select id="findByOpenIdRelation" resultMap="BaseResultMap">
+   select 
+   	<include refid="Base_Column_List" />
+    from vdlm_user_relation
+     where 
+     archive=false
+     and (open_id = #{openId,jdbcType=VARCHAR} or parent_open_id=#{openId,jdbcType=VARCHAR})
+     limit 0,1
+ </select>
+ 
+ 
+  <!--根据用户ID 查询没有绑定用户-->
+ <select id="findByOpenIdNoRelation" resultMap="BaseResultMap">
+    select 
+   	<include refid="Base_Column_List" />
+    from vdlm_user_relation
+     where 
+     archive=false and user_id=0
+     and open_id = #{openId,jdbcType=VARCHAR} limit 0,1
+ </select>
+ 
+  <update id="updateByOpenId">
+    update vdlm_user_relation set user_id=#{userId}, updated_at = now()
+    where  archive=false and open_id = #{openId,jdbcType=VARCHAR} 
+  </update>
+ 
+ 
+   <!--根据用户ID 查询没有绑定用户-->
+ <select id="findByUserIdRelation" resultMap="BaseResultMap">
+    select 
+   	<include refid="Base_Column_List" />
+    from vdlm_user_relation
+     where 
+     archive=false and user_id = #{userId} limit 0,1
+ </select>
+ 
+
+ 
+</mapper>

@@ -1,0 +1,53 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<form style="margin: 10px 15px" role="form" id="cForm">
+        <div class="form-group">
+            电话：<input type="text" name="tel"/>
+        </div>
+        <button type="button" class="btn btn-primary" id="btnL">审核通过区县代理</button>
+
+
+</form>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+
+
+        $.ajaxSetup({
+            async: false   //同步
+        });
+
+
+        //save
+        $("#btnL").click(function () {
+            var params = getFormParams();
+            $.post("/proxy/admin/audit" ,params, function (data) {
+                if (data.success) {
+                    alert("审核成功");
+                } else {
+                    alert("审核失败 " + data.message);
+                }
+            });
+        });
+
+    });
+    //
+</script>
+#parse("/proxy/head.vm")
+</body>
+</html>

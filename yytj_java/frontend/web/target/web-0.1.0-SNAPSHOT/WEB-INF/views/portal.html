@@ -1,0 +1,160 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no"/>
+<title>应用淘金</title>
+<style>
+html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+body{margin:0;}
+img {width:100%;}
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }   
+.clearfix { zoom:1; }    
+
+.topFixed {position:fixed;top:0;left:0;width:100%;height:30px;line-height:30px;text-align:center;color:#fff;font-size:12px;}
+.topMask {position:absolute;top:0;left:0;width:100%;height:30px;background:#fe6d4e;opacity:0.3;}
+.topClose {position:absolute;right:3%;top:5px;width:20px;height:20px;line-height:18px;background:#cb4e44;font-size:25px;border-radius:50%;}
+
+.content {background:#fff;}
+.incomeInfo {width:100%;background:#d92d22;padding:40px 0 20px 0;background:url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p1_3.jpg") center no-repeat;-wenkit-background-size:100% 100%;}
+.userImg {text-align:center;margin-top:5%;}
+.userImg a {display:inline-block;width:60px;height:60px;}
+.userImg a img {border-radius:50%;}
+.allIncome {display:block;font-size:12px;color:#fff;text-align:center;padding:10px 0;}
+.allIncomeNum {display:inline-block;font-size:30px;padding-left:10px;}
+.incomeDetail {padding-top:5%;}
+.incomeBox {float:left;position:relative;font-size:12px;color:#fff;text-align:center;padding:5px 0;} 
+.boxMask {position:absolute;top:0;left:0;width:100%;height:100%;background:#94200f;opacity:0.3;border-radius:5px;}
+.todayIncome {width:25%;margin: 0 3% 0 5%;}
+.balance {width:28%;margin: 0 3% 0 2%;}
+.mentioned {width:26%;margin: 0 5% 0 2%;}
+.incomeNum {font-size:16px;}
+
+.otherLinks {position:relative;padding:20px 0;}
+.linkBox {float:left;width:27%;margin:2% 3%;font-size:12px;text-align:center;}
+.linkImg {display:inline-block;width:80%;margin-bottom:5px;}
+.linkImg img {border-radius:50%;}
+
+/*赚钱提示 begin*/
+.earnTip {position:absolute;left:30%;top:14%;}
+.leftArrow { position: absolute;left: -3%;top: 30%;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid #db2e22;}
+.earnContent {padding:10px 10px 10px 8px;background:#db2e22;border-radius:5px;font-size:12px;color:#fff;letter-spacing:1px;}
+.earnClose {position:absolute;right:5px;top:-3px;font-size:20px;}
+
+/*赚钱提示 end*/
+
+@media only screen 
+and (min-device-height : 480px){
+	
+}
+
+</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<div class="topFixed">
+		<span class="topMask"></span>
+		<span>百万现金招募，8元奖励推荐好友</span>
+		<span class="topClose">×</span>
+	</div>
+	<div class="content">
+		<div class="incomeInfo">
+			<div class="userImg" id="userCenter"><a><img src="$user.picUri" /></a></div>
+			<a class="allIncome">总收入<span class="allIncomeNum">$!velocityCommonUtil.longFen2Yuan($!{totalScore})</span></a>
+			<div class="incomeDetail clearfix">
+				<a class="incomeBox todayIncome">
+					<div class="boxMask"></div>
+					<div >今日收入</div>
+					<div class="incomeNum">$!velocityCommonUtil.longFen2Yuan($todayScore)</div>
+				</a>
+				<a class="incomeBox balance">
+					<div class="boxMask"></div>
+					<div >余额</div>
+					<div class="incomeNum">$!velocityCommonUtil.longFen2Yuan(${canCash})</div>
+				</a>
+				<a class="incomeBox mentioned">
+					<div class="boxMask"></div>
+					<div >已提现<input name="userId" id="userId" value="$user.id" type="hidden" /></div>
+					<div class="incomeNum">$!velocityCommonUtil.longFen2Yuan(${cutScore})</div>
+				</a>
+			</div>
+		</div>
+		<div class="otherLinks clearfix">
+			<a class="linkBox">
+				<div class="linkImg" id="profit"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/i1.jpg" /></div>
+				<div>赚钱</div>
+			</a>
+			<a class="linkBox">
+				<div class="linkImg" id="active"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/i2.jpg" /></div>
+				<div>活动</div>
+			</a>
+			<a class="linkBox">
+				<div class="linkImg" id="cashApply"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/i3.jpg" /></div>
+				<div>提现</div>
+			</a>
+			<a class="linkBox">
+				<div class="linkImg" id="scoreInfo"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/i4.jpg" /></div>
+				<div>收支明细</div>
+			</a>
+			<a class="linkBox">
+				<div class="linkImg" id="newBoot"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/person@3x.png" /></div>
+				<div>个人中心</div>
+			</a>
+			<a class="linkBox">
+				<div class="linkImg" id="question"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/i6.jpg" /></div>
+				<div>常见问题</div>
+			</a>
+			<!--赚钱提示 begin-->
+			<div class="earnTip">
+				<div class="leftArrow"></div>
+				<div class="earnContent">
+					<div class="earnClose">×</div> 
+					已获得5元奖励<br />再赚5元就可以提现了<br />快点点击赚钱开始吧
+				</div>				
+			</div>
+			<!--赚钱提示 end-->
+		</div>
+		
+	</div>
+</div>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/webHelper.js"></script>	
+
+<script>
+  $(function(){
+	  
+	  $("#profit").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/profitPortal"
+	  });
+	  $("#cashApply").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/addUserAccount"
+	  });
+	  $("#scoreInfo").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/getScoreInfo"
+	  });
+	  $("#newBoot").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/individualCenter"
+	  });
+	  $("#question").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/question"
+	  });
+	  $("#userCenter").click(function(){
+		  window.location="$!{velocityCommonUtil.getStaticUrl()}/innerPage/individualCenter"
+	  });
+
+	  $(".earnClose").click(function(){
+		  $(".earnTip").hide()
+	  });
+	  
+	  $(".topClose").click(function(){
+		  $(".topFixed").hide()
+	  });
+	  
+  })
+
+</script>
+
+</body>
+</html>

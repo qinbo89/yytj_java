@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no"/>
+<title>投资返现</title>
+<style>
+html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+body{margin:0;}
+img {width:100%;}
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }   
+.clearfix { zoom:1; }  
+ 
+
+.pageWrapper {background:#fff;}
+
+.topTip {background:#f8f8f8;border-bottom:1px solid #dedede;padding:4% 5%;font-size:12px;color:#999;line-height:20px;}
+
+/*
+.appBox {display:table;width:92%;padding:8px 4%;border-bottom:1px solid #dedede;} 
+.boxGray.appBox {background:#f0f0f0;}
+.appBoxWrapper {padding:0 4%;}
+.appBoxWrapper > div {display:table-cell;vertical-align:middle;}
+.boxIcon {width:15%;}
+.boxInfo {position:relative;top:0;left:5%;width:60%;}
+.boxBtn {width:20%;} 
+.boxBtn a {display:block;width:100%;background:#e23723;border-radius:3px;text-align:center;font-size:12px;color:#fff;padding:5px 0;}
+.btnGreen.boxBtn a {background:#7bc44e;}
+.btnGray.boxBtn a {background:#bfbfbf;}
+.boxName {position:absolute;top:0;left:0;font-size:14px;color:#000;}
+.boxStatus {position:absolute;bottom:0;left:0;}
+.boxStatus > div {float:left;font-size:12px;}
+.colorYellow {color:#ffd030;}
+.colorGray {color:#ccc;}
+.grayIcon {display:inline-block;width:16%;vertical-align:middle;margin-right:3px;margin-left:10px;}
+*/
+.appBox {position:relative;width:92%;padding:8px 4%;border-bottom:1px solid #dedede;font-size:0;} 
+.boxGray.appBox {background:#f0f0f0;}
+.appBoxWrapper {padding:0 4%;}
+.appBoxWrapper > div {display:table-cell;vertical-align:middle;}
+.boxIcon {display:inline-block;width:15%;vertical-align:middle;}
+.boxInfo {display:inline-block;width:60%;vertical-align:middle;padding-left:5%;}
+.boxBtn {display:inline-block;width:20%;} 
+.boxBtn a {display:block;width:100%;background:#e23723;border-radius:3px;text-align:center;font-size:12px;color:#fff;padding:5px 0;}
+.btnGreen.boxBtn a {background:#7bc44e;}
+.btnGray.boxBtn a {background:#bfbfbf;}
+.boxName {font-size:14px;color:#000;padding-bottom:10px;}
+.boxStatus {}
+.boxStatus > div {float:left;font-size:12px;}
+.colorYellow {color:#ffd030;}
+.colorGray {color:#ccc;}
+.grayIcon {display:inline-block;width:16%;vertical-align:middle;margin-right:3px;margin-left:10px;}
+
+
+
+@media only screen 
+and (min-device-height : 480px){
+	
+}
+
+</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<div class="topTip">		将闲置资金通过第三方平台，借给信誉良好的借款人，到期后，可以获得投资期间的收益并归还本金，收益远超银行利息，在获得高额收益同时还能获得某某的返现奖励。
+	</div>
+	<div class="content">
+	
+	#foreach( $tryApp in $tryList)
+		<div class="appBox clearfix">
+	
+				<div class="boxIcon"><img src="$tryApp.appImg" /></div>
+				<div class="boxInfo">
+					<div class="boxName">$tryApp.appName</div>
+					<div class="boxStatus clearfix">
+						<div class="colorYellow boxTop">投资>$tryApp.description</div>
+					</div>
+				</div>
+				<div class="boxBtn"><a href="$tryApp.investUrl">查看详情</a></div>
+		</div>
+	#end	
+		
+		
+	</div>
+</div>
+	
+
+<script>
+
+</script>
+
+</body>
+</html>

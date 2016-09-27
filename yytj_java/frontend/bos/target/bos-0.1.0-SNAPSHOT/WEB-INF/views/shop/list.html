@@ -1,0 +1,75 @@
+#set( $page_title = "入驻审核" )
+<div>
+    <div style="font-size: 24px; color: #333333;">入驻审核</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/shop/list.html" method="get" id="listForm">
+             <div>
+                 <span style="color: #747474;">手机号：</span><input type="text" name="mobileLike"  value="$!{query.mobileLike}"   style="width: 180px;">
+                 <span style="color: #747474;">商家名称：</span><input type="text" name="nameLike"  value="$!{query.nameLike}"   style="width: 180px;">
+                 <span style="color: #747474;">状态：</span>
+                 <select name="status">
+                     <option value="" >所有</option>
+                     #foreach($item in $!statusList)
+                     <option value="$!item.code" #if($!item.code == $!{query.status})selected="true"#end>$!item.description</option>
+                     #end
+                 </select>
+             </div>
+             <div style="margin-top:10px">
+                 <span style="color: #747474;">区县区域：</span>
+                 <input type="hidden" id="zoneId" name="zoneId"  value="$!{query.zoneId}"   >
+                 <input type="text" id="zoneText" name="zoneText"  value="$!{query.zoneText}"   style="width: 180px;" readonly="true" placeholder="请点击选择">
+                 <input type="button" id="btnQueryZone" value="选择" class="btn btn-primary"  style="height: 30px; width: 40px;">
+                 <span style="color: #747474;">区县代理商：</span>
+                 <input type="hidden" id="areaUserId" name="areaUserId"  value="$!{query.areaUserId}"   >
+                 <input type="text" id="areaUserName" name="areaUserName"  value="$!{query.areaUserName}"   style="width: 180px;" readonly="true" placeholder="请点击选择">
+                 <input type="button" id="btnQueryProxy" value="选择" class="btn btn-primary"  style="height: 30px; width: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />&nbsp;&nbsp;&nbsp;
+                 <input type="button" class="btn   btn-danger" id="btnClear"  value="清空" style="height: 30px; width: 60px;" />
+             </div>
+                </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 6%;">申请时间</th>
+                    <th style="width: 5%;">商户名称</th>
+                    <th style="width: 5%;">手机号码</th>
+                    <th style="width: 4%;">所在区域</th>
+                    <th style="width: 8%;">所属代理</th>
+                    <th style="width: 8%;">状态</th>
+                    <th style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.name</td>
+                    <td >$!item.mobile</td>
+                    <td >$!item.areaFullText</td>
+                    <td >$!item.proxyName</td>
+                    <td >$!item.statusText</td>
+                    <td>
+                        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/shop/enterDetail.html?id=$!item.id" target="_blank" >详情</a><br/>
+                        ##<a href="javascript:void(0)" id="memo" data-id="$!item.id" >指派</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/lhgdialog/lhgdialog.min.js"></script>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/shop.js"></script>
+
+
+
+
+

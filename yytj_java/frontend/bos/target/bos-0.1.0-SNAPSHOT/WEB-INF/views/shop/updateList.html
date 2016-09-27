@@ -1,0 +1,63 @@
+#set( $page_title = "商户修改列表" )
+<div>
+    <div style="font-size: 24px; color: #333333;">商户修改列表</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="${rc.getContextPath()}/shop/updateShopList.html" method="get">
+             <span style="color: #747474;">商户账号：</span><input type="text" name="mobileLike"  value="$!{query.mobileLike}"   style="width: 180px;">
+             <span style="color: #747474;">商家名称：</span><input type="text" name="nameLike"  value="$!{query.nameLike}"   style="width: 180px;">
+             <span style="color: #747474;">修改地址状态：</span>
+             <select name="updateAddrStatus">
+                 <option value="" >所有</option>
+                 #foreach($item in $!updateStatusList)
+                 <option value="$!item.code" #if($!item.code == $!{query.updateAddrStatus})selected="true"#end>$!item.description</option>
+                 #end
+             </select>
+                    <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+                </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 6%;">申请时间</th>
+                    <th style="width: 5%;">商户名称</th>
+                    <th style="width: 5%;">商户账号</th>
+                    <th style="width: 6%;">地址</th>
+                    <th style="width: 4%;">所在区域</th>
+                    <th style="width: 4%;">所属代理</th>
+                    <th style="width: 5%;">修改地址状态</th>
+                    <th style="width: 8%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.name</td>
+                    <td >$!item.mobile</td>
+                    <td >$!item.address</td>
+                    <td >$!item.areaFullText</td>
+                    <td >$!item.proxyName</td>
+                    <td >$!velocityBizUtil.updateStatus($!item.updateAddrStatus)</td>
+                    <td>
+                        <a href="javascript:void(0)" id="enterUpdate" data-id="$!item.id" >折扣修改</a>
+                        <a href="javascript:void(0)" id="enterAddrUpdate" data-id="$!item.id" >地址修改</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/module/shop.js"></script>
+
+
+
+
+

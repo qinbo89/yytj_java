@@ -1,0 +1,72 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "缓存管理" )
+<div>
+    <div style="margin:15px 5px;text-align: left; font-size: 24px; color: #333333;">系统管理 &gt; 缓存管理</div>
+    <div style="border-top: 1px solid #e7e7e7; margin: 20px 5px;text-align: right;">
+        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/log/list.html">日志管理</a>
+    </div>
+    <div style="margin-top: 20px;">
+         密码：<input type="text" id="pass">
+         选择：
+         <select id="type">
+             <option value="">所有</option>
+             <option value="shop">shop</option>
+             <option value="hongbao">hongbao</option>
+         </select>
+         <input type="button" id="btnBuilderIndex" class="btn btn-danger" value="重建索引" style="width:120px;height: 30px">
+         <textarea id="result" style="margin-top:15px;width:98%;height:450px;background: black;color:#f0f0f0"  readonly="true" ></textarea>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        basePath = $("#basePath").val();
+
+        $("#btnBuilderIndex").click(function(){
+            $.post(basePath+"/manager/indexAll",{"pass":$("#pass").val(),type:$("#type").val()},function(d){
+                if(d == "0"){
+                    writeMsg("您没有权限!",true);
+                }else if(d  == "1"){
+                    writeMsg("执行成功!",true);
+                    //打印消息
+                    interval = window.setInterval("printMsg()",1500);
+                }else if(d == "2"){
+                    writeMsg("请不要重复执行!",true);
+                    interval = window.setInterval("printMsg()",1500);
+                }else{
+                    writeMsg("出错了!",true);
+                }
+            });
+        });
+
+
+    });
+
+    function writeMsg(msg,flag){
+        if(!msg){
+            return;
+        }
+        if(typeof(flag) != "undefind" && flag){
+            msg = $("#result").val()+msg;
+        }
+        msg+="\r\n";
+        $("#result").val(msg);
+        result.scrollTop = result.scrollHeight;
+    }
+
+
+    function printMsg(){
+        $.post(basePath+"/manager/indexStatus",{},function(d){
+            if(d != "1"){
+                writeMsg(d,true);
+            }else{
+                window.clearInterval(interval);
+                writeMsg("重建索引结束",true);
+            }
+        },"text");
+    }
+</script>
+
+
+
+
+

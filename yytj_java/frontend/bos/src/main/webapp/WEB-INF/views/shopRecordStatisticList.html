@@ -1,0 +1,45 @@
+#set( $layout = "include/header_footer.html" )
+#set( $page_title = "商户列表" )
+<div>
+    <div style="height: 20px;"></div>
+    <div style="font-size: 24px; color: #333333;">商户列表</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th  >店铺名</th>
+                    <th  >地址</th>
+                    <th  >录入时间</th>
+                    <th  >状态</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($recordShop in $shopRecordStatisticList)
+                <tr>
+                    <th  >$!recordShop.name</th>
+                    <th  >$!recordShop.address</th>
+                    <th >$date.format('yyyy-MM-dd HH:mm:ss',$!recordShop.createdAt)</th>
+                    <th >$velocityBizUtil.shopStatus($!recordShop.status)</th>
+                </tr>
+                #end
+                #if($shopRecordStatisticList.size()==0)
+                    <tr>
+                        <th colspan="4" align="center" style="text-align: center;" >暂无数据</th>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($pageInfo)
+         </div>
+    </div>
+</div>
+
+
+
+
+

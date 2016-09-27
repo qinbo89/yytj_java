@@ -1,0 +1,48 @@
+#set( $layout = "include/header_footer.html" )
+#set( $page_title = "登录" )
+<div align="center">
+    <div style="display: inline-block; border: 1px solid #e7e7e7; margin-top: 20px; padding-bottom: 40px;width: 420px;" align="left">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/login.html" method="post">
+                                     <input type="hidden" name="returl" value="$!{returl}">
+         
+         
+                        <div style="height: 30px; background-color: fd5c63; color: white; padding: 10px 0px 10px 20px; font-size: 20px;">登录</div>
+                        <div style="padding-left: 40px; padding-right: 40px;">
+                            <div style="height: 40px; margin-top: 40px;">
+                                <input type="text" placeholder="请输入账号" style="width: 100%; height: 40px;"  name="mobile" >
+                            </div>
+                            <div style="height: 40px; margin-top: 40px;">
+                                <input type="password" placeholder="请输入密码" style="width: 100%; height: 40px;" name="password">
+                            </div>
+                            
+                            
+                              <div style="height: 40px; margin-top: 40px;">
+                              <label>登陆角色：</label>
+                                  <select id="type" name="type">
+                                      <option value="">选择角色</option>
+                                      <option value="6">系统管理员</option>
+                                      <option value="7">客服</option>
+                                      <option value="8">财务</option>
+                                      <option value="2">代理商</option>
+                                  </select>
+                            </div>
+                            
+                            
+                               <div style="height: 40px; margin-top: 15px;">
+                                <input type="text" placeholder="请输入验证码" style="height: 40px;" name="imageCheckCode"  maxlength="4">
+                                <img src="$!{velocityCommonUtil.getAbsoluteURL()}/imageCheckCode.html" style="height: 40px;vertical-align: middle;cursor: pointer;"  onclick="this.src='$!{velocityCommonUtil.getAbsoluteURL()}/imageCheckCode.html?t=' + new Date().getTime()" >
+                            </div>
+                            
+                            
+                            <div style="height: 40px; margin-top: 40px;">
+                                <input type="submit" class="btn   btn-danger"   value="登录" style="width: 100%; height: 40px;">
+                            </div>
+                            
+                             
+                        </div>
+         </form>
+    </div>
+</div>
+
+
+

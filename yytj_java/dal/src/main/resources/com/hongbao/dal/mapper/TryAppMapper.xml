@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.TryAppMapper">
+	<resultMap type="com.hongbao.dal.model.TryApp" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="app_app_id" property="appAppId" jdbcType="VARCHAR" />
+		<result column="app_img" property="appImg" jdbcType="VARCHAR" />
+		<result column="is_admin" property="isAdmin" jdbcType="VARCHAR" />
+		<result column="project_name" property="projectName" jdbcType="VARCHAR" />
+		<result column="package_name" property="packageName" jdbcType="VARCHAR" />
+		<result column="schema" property="schema" jdbcType="VARCHAR" />
+		<result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+		<result column="try_time" property="tryTime" jdbcType="DECIMAL" />
+		<result column="success_status" property="successStatus"
+			jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="DECIMAL" />
+		<result column="tag" property="tag" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="archive" property="archive" jdbcType="TINYINT" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+		<result column="task_type" property="taskType" jdbcType="VARCHAR" />
+		<result column="click_call_url" property="clickCallUrl"
+			jdbcType="VARCHAR" />
+		<result column="parent_score" property="parentScore" jdbcType="VARCHAR" />
+		<result column="callBack_url" property="callBackUrl" jdbcType="VARCHAR" />
+		<result column="siginKey" property="siginKey" jdbcType="VARCHAR" />
+		<result column="num" property="num" jdbcType="DECIMAL" />
+		<result column="app_type" property="appType" jdbcType="DECIMAL" />
+		<result column="invest_url" property="investUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 字段集合 -->
+	<sql id="Base_Column_List">
+		id,app_name,app_app_id,app_img,is_admin,project_name,package_name,`schema`,key_word,try_time,success_status
+		,score ,tag,description,status,archive, created_at
+		,updated_at,task_type,click_call_url,parent_score,callBack_url,siginKey,num,app_type,invest_url
+	</sql>
+
+
+	<sql id="sql_where">
+		<if test="map.startDate !=null">
+			and created_at &gt;=#{map.startDate}
+		</if>
+		<if test="map.endDate!=null">
+			and created_at &lt;=#{map.endDate}
+		</if>
+
+	</sql>
+
+	<insert id="insert" parameterType="com.hongbao.dal.model.TryApp">
+		<selectKey resultType="Long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into vdlm_try_app
+		(app_name,app_img,is_admin,project_name,`schema`,key_word,tag,description,
+		try_time,package_name,status,success_status ,app_app_id,score
+		,archive, created_at
+		,updated_at,task_type,click_call_url,parent_score) values(
+		#{appName},#{appImg},#{isAdmin},#{projectName},#{schema},#{keyWord},#{tag},#{description},#{tryTime},
+		#{packageName},#{status},#{successStatus},#{appAppId},#{score},0,now(),now(),#{taskType},#{clickCallUrl},#{parentScore}
+		)
+	</insert>
+	<update id="updateTryApp" parameterType="com.hongbao.dal.model.TryApp">
+		  update vdlm_try_app 
+		      <set >
+				  <if test="appName != null" >
+					 app_name = #{appName},
+				  </if>
+	              <if test="appImg != null" >
+					 app_img = #{appImg,jdbcType=VARCHAR},
+				  </if>
+				   <if test="isAdmin != null" >
+					 is_admin = #{isAdmin},
+				  </if>
+				   <if test="projectName != null" >
+					 project_name = #{projectName},
+				  </if>
+				  <if test="schema != null" >
+					 `schema` = #{schema},
+				  </if>
+				   <if test="keyWord != null" >
+					 key_word = #{keyWord},
+				  </if>
+				   <if test="tag != null" >
+					 tag = #{tag},
+				  </if>
+				   <if test="description != null" >
+					 description = #{description},
+				  </if>
+				   <if test="tryTime != null" >
+					 try_time = #{tryTime},
+				  </if>
+				   <if test="packageName != null" >
+					 package_name = #{packageName},
+				  </if>
+				   <if test="status != null" >
+					 status = #{status},
+				  </if>
+				  <if test="successStatus != null" >
+					 success_status = #{successStatus},
+				  </if>
+				  <if test="appAppId != null" >
+					 app_app_id = #{appAppId},
+				  </if>
+				  <if test="score != null" >
+					 score = #{score},
+				  </if>
+	        updated_at = now()
+	       </set>
+		  where id =#{id}
+	</update>
+	<!-- 试用列表 -->
+	<select id="queryTryAppList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app ta where ta.status='1' and app_type=${appType}  and archive=0 and not EXISTS
+		(select 1 from vdlm_user_app ua where ua.status=ua.success_status and
+		ua.app_id=ta.id and ua.user_id=#{userId})
+	</select>
+	
+	
+	
+	
+	<!-- 还有开始的试玩列表 -->
+	<select id="queryNotStartTryAppList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app ta where ta.status='2' and archive=0 and not EXISTS
+		(select 1 from vdlm_user_app ua where ua.status=ua.success_status and
+		ua.app_id=ta.id and ua.user_id=#{userId})
+	</select>
+
+	<!-- 所有在线的试用列表 -->
+	<select id="queryOnlineTryAppList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app ta where ta.status='1' and archive=0
+	</select>
+
+	<!-- 查找app -->
+	<select id="queryTryAppById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app ta where ta.status='1' and ta.id=#{id}
+	</select>
+
+	<!-- 查找app -->
+	<select id="queryMyTryAppById" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app ta where ta.id=#{id}
+	</select>
+
+	<select id="getTryAppListCount" resultType="java.lang.Integer">
+		select count(*) from vdlm_try_app where archive=0
+		<include refid="sql_where" />
+	</select>
+
+	<select id="getTryAppList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_try_app
+		where archive=false
+		<include refid="sql_where" />
+		limit #{page.offset}, #{page.pageSize}
+	</select>
+
+
+
+
+
+
+</mapper>

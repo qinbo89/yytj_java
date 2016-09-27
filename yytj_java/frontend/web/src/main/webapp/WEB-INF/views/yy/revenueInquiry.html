@@ -1,0 +1,45 @@
+<!doctype html>  
+<html>  
+<head>  
+<meta charset="utf-8" />  
+<title>收入查询</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/_resources/css/style.css" />
+  
+</head>  
+<body class="personalCenterBody"> 
+<div class="">
+	<div class="userInfo" th:if="${scoreInfo!=null}">
+		<div class="userInfoItem">
+			<div class="userLabel">可提收入</div>
+			<div class="userText availableRevenue" ><span th:text="${scoreInfo.usableScoreYuan}">0.00</span>元</div>
+		</div>
+		<div class="userInfoItem">
+			<div class="userLabel">已提收入</div>
+			<div class="userText" ><span th:text="${scoreInfo.cashApplyScoreYuan}">0.00</span>元</div>
+		</div>
+		<div class="userInfoItem">
+			<div class="userLabel">全部收入</div>
+			<div class="userText" ><span th:text="${scoreInfo.totalScoreYuan}">0.00</span>元</div>
+		</div>
+	</div>
+	
+	<div class="userInfo recordsInfo">
+		<a class="userInfoItem">
+			<div class="userLabel">试玩收入</div>
+			<div class="userText"  ><span th:text="${scoreInfo.tryScoreYuan}" >00.00</span>元</div>
+<!-- 			<img class="arrowHref" src="/_resources/images/arrow02.jpg" width="100%" /> -->
+		</a>
+		<a class="userInfoItem">
+			<div class="userLabel">邀请收入</div>
+			<div class="userText" ><span th:text="${scoreInfo.apprenticeScoreYuan}">10.00</span>元</div>
+<!-- 			<img class="arrowHref" src="/_resources/images/arrow02.jpg" width="100%" /> -->
+		</a>
+	</div>
+	<div class="submitBtn"><a th:href="@{/weixin/duobaoList}">申请多宝</a></div> 
+	<div class="queryBtn" style=""><a th:href="@{/innerPage/applyCash}">申请提现</a></div>
+	
+</div> 
+
+</body> 
+</html>  

@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+</body>
+<form style="margin: 10px 15px" role="form" id="pForm">
+
+##    <input type="text" class="form-control" placeholder="Search">
+    <div class="form-group">
+     区域：<select id="selProvince"></select>
+    </div>
+    <div class="form-group">
+        姓名：<input type="text"  id="name" name="name" placeholder="请输入姓名">
+    </div>
+    <div class="form-group">
+        密码：<input type="text" name="password" />
+    </div>
+    <div class="form-group">
+        手机号码：<input type="text" name="tel" />
+    </div>
+    <div class="form-group">
+        身份证号：<input type="text" name="cardNo" />
+    </div>
+    <input class="btn btn-primary" id="btnP" value="创建省级代理商" />
+
+</form>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+
+        $.ajaxSetup({
+            async: false,   //同步
+            contentType: "application/x-www-form-urlencoded;charset=utf-8 "
+        });
+
+        //获取已经创建好的省级代理商列表
+        var provinceProxyList = [];
+        $.post("/proxy/admin/getProxyList?level=1",function(data){
+            var itemList = data.data;
+            for(var i = 0; i < itemList.length; i++){
+                provinceProxyList.push(itemList[i].zoneId);
+            }
+        });
+
+        $.post("/m/getProvinces",function(data){
+            var jsonArr = data.data;
+            for(var i = 0; i < jsonArr.length; i++){
+                var jsonObj = jsonArr[i];
+                var contain = false;
+                for(var j = 0; j < provinceProxyList.length; j++){
+                    if(provinceProxyList[j] == jsonObj.id){
+                        contain = true;
+                        break;
+                    }
+                }
+                if(!contain){  //不存在，就不添加
+                    $("#selProvince").append("<option value='"+jsonObj.id+"'>"+jsonObj.name+"</option>")
+                }
+            }
+        },"json");
+
+        //save
+        $("#btnP").click(function(){
+            var params = getFormParams();
+            var zoneId = $("#selProvince").val();
+            var zoneText = $("#selProvince").find("option:selected").text()
+            params["zoneId"] = zoneId;
+            params["zoneText"] = zoneText;
+            $.post("/proxy/provinceSave",params,function(data){
+                if(data.success){
+                    alert("创建成功");
+                }else{
+                    alert("创建失败 "+data.message);
+                }
+            });
+        });
+    });
+
+
+
+</script>
+#parse("/proxy/head.vm")
+</html>

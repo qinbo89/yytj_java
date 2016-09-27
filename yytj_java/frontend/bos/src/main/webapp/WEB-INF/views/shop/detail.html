@@ -1,0 +1,85 @@
+#set( $page_title = "详情" )
+<link rel="stylesheet" type="text/css" href="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/lightbox/lightbox.css">
+<style>
+    .txtProp{
+        color:dimgrey;
+        font-size: 16px;
+    }
+</style>
+<div style="font-size:16px">
+    <div style="font-size:24px; color: #333333;">详情</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 5px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!domain.id">
+            <div style="float: left; width: 450px;">
+               <div style="margin:5px 3px;">商户营业执照</div>
+               <div>
+                   <a href="$!domain.code" class="lightbox" title="营业执照">
+                       <img src="$!domain.code" style="width:365px;height:225px">
+                   </a>
+               </div>
+
+                <div style="margin:5px 3px;">
+                    <input type="text" style="width:265px" id="licenseNo" value="$!domain.licenseNo" placeholder="请输入营业执照编号" />
+                    <input type="button" id="btnCheck" value="检测" class="btn btn-primary"  style="height: 30px; width: 60px;">
+                </div>
+                <div style="margin:5px 3px;">
+                    #set($imgSize = $!{hjImg.size()}+1)
+                    店铺图（$!{imgSize}）请点击查看
+                </div>
+                <div style="margin-top:5px;">
+                    <a href="$!domain.img" class="lightbox">
+                        <img src="$!domain.img" style="width:92px;height:68px" />
+                    </a>
+                    #foreach($hjItem in $!hjImg)
+                    <a href="$!hjItem.img" class="lightbox">
+                        <img src="$!hjItem.img" style="width:92px;height:68px" />
+                    </a>
+                    #end
+                </div>
+
+            </div>
+
+            <div style="float: right; width: 450px">
+                <dl>
+                    <dt>商户名称：<span class="txtProp">$!domain.name</span></dt>
+                    <dt>状态：<span class="txtProp">$!domain.statusText</span></dt>
+                    <dt>商户地址：<span class="txtProp">$!domain.address</span></dt>
+                    <dt>所属代理商：<span class="txtProp">#if($!{domain.zoneText}) $!{domain.zoneText} - #end #if($!{proxy.name})$!{proxy.name} #else 暂无 #end ($!{domain.tel})</span></dt>
+                    <dt>商户类目：<span class="txtProp">$!shopcat.name</span></dt>
+                    <dt>营业时间：<span class="txtProp">#if($!domain.startTime!="00:00") $!domain.startTime $!domain.endTime #else 未填写 #end </span></dt>
+                    <dt>停车位：<span class="txtProp">#if($!domain.parkingSpace==1) 有 #else 否 #end</span></dt>
+                    <dt>联系电话：<span class="txtProp">#if($!domain.mobile)$!domain.mobile #else 未填写 #end</span></dt>
+                    <dt>人均：<span class="txtProp">$!velocityCommonUtil.fen2Yuan($!domain.custFee) 元</span></dt>
+                    <!--<dt>商户手续费：<span class="txtProp"></span></dt>-->
+                </dl>
+            </div>
+
+            <div style="clear:both;">
+                <div style="padding-top:10px">
+                    <input type="button" id="btnPass" value="通过" class="btn   btn-danger"  style="height: 30px; width: 80px;"/>
+                    <input type="button" id="btnNotPass"  value="不通过"  class="btn   btn-danger"  style="height: 30px; width: 90px;"/>
+                    <input type="button" id="btnAssign"  value="指派" class="btn   btn-danger"  style="height: 30px; width: 80px;" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/lhgdialog/lhgdialog.min.js"></script>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/lightbox/jquery.lightbox.js"></script>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/shop.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".lightbox").lightbox({
+            fitToScreen: true,
+            imageClickClose: false
+        });
+    });
+</script>
+
+
+
+
+

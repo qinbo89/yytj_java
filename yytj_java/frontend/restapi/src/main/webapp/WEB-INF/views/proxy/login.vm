@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<form style="margin: 10px 15px" role="form" id="cForm">
+    #if($!user)
+        <strong>$!user.userName</strong> 已登录。手机：$!user.mobile
+        <button type="button" class="btn btn-primary" id="btnC">退出</button>
+    #else
+        <div class="form-group">
+            手机：<input type="text" name="mobile"/>
+        </div>
+        <div class="form-group">
+            密码：<input type="text" name="password"/>
+        </div>
+        <button type="button" class="btn btn-primary" id="btnL">登录</button>
+
+    #end
+
+</form>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+
+
+        $.ajaxSetup({
+            async: false   //同步
+        });
+
+
+        //save
+        $("#btnL").click(function () {
+            var params = getFormParams();
+            $.post("/proxy/login" ,params, function (data) {
+                if (data.success) {
+                    alert("登录成功");
+                } else {
+                    alert("登录失败 " + data.message);
+                }
+            });
+        });
+
+        //save
+        $("#btnC").click(function () {
+            document.cookie = "_login_id=1";
+        });
+    });
+    //
+</script>
+#parse("/proxy/head.vm")
+</body>
+</html>

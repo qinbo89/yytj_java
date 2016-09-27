@@ -1,0 +1,27 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "备注" )
+<div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!id">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>
+                        <textarea style="width:490px;height:250px" id="memo" name="memo" value="$!cashout.memo"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="btnEditMemo" class="btn btn-danger" value="提交" style="height: 30px; width: 80px;">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/cashout.js"></script>
+
+
+
+
+

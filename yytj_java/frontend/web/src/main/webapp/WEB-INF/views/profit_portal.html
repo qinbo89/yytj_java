@@ -1,0 +1,143 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no"/>
+<title>应用淘金</title>
+<style>
+html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+body{margin:0;}
+img {width:100%;}
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }   
+.clearfix { zoom:1; }    
+
+.topFixed {position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:12px;}
+/**.topMask {position:absolute;top:0;left:0;width:100%;height:50%;background:#fff;opacity:0.5;} ***/
+.topFixedContent {background:url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/maskBg1.png") center;-webkit-background-size:100% 100%;padding-bottom:20px;}
+.appIcon {width:16%;margin:10px 42%;}
+.someTip {font-size:12px;color:#000;text-align:center;padding-bottom:10px;}
+.someTip a {display:inline-block;color:#2a9dec;padding-left:5px;}
+.downloadBtn a {display:inline-block;width:50%;margin: 0 25%;font-size:16px;color:#fff;padding:8px 0;border-radius:5px;background:#2a9dec;}
+.downloadBtn a span {display:inline-block;width:10%;vertical-align:middle;margin-right:5px;}
+
+.tasks {padding-top:20%;}
+.taskBox {float:left;width:50%;padding-bottom:20px;}
+.taskIcon {width:80%;margin:0 10%;}
+.taskName {font-size:14px;color:#000;text-align:center;}
+.taskInfo {font-size:12px;color:#ccc;text-align:center;padding-top:3px;}
+.taskInfo span {color:#db2e23;}
+
+
+@media only screen 
+and (min-device-height : 480px){
+	
+}
+
+</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<div class="topFixed" id="downloadWrapper" style="display:none">
+		<div class="topMask"></div>
+		<div class="topFixedContent">
+			<div class="appIcon"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_1.jpg" /></div>
+			<div class="someTip">开始任务前，请先下载<a>安装助手</a></div>
+			<div class="downloadBtn"><a><span><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_2.jpg" /></span>安装助手</a></div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="tasks clearfix">
+			<a class="taskBox" id="profit" >
+			    <input name="userId" type="hidden" value="$!{user.id}" id="userId" />
+				<div class="taskIcon"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_3.jpg" /></div>
+				<div class="taskName" >APP赚钱</div>
+				<div class="taskInfo">100%实时赚钱</div>
+			</a>
+			<a class="taskBox" id="tz" >
+				<div class="taskIcon"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_4.jpg" /></div>
+				<div class="taskName">投资返现</div>
+				<div class="taskInfo">100%投资收益+返现奖励</div>
+			</a>
+			<a class="taskBox" id="jf" >
+				<div class="taskIcon"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_5.jpg" /></div>
+				<div class="taskName">积分墙任务</div>
+				<div class="taskInfo">实时返现</div>
+			</a>
+			<a class="taskBox" id="invite" >
+				<div class="taskIcon"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p2_6.jpg" /></div>
+				<div class="taskName">邀请好友</div>
+				<div class="taskInfo">邀请成功获得<span>10</span>元奖励</div>
+			</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/webHelper.js"></script>	
+
+
+
+<script>
+   $(function(){
+	   jQuery.ajax({  
+           type:'post',
+           url:'/weixin/checkDownLoad',
+           data:{},
+           dataType:'json', 
+           success:function(result) {//返回数据根据结果进行相应的处理  
+               if (result.data==0 ) {  
+					 $("#downloadWrapper").show();
+               } else {  
+            	   $("#downloadWrapper").hide();
+               }  
+           }  
+       });  
+
+	   $("#profit").bind("click",function(){
+		   userId = $("#userId").val()
+		   window.location="/innerPage/queryTryAppList?userId="+userId
+	   })
+	   
+	     $("#tz").bind("click",function(){
+		   userId = $("#userId").val()
+		   window.location="/innerPage/queryInvestTryAppList";
+	   })
+	   
+	   
+
+	   $("#invite").bind("click",function(){
+		   window.location="/innerPage/inviteFriend"
+	   })
+	   
+	   $(".downloadBtn").bind("click",function(){
+		   
+		   window.location="/innerPage/appDownLoadPage";
+		   
+	   });
+	   
+	   
+	   
+	   
+   })
+   
+   
+	   if(SocketCreated==false){
+		   $("#downloadWrapper").show();
+	   }
+	   
+	   var showDownLoad = function(){
+		  if(Date.parse(new Date())-time>10000){
+			  $("#downloadWrapper").show()
+		  }else{
+			  $("#downloadWrapper").hide()
+		  }
+		   
+	   };
+	   
+	   window.setInterval("showDownLoad()",3000); 
+
+</script>
+
+</body>
+</html>

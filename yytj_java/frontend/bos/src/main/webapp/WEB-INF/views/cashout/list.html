@@ -1,0 +1,70 @@
+#set( $page_title = "商家提现" )
+<div>
+    <div style="font-size: 24px; color: #333333;">商家提现</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/cashout/list.html" method="get">
+             <span style="color: #747474;">持卡人：</span><input type="text" name="userName"  value="$!{query.userName}"   style="width: 280px;">
+             <span style="color: #747474;">状态：</span>
+                    <select name="status">
+                        <option value="">所有</option>
+                        #foreach($eitem in $!cashoutStatus.values())
+                           <option value="$!eitem.code" #if($!eitem.code == $!query.status)selected="true"#end>$!eitem.desc</option>
+                        #end
+                    </select>
+                    <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+                    <input type="button" class="btn   btn-danger" id="btnExportExcel"  value="导出EXCL" style="height: 30px; width: 80px;" />
+                </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 4%;">持卡人</th>
+                    <th style="width: 4%;">手机号码</th>
+                    <th style="width: 3%;">金额(元)</th>
+                    <th style="width: 5%;">账号</th>
+                    <th style="width: 6%;">开户行</th>
+                    <th style="width: 8%;">分行</th>
+                    <th style="width: 5%;">申请时间</th>
+                    <th style="width: 3%;">状态</th>
+                    <th style="width: 4%;">备注</th>
+                    <th style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!item.userName</td>
+                    <td >$!item.mobile</td>
+                    <td >$!item.yuanAmount</td>
+                    <td >$!item.account</td>
+                    <td >$!item.bank</td>
+                    <td >$!item.secName,$!item.thirdName</td>
+                    <td >$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.statusText</td>
+                    <td >$!item.memo</td>
+                    <td>
+                        #if(${item.status} == 0)
+                        <a href="javascript:void(0)" id="auditPass" data-id="$!item.id">汇款成功</a><br/>
+                        <a href="javascript:void(0)" id="auditNotPass" data-id="$!item.id" >汇款失败</a><br/>
+                        #end
+                        <a href="javascript:void(0)" id="memo" data-id="$!item.id" >备注</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/cashout.js"></script>
+
+
+
+
+

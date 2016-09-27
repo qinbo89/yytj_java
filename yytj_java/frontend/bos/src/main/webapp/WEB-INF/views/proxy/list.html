@@ -1,0 +1,104 @@
+#set( $page_title = "代理商列表" )
+<div>
+    <div style="font-size: 24px; color: #333333;">代理商列表</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/list.html" method="get">
+             <span style="color: #747474;">区域：</span><input type="text" name="zoneId"  value="$!{query.zondId}"   style="width: 180px;">
+             <span style="color: #747474;">名称：</span><input type="text" name="nameLike"  value="$!{query.nameLike}"   style="width: 180px;">
+             <span style="color: #747474;">电话：</span><input type="text" name="telLike"  value="$!{query.telLike}"   style="width: 180px;">
+             <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+         </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 6%;">代理商名称</th>
+                    <th style="width: 6%;">创建时间</th>
+                    <th style="width: 5%;">电话</th>
+                    <th style="width: 5%;">区域</th>
+                    <th style="width: 5%;">审核状态</th>
+                    <th style="width: 4%;">邀请码</th>
+                    <th style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!item.name</td>
+                    <td >$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.tel</td>
+                    <td >$!item.zoneText</td>
+                    <td >$!item.proxyStatus.description</td>
+                    <td >$!item.inviteCode</td>
+                    <td>
+                        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/enterEdit.html?id=$!item.id" target="_blank"  style="margin-right: 10px;display: inline-block;" class="anormalLink " >修改</a>
+                        #if($item.proxyPermission && $item.proxyPermission==1)
+                         <a href="javascript:void(0);"   style="margin-right: 10px;display: inline-block;" proxyId="$!item.id" proxyName="$!item.name" class="anormalLink updateProxyPermission" proxyPermission="0">取消录入权限</a>                        
+                        #end
+                        #if(!$item.proxyPermission || $item.proxyPermission==0)
+                         <a href="javascript:void(0);"   style="margin-right: 10px;display: inline-block;" proxyId="$!item.id" proxyName="$!item.name" class="anormalLink updateProxyPermission" proxyPermission="1">添加录入权限</a>                        
+                        #end
+                        <a href="javascript:void(0)" id="delProxy" data-id="$!item.userId">删除</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/proxy.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".updateProxyPermission").click(function(){
+
+        $thiz = $(this);
+         var proxyId = $thiz.attr("proxyId");
+         var proxyName = $thiz.attr("proxyName");
+         var proxyPermission = $thiz.attr("proxyPermission");
+         var proxyPermissionString = "";
+         
+         if(parseInt(proxyPermission) ==1){
+        	 proxyPermissionString = "添加";
+         }
+         if(parseInt(proxyPermission) ==0){
+             proxyPermissionString = "取消";
+         }
+          $.layer({
+             shade: [0],
+             area: ['auto','auto'],
+             dialog: {
+                 msg: '确认为 ['+proxyName +'] ' + proxyPermissionString +'代理商录入权限？',
+                 btns: 2,                    
+                 type: 4,
+                 yes: function(index){
+                     YTLib.doAjaxRequest({
+                         url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/updateProxyPermission",
+                         data : {
+                        	 proxyId:proxyId,
+                        	 proxyPermission:proxyPermission
+                         },
+                         loading:true
+                     }, function(res) {
+                         if(res.success){
+                            location.reload(true);
+                         }
+                     });
+                 }, no: function(){
+                 }
+             }
+         }); 
+	});
+})
+</script>
+
+
+
+
+

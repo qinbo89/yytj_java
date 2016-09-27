@@ -1,0 +1,80 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no"/>
+	<title>收支明细</title>
+	<style>
+		html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+		body{margin:0;background:#f8f8f8;}
+		img {width:100%;}
+		p {margin:0;padding:0;}
+		ul, li {list-style:none;margin:0;padding:0;}
+		.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }
+		.clearfix { zoom:1; }
+
+		.pageWrapper {background:#f8f8f8;}
+		.content {padding-bottom:100px;}
+		.topTab {background:#fff;}
+		.topTab li {float:left;width:33.3%;text-align:center;padding:10px 0;font-size:14px;color:#000;border-bottom:2px solid #fff;}
+		.topTab li.curTab {color:#db2e23;border-color:#db2e23;}
+
+		.payDetail {background:#fff;border-top:1px solid #ededed;margin-top:20px;}
+		.payBox {position:relative;border-bottom:1px solid #ededed;width:90%;padding:10px 5%;}
+		.payFrom {font-size:14px;color:#000;padding-bottom:8px;}
+		.payTime {font-size:12px;color:#999;}
+		.payNum {position:absolute;right:5%;bottom:5%;font-size:14px;color:#e44431;}
+
+
+
+		@media only screen
+		and (min-device-height : 480px){
+
+		}
+
+	</style>
+</head>
+<body>
+<div class="pageWrapper">
+	<ul class="topTab clearfix">
+		<a href="/innerPage/getScoreInfo"><li #if(!$!{query.type})class="curTab"#end>全部</li></a>
+		<a href="/innerPage/getScoreInfo?type=TryPlayScore"><li #if("$!{query.type}"=="TryPlayScore")class="curTab"#end>任务</li></a>
+		<a href="/innerPage/getScoreInfo?type=ApprenticeScore"><li #if("$!{query.type}"=="ApprenticeScore")class="curTab"#end>邀请</li></a>
+	</ul>
+	<div class="content">
+		<div class="payDetail">
+			#foreach($item in $!dataList)
+			<div class="payBox">
+				<div class="payFrom">
+					#if("$!{item.type}"=="TryPlayScore")
+					  试玩任务
+					#elseif("$!{item.type}"=="ApprenticeScore")
+					  收徒弟试玩
+					#elseif("$!{item.type}"=="SUBSCRIBE")
+					  首次登录发红包
+					#elseif("$!{item.type}"=="FrozenScore")
+					  提现冻结
+					#elseif("$!{item.type}"=="CashApplyScore")
+					  提现支出
+				    #end
+				</div>
+				<div class="payTime">$!date.format('MM月dd日 HH:mm',$!item.createdAt)</div>
+				<div class="payNum">
+				#if("$!{item.type}"=="TryPlayScore" || "$!{item.type}"=="ApprenticeScore" || "$!{item.type}"=="SUBSCRIBE" )
+				 +
+				#else
+				 -
+				#end
+				$!{velocityCommonUtil.fen2Yuan($!item.score)} 元</div>
+			</div>
+			#end
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>

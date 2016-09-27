@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.hongbao.dal.mapper.UserAppMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserApp" >
+	<id column="id" property="id" jdbcType="DECIMAL"    />
+	<result column="user_id" property="userId"  jdbcType="DECIMAL"   />
+	<result column="app_id" property="appId" jdbcType="VARCHAR"   />
+	<result column="app_name" property="appName" jdbcType="VARCHAR" />
+	<result column="app_img" property="appImg"  jdbcType="VARCHAR" />
+	<result column="project_name" property="projectName"  jdbcType="VARCHAR" />
+	<result column="package_name" property="packageName"  jdbcType="VARCHAR" />
+	<result column="archive" property="archive" jdbcType="BIT" />
+	<result column="schema" property="schema" jdbcType="VARCHAR" />
+	<result column="key_word" property="keyWord" jdbcType="VARCHAR" />
+	<result column="try_time" property="tryTime" jdbcType="DECIMAL" />
+	<result column="success_status" property="successStatus" jdbcType="VARCHAR" />
+	<result column="status" property="status" jdbcType="VARCHAR" />
+	<result column="created_at" property="createdAt"  jdbcType="TIMESTAMP" />
+	<result column="updated_at" property="updatedAt"  jdbcType="TIMESTAMP" />
+	<result column="app_app_id" property="appAppId" jdbcType="VARCHAR" />
+	<result column="id" property="taskId"  jdbcType="DECIMAL" />
+	<result column="uuid" property="uuid"  jdbcType="VARCHAR"  />
+	<result column="channel" property="channel"  jdbcType="VARCHAR"  />
+	<result column="pageUid" property="pageUid"  jdbcType="VARCHAR"  />
+	
+  </resultMap>
+  
+
+
+  <sql id="Base_Column_List">
+	    id, user_id,app_id,app_name,app_img,app_img,project_name,package_name,archive,`schema`,key_word,try_time,success_status,`status`,created_at,updated_at,score,app_app_id,uuid,channel,pageUid
+  </sql>
+
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	where id = #{id} and archive=false
+  </select>
+  
+  <select id="queryUserAppList"  resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	<![CDATA[
+		from vdlm_user_app ua
+		where  ua.archive=false and  ua.updated_at  >=#{queryTime} and ua.user_id=#{userId} and ua.success_status!=ua.`status` and ua.app_id > 0 and   EXISTS 
+		(
+			select 1 from vdlm_try_app ta where ta.id=ua.app_id and ta.task_type=0
+		)
+	]]>
+  </select>
+
+  <insert id="insert" parameterType="com.hongbao.dal.model.UserApp" >
+	<selectKey resultType="long" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+	insert into vdlm_user_app (user_id, app_id, app_name, app_img,
+	  project_name, package_name, `schema`, key_word, try_time, success_status, score,archive, status,created_at, updated_at,app_app_id,channel,uuid,pageUid
+	  )
+	values (#{userId}, #{appId}, #{appName},#{appImg},#{projectName},#{packageName}, #{schema,jdbcType=VARCHAR}, 
+	  #{keyWord,jdbcType=VARCHAR}, #{tryTime}, #{successStatus},#{score},0,#{status},now(),now(),#{appAppId},#{channel},#{uuid},#{pageUid})
+  </insert>
+
+ <select id="querySuccessAppCount"  resultType="long">
+    <![CDATA[
+	select count(*) as cnt from vdlm_user_app ua where ua.updated_at  >=#{endTime} and <=#{startTime} and ua.app_id=#{appId}
+	 ]]>
+  </select>
+
+  
+  <update id="updateUserApp" parameterType="com.hongbao.dal.model.UserApp" >
+	update vdlm_user_app
+	<set >
+	  <if test="status != null" >
+		 status = #{status,jdbcType=VARCHAR},
+	  </if>
+	     updated_at = now()
+	</set>
+	<![CDATA[
+	where id = #{id} and archive=false and user_id=#{userId} and status < success_status
+   ]]>
+  </update>
+  
+  
+    <update id="updateCpUserApp" parameterType="com.hongbao.dal.model.UserApp" >
+	update vdlm_user_app
+	<set >
+	  <if test="status != null" >
+		 status = #{status,jdbcType=VARCHAR},
+	  </if>
+	     updated_at = now()
+	</set>
+	<![CDATA[
+	where id = #{id} and archive=false and status < success_status
+   ]]>
+  </update>
+ 
+	<!-- 根据用户，展现对应 app -->
+	<select id="findByUserIdList" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List"/>
+		from
+			vdlm_try_app a
+		where 
+		EXISTS 
+		(
+			select id from vdlm_user_app us 
+			where
+			archive=false 
+			and us.app_id = a.id 
+			and us.success_status! = a.success_status
+			and us.user_id=#{userId} 
+		)
+	</select>
+	
+ 	<select id="getUserAppListByUserId" resultMap="BaseResultMap">
+ 	select 
+	<include refid="Base_Column_List" />
+		from vdlm_user_app
+		where  archive=false and user_id=#{userId}  and success_status=`status`  
+ 	</select>
+
+	<select id="getUserAppNewByUserId" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+		from vdlm_user_app
+		where  archive=false and user_id=#{userId}  and success_status=`status`  
+		order by updated_at desc limit 0,1
+	</select>
+	
+<select id="getUserAppId" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+		from vdlm_user_app
+		where  archive=false and id=#{id} 
+	</select>
+	
+<select id="getUserSuccessAppList" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+		from vdlm_user_app
+		where  archive=false and    status=success_status and app_id=#{appId} and user_id=#{userId}
+</select>
+
+ <select id="selectByUserIdAndAppId" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	<![CDATA[
+	   where  archive=false  and app_id=#{appId} and user_id=#{userId} and  created_at>#{createdAt}#
+    ]]>
+  </select>
+  
+   <select id="selectByUserIdAndAppName" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	<![CDATA[
+	   where  archive=false  and app_name=#{appName}  and  status=success_status and user_id=#{userId}
+    ]]>
+  </select>
+  
+  
+  <select id="selectByAppName" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	<![CDATA[
+	   where  archive=false  and app_name<>#{appName} and  status=success_status  order by id asc limit  10,500 
+    ]]>
+  </select>
+  
+   <select id="selectByAppPageUid" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	<![CDATA[
+	   where  archive=false  and pageUid=#{pageUid}
+    ]]>
+  </select>
+  
+   <select id="selectByUuid" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user_app
+	<![CDATA[
+	   where  archive=false  and uuid=#{uuid} and app_app_id=#{appAppId} order by id desc
+    ]]>
+  </select>
+	
+</mapper>

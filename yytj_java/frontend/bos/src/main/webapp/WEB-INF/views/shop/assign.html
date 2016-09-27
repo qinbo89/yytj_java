@@ -1,0 +1,26 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "指派业务员" )
+<!--<link rel="stylesheet" href="${rc.getContextPath()}/_resources/js/zTree/css/demo.css" type="text/css">-->
+<link rel="stylesheet" href="${rc.getContextPath()}/_resources/js/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<div>
+    <div style="margin-top: 20px;margin-left: 25px; text-align: left">
+            <input type="hidden" name="id" id="id" value="$!id" />
+                <span style="color: #747474;">关键字：</span><input type="text" id="keyword"   placeholder="区域/代理商/业务员"  >
+                <span style="color: #747474;">电话号码：</span><input type="text"  id="tel"   placeholder="代理商/业务员电话号码" >
+                <input type="button" class="btn   btn-danger"  id="btnSearch" value="搜索" style="height: 30px; width: 60px;" />
+    </div>
+    <div style="margin-top: 20px;margin-left: 25px;">
+        <div id="treeDiv" class="ztree"></div>
+    </div>
+    <div style="margin-bottom:10px">
+        <input type="button"  id="btnConfirmAssgin" value="确认指派" class="btn btn-danger"  style="height: 30px; width: 160px;" />
+    </div>
+</div>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/zTree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/zTree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${rc.getContextPath()}/_resources/js/module/assignSaleman.js"></script>
+
+
+
+
+

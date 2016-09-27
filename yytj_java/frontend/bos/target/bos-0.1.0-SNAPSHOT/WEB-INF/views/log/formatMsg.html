@@ -1,0 +1,77 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "消息" )
+<div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>
+                        <h3>SQL列表</h3>
+                    </td>
+                </tr>
+                #foreach($item in $!hbLogVo.sqls)
+                <tr>
+                    <td>
+                        $!item
+                    </td>
+                </tr>
+                #end
+                <tr>
+                    <td>
+                        <h3>返回结果</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea id="txtResult" style="width:90%;height:100px;font-size:21px;background: black;color: white" readonly="true">$!hbLogVo.resp.formatResult</textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <h3>请求参数</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                            $!hbLogVo.req.paramterList
+                        <!--<textarea id="txtResult" style="width:90%;height:100px;font-size:21px;background: black;color: white" readonly="true"></textarea>-->
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <h3>请求列表</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        $!hbLogVo.req
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3>返回列表</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        $!hbLogVo.resp
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("textarea").each(function(){
+            $(this).css("height",$(this).prop("scrollHeight")+20);
+        });
+    });
+</script>
+
+
+
+
+

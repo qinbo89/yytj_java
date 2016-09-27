@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->  
+    <property name="LOG_HOME" value="/Users/sairong/logs/web" />
+    
+
+    <!-- 按照每天生成日志文件 -->   
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">   
+        <Encoding>UTF-8</Encoding>
+        <File>${LOG_HOME}/web.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/web.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>50</MaxHistory>
+        </rollingPolicy>   
+        <layout class="ch.qos.logback.classic.PatternLayout">  
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%file:%line]-%msg%n   
+            </pattern>   
+       </layout> 
+    </appender> 
+    
+    <!-- 按照每天生成ERROR日志文件 -->   
+    <appender name="ErrorFile"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+       <Encoding>UTF-8</Encoding>   
+        <Append>true</Append>
+        <File>${LOG_HOME}/web-error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/web-error.log.%d{yyyy-MM-dd}.log</FileNamePattern>   
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+       <layout class="ch.qos.logback.classic.PatternLayout">  
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%file:%line]-%msg%n   
+            </pattern>   
+       </layout> 
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--级别过滤-->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    
+    
+    <!-- 按照每天生成ERROR日志文件 -->   
+    <appender name="RequestLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+       <Encoding>UTF-8</Encoding>   
+        <Append>true</Append>
+        <File>${LOG_HOME}/web-request.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${LOG_HOME}/web-request.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+       <layout class="ch.qos.logback.classic.PatternLayout">  
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} [%file:%line]-%msg%n   
+            </pattern>   
+       </layout> 
+    </appender>
+
+    <logger name="RequestLog" level="info" >
+        <appender-ref ref="RequestLog" />   
+    </logger>
+    
+    <logger name="com.hongbao" level="INFO" />
+    <!-- 
+    <logger name="java.sql.Connection" level="DEBUG"><appender-ref ref="sql" /></logger>   
+    <logger name="java.sql.Statement" level="DEBUG"><appender-ref ref="sql" /></logger>  
+    <logger name="java.sql.PreparedStatement" level="DEBUG"><appender-ref ref="sql" /></logger>  
+    <logger name="java.sql.ResultSet" level="DEBUG"><appender-ref ref="sql" /></logger>   -->
+    
+    <!-- 日志输出级别 -->
+    <root level="INFO">   
+        <appender-ref ref="FILE" />
+        <appender-ref ref="ErrorFile" />   
+        <appender-ref ref="RequestLog" />   
+    </root>
+</configuration>

@@ -1,0 +1,54 @@
+{
+    "button": [
+        {
+            "name": "我要赚钱", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "应用赚钱", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55cee53e0b96179c&redirect_uri=http%3a%2f%2fwww.yahaomai.com%2fweixin%2fqueryTryAppList&response_type=code&scope=snsapi_base&state=bdx#wechat_redirect"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "一元夺宝", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55cee53e0b96179c&redirect_uri=http%3a%2f%2fwww.yaohaomai.com%2fweixin%2fduobaoList&response_type=code&scope=snsapi_base&state=bdx#wechat_redirect"
+                }
+            ]
+        }, 
+        {
+            "name": "我的信息", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "个人中心", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55cee53e0b96179c&redirect_uri=http%3a%2f%2fwww.yaohaomai.com%2fweixin%2findividualCenter&response_type=code&scope=snsapi_base&state=bdx#wechat_redirect"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "邀请好友", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55cee53e0b96179c&redirect_uri=http%3a%2f%2fwww.yaohaomai.com%2fweixin%2fmyQrcode&response_type=code&scope=snsapi_base&state=bdx#wechat_redirect"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "收入查询", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx55cee53e0b96179c&redirect_uri=http%3a%2f%2fwww.yaohaomai.com%2fweixin%2fgetScoreInfo&response_type=code&scope=snsapi_base&state=bdx#wechat_redirect"
+                }
+            ]
+        }, 
+        {
+            "name": "更多", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "关于我们", 
+                    "url": "http://www.yahaomai.com/innnerPage/aboutUs"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "下载钥匙", 
+                    "url": "http://www.yahaomai.com/innerPage/appDownLoadPage"
+                }
+            ]
+        }
+    ]
+}

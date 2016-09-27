@@ -1,0 +1,32 @@
+<div style="width: 100%; background-color: f8f8f8; height: 60px;border-bottom: 1px solid #e7e7e7;" align="center">
+    <div style="max-width: 1200px; min-width: 900px; font-size: 20px; padding-top: 10px;  padding-bottom: 10px;" align="left">
+        <div>
+                 <a href="$!{velocityCommonUtil.getAbsoluteURL()}/"  class="emptylink">   <img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/yuntao_logo.png"  style="height: 40px;width: 40px;vertical-align: middle;"/>
+                        <span >云淘红包管理系统</span></a>
+                        <span style="float: right;">
+                                #if(${currentUser})
+                                    <span>
+                                        <img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/alarm.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+                                        <span style="font-size: 14px;">消息</span>
+                                        <span style="font-size: 14px;color: #fd5c63;">0</span>
+                                    </span>
+                                    <span>
+                                        <img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/user.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+                                        <span style="font-size: 14px;">$!{currentUser.mobile}：$velocityBizUtil.userType($!currentUser.type)</span>
+                                        <img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/down.png"  style="height: 5px;width: 8px;vertical-align: middle;"/>
+                                    </span>
+                                    <span>
+                                        <a class="anormalLink" style="color: red;font-size: 14px;"  href="$!{velocityCommonUtil.getAbsoluteURL()}/logout">退出</a>
+                                    </span>
+                                 #end
+                        </span>
+            </div>
+    </div>
+</div>
+#if(${errorMessage})
+<div  style="max-width: 1200px; min-width: 900px; font-size: 20px; padding-top: 10px;  padding-bottom: 10px;"  class="alert alert-error">$!{errorMessage}</div>
+#end
+#if(${infoMessage})
+<div  style="max-width: 1200px; min-width: 900px; font-size: 20px; padding-top: 10px;  padding-bottom: 10px;"  class="alert alert-info">$!{infoMessage}</div>
+#end
+

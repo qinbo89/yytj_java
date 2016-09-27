@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserAccount" >
+    <id column="id" property="id"  jdbcType="BIGINT"  />
+    <result column="user_id" property="userId"  jdbcType="BIGINT" />
+    <result column="account_no" property="accountNo"   jdbcType="VARCHAR" />
+    <result column="real_name" property="realName"  jdbcType="VARCHAR" />
+    <result column="type" property="type"   jdbcType="VARCHAR" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,user_id,account_no,real_name,type,created_at, updated_at
+  </sql>
+  
+ 
+ 
+  <insert id="insert" parameterType="com.hongbao.dal.model.UserAccount" >
+    <selectKey resultType="long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+	    insert into vdlm_user_account ( user_id,account_no,real_name,type,archive, created_at, updated_at)
+	    values (
+	    #{userId,jdbcType=BIGINT},#{accountNo,jdbcType=VARCHAR},
+	    #{realName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+	    0, now(), now())
+  </insert>
+  
+   <select id="selectById" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user_account
+    where id = #{id}
+  </select>
+  
+   <select id="getAccountListByUserId" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user_account
+    where archive=false and  user_id = #{userId} 
+  </select>
+  <select id="findUserAccountByUserIdDesc" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_user_account
+    where archive=false and  user_id = #{userId} 
+    order by updated_at desc limit 0,1
+  </select>
+  
+  <select id="getAccountListByUserIdAndType" resultMap="BaseResultMap"  >
+   select 
+    <include refid="Base_Column_List" />
+    from vdlm_user_account
+    where archive=false and  user_id = #{userId} 
+    and type = #{type,jdbcType=VARCHAR}
+  </select>
+ 
+ <update id="updateUserAccount" parameterType="com.hongbao.dal.model.UserAccount" >
+ 	update vdlm_user_account set 
+ 	updated_at=now()
+ 	where archive=false 
+    and id =#{id}
+ </update>
+ 
+ <select id="isExist" resultType="java.lang.Integer">
+  select count(*) from vdlm_user_account
+  where archive=false 
+  and user_id = #{userId} 
+  and account_no = #{accountNo,jdbcType=VARCHAR}
+   and type = #{type,jdbcType=VARCHAR}
+ </select>
+
+
+
+ 
+ 
+</mapper>

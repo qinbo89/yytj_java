@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.hongbao.dal.model.User">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="loginname" property="loginname" jdbcType="VARCHAR" />
+		<result column="admin" property="admin" jdbcType="BIT" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="archive" property="archive" jdbcType="BIT" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="shop_id" property="shopId" typeHandler="idHandler" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="out_user_id" property="outUserId" jdbcType="VARCHAR" />
+		<result column="out_nick" property="outNick" jdbcType="VARCHAR" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="tree_path" property="treePath" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="pic_uri" property="picUri" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="occupation" property="occupation" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="hobbies" property="hobbies" jdbcType="VARCHAR" />
+		<result column="union_id" property="unionid" jdbcType="VARCHAR" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, loginname, admin, phone, email, password,
+		archive, avatar
+		, shop_id, source, out_user_id, out_nick, created_at,
+		updated_at,uuid,tree_path
+		,nickname,pic_uri,city,occupation,sex,hobbies,birthday
+		,union_id,open_id
+	</sql>
+	
+	<select id="testSelectFromDual" resultType="java.lang.String">
+		select 1 from dual
+	</select>
+
+	<sql id="sql_where">
+		 <if test="map.startDate !=null">
+	    and created_at &gt;=#{map.startDate}
+	    </if>
+	 	<if test="map.endDate!=null">
+	 	 and created_at &lt;=#{map.endDate}
+	 	</if>
+	 	 <if test="map.nickname!=null and map.nickname!=''">
+	  	and nickname like  CONCAT('%',#{map.nickname},'%' )
+	  	</if>
+	 	 <if test="map.phone != null and map.phone!=''" >
+		and phone like   CONCAT('%',#{map.phone},'%' )
+	  </if>
+  </sql>
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user
+	where id = #{id} and archive=false
+  </select>
+  
+  <select id="loadByLoginname" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user
+	where archive=false and loginname = #{0}
+  </select>
+  
+  <select id="countRegistered" parameterType="string" resultType="int">
+	select count(*) from vdlm_user where loginname=#{mobile} and archive=false
+  </select>
+
+  <update id="deleteByPrimaryKey">
+    update vdlm_user set archive=true, updated_at = now()
+    where id = #{id} and archive=false
+  </update>
+  
+  <update id="undeleteByPrimaryKey">
+    update vdlm_user set archive=false, updated_at = now()
+    where id = #{id} and archive=true
+  </update>
+
+  <insert id="insert" parameterType="com.hongbao.dal.model.User" >
+	<selectKey resultType="long" keyProperty="id"> 
+		SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+	insert into vdlm_user (name, loginname, admin, phone,
+	  email, password, archive, shop_id, source, out_user_id, out_nick,uuid, created_at, updated_at  
+	  , union_id,open_id
+	  ,nickname,pic_uri
+	  )
+	values (#{name,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, false, #{phone,jdbcType=VARCHAR}, 
+	  #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, false,
+	  #{shopId,typeHandler=idHandler},#{source,jdbcType=VARCHAR},#{outUserId,jdbcType=VARCHAR},#{outNick,jdbcType=VARCHAR},#{uuid,jdbcType=VARCHAR},now(),now()
+	  ,#{unionid,jdbcType=VARCHAR} ,#{openId,jdbcType=VARCHAR}
+	  ,#{nickname,jdbcType=VARCHAR},#{picUri,jdbcType=VARCHAR}
+	  )
+  </insert>
+
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.hongbao.dal.model.User" >
+	update vdlm_user
+	<set >
+	  <if test="name != null" >
+		name = #{name,jdbcType=VARCHAR},
+	  </if>
+	  <if test="phone != null" >
+		phone = #{phone,jdbcType=VARCHAR},
+	  </if>
+	   <if test="loginname != null" >
+		loginname = #{loginname,jdbcType=VARCHAR},
+	  </if>
+	  <if test="email != null" >
+		email = #{email,jdbcType=VARCHAR},
+	  </if>
+	  <if test="password != null" >
+		password = #{password,jdbcType=VARCHAR},
+	  </if>
+	  <if test="archive != null" >
+		archive = #{archive,jdbcType=BIT},
+	  </if>
+	  <if test="shopId != null" >
+		shop_id = #{shopId},
+	  </if>
+	  <if test="avatar != null" >
+		avatar = #{avatar,jdbcType=VARCHAR},
+	  </if>	  
+	  <if test="uuid != null and uuid !=''" >
+		uuid = #{uuid,jdbcType=VARCHAR},
+	  </if>	 
+	   <if test="source != null and source!=''" >
+		source = #{source,jdbcType=VARCHAR},
+	  </if>	
+	  <if test="admin != null " >
+		admin = #{admin,jdbcType=BIT},
+	  </if>	
+	  <if test="treePath != null" >
+		tree_path = #{treePath,jdbcType=VARCHAR},
+	  </if>	
+	  
+	  <if test="nickname!=null and nickname!=''">
+	  	nickname=#{nickname,jdbcType=VARCHAR},
+	  </if>
+	  <if test="picUri!=null and picUri!=''">
+	  	pic_uri=#{picUri,jdbcType=VARCHAR},
+	  </if>	  
+	  <if test="city!=null and city!=''">
+	  	city=#{city,jdbcType=VARCHAR},
+	  </if>
+	  <if test="occupation!=null and occupation!=''">
+	  	occupation=#{occupation,jdbcType=VARCHAR},
+	  </if>
+	  <if test="sex!=null and sex!=''">
+	  	sex=#{sex,jdbcType=VARCHAR},
+	  </if>
+	  <if test="hobbies!=null and hobbies!=''">
+	  	hobbies=#{hobbies,jdbcType=VARCHAR},
+	  </if>	  	  	  	  
+	  <if test="birthday!=null and birthday!=''">
+	  	birthday=#{birthday,jdbcType=TIMESTAMP},
+	  </if>	 
+	   
+	  <if test="unionid!=null and unionid!=''">
+	  	union_id=#{unionid,jdbcType=VARCHAR},
+	  </if>	  	  	  	  
+	  <if test="openId!=null and openId!=''">
+	  	open_id=#{openId,jdbcType=TIMESTAMP},
+	  </if>		  
+	  
+	  updated_at = now()
+	</set>
+	where id = #{id} and archive=false
+  </update>
+  
+  <update id="updateByPrimaryKey" >
+	update vdlm_user
+	set name = #{name,jdbcType=VARCHAR},
+	  loginname = #{loginname,jdbcType=VARCHAR},
+	  admin = #{admin,jdbcType=BIT},
+	  phone = #{phone,jdbcType=VARCHAR},
+	  email = #{email,jdbcType=VARCHAR},
+	  password = #{password,jdbcType=VARCHAR},
+	  archive = #{archive,jdbcType=BIT},
+	  shop_id = #{shopId,typeHandler=idHandler},
+	  avatar = #{avatar,jdbcType=VARCHAR},
+	  updated_at = now()
+	where id = #{id,typeHandler=idHandler} and archive=false
+  </update>
+  
+  <update id="emptyUserPassword" >
+    update vdlm_user
+    set password = NULL, updated_at = now()
+    where id = #{id,typeHandler=idHandler} and archive=false
+  </update>
+
+  <update id="emptyUserPasswordByLoginname" >
+    update vdlm_user
+    set password = NULL, updated_at = now()
+    where loginname = #{loginname} and archive=false
+  </update>
+  
+  <select id="findUserByOutUserId" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_user 
+	where  out_user_id = #{0}
+  </select>
+  
+  <select id="selectByuuid" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_user
+		where  uuid= #{0} limit 0,1
+  </select>
+  
+    <select id="selectByuuidList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_user
+		where  uuid= #{0} 
+  </select>
+
+	<update id="updateUserPhoneByUserId" parameterType="com.hongbao.dal.model.User">
+	update vdlm_user
+	set 
+	  loginname = #{phone,jdbcType=VARCHAR},
+	  phone = #{phone,jdbcType=VARCHAR},
+	  uuid = #{uuid,jdbcType=VARCHAR},
+	  updated_at = now()
+	where id = #{id,typeHandler=idHandler} and archive=false
+	</update>
+
+	<!-- 昨天用户记录数（一天的用户注册数统计） -->
+	<select id="findByOneDateRegisterAmount"  resultType="int">
+		select 
+		count(1)
+		from vdlm_user  where 
+		archive=false 
+		and  created_at &gt;= #{startTime,jdbcType=TIMESTAMP}  
+		and  created_at &lt;=#{endTime,jdbcType=TIMESTAMP} 
+	</select>
+	
+	<!-- 说有的用户统计数 -->
+	<select id="findAllUserAmount" resultType="int">
+		select 
+		count(1)
+		from vdlm_user  where 
+		archive=false 
+	</select>
+	
+	
+	<select id="selectByOpenId"  resultMap="BaseResultMap">
+	select
+		<include refid="Base_Column_List" />
+		from vdlm_user
+		where  open_id = #{openId,jdbcType=VARCHAR} order by updated_at limit 0,1
+	</select>
+	
+	<select id="selectByUnionid"  resultMap="BaseResultMap">
+	select
+		<include refid="Base_Column_List" />
+		from vdlm_user
+		where  union_id = #{unionId,jdbcType=VARCHAR} limit 0,1
+	</select>
+
+
+	<!-- 根据用户id 和 openid 查询用户信息  cat 作为切换  unionid 还是 open_id-->
+	<select id="selectByIdOpenIdOrUnionid"  resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from vdlm_user where 
+		archive=false 
+		<if test="cut=='1'">
+		  and open_id = #{openId,jdbcType=VARCHAR}
+		</if>
+		<if test="cut=='2'">
+		  and union_id = #{unionId,jdbcType=VARCHAR}
+		</if>
+		and  id = #{id,typeHandler=idHandler} 
+	</select>
+
+	<select id="getUserListCount" resultType="java.lang.Integer">
+			select count(*) from vdlm_user
+    where archive=false
+  <include refid="sql_where"/>
+	</select>
+	
+ <select id="getUserList" resultMap="BaseResultMap">
+ 	select <include refid="Base_Column_List"/> from vdlm_user
+    where archive=false
+	 <include refid="sql_where"/>
+	  order by id desc
+	 limit #{page.offset}, #{page.size}
+ </select>
+
+
+	<select id="findUserByPhone" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from vdlm_user
+		where archive=false and phone = #{phone}
+		and admin = #{admin,jdbcType=BIT}
+	</select>
+
+	
+
+
+</mapper>

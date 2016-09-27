@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserScore" >
+    <id column="id" property="id"  jdbcType="BIGINT"/>
+    <result column="user_id" property="userId" />
+    <result column="object_id" property="objectId"/>
+    <result column="type" property="type"  jdbcType="VARCHAR" />
+    <result column="score" property="score"  jdbcType="BIGINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseScoreResultMap" type="com.hongbao.dal.model.UserScoreTopTen" >
+    <result column="user_id" property="userId"  jdbcType="BIGINT" />
+    <result column="sum_score" property="totalScore"  jdbcType="BIGINT" />
+  </resultMap>
+  
+  
+  
+  <sql id="Base_Column_List" >
+    id,user_id,score,type,created_at, updated_at
+  </sql>
+  
+  <insert id="insert" parameterType="java.util.Map"  >
+    <selectKey resultType="long" keyProperty="userScore.id">
+			SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+	    insert into ${tableName} (user_id,object_id,score,type,archive, created_at, updated_at)
+	    values (
+	    #{userScore.userId},
+	     #{userScore.objectId},
+	    #{userScore.score,jdbcType=BIGINT}, #{userScore.type,jdbcType=VARCHAR},0, now(), now())
+  </insert>
+  
+  <select id="getById" resultMap="BaseResultMap"   >
+  	select <include refid="Base_Column_List"/> from ${tableName} 
+  	where archive = false and id =#{id}
+  </select>
+  
+  
+  <!-- 总分 -->
+  <select id="getTotalScoreByUserId" resultType="java.lang.Long"   >
+   select ifnull(sum(score),0) from  ${tableName}
+   where archive = false 
+   and user_id =  #{userId}
+   and type in('TryPlayScore','ApprenticeScore','SUBSCRIBE')
+  </select>
+  
+ <!-- 提现扣分和冻结扣分 -->
+ <select id="getDeductedScoreByUserId" resultType="java.lang.Long"   >
+    select ifnull(sum(score),0) from ${tableName}
+   where archive = false 
+   and user_id =  #{userId}
+   and type in('CashApplyScore','FrozenScore')
+ </select>
+ 
+ <select id="getScoreByUserIdScoreType" resultType="java.lang.Long"   >
+  select ifnull(sum(score),0) from ${tableName} 
+   where archive = false 
+   and user_id =  #{userId}
+   and type = #{scoreType,jdbcType=VARCHAR}
+ </select>
+ 
+ <update id="updateFrozenToCashApplyById"   >
+ 	update ${tableName}  set type='CashApplyScore'
+ 	where archive = false 
+   and id =  #{id} 
+ </update>
+ 
+ <select id="getEveryTopTen" resultMap="BaseScoreResultMap">
+    select ifnull(sum(score),0) sum_score, user_id from  ${tableName}
+   where archive = false 
+   and type in('TryPlayScore','ApprenticeScore','SUBSCRIBE')
+   group by user_id 
+   order by sum_score desc limit 0,10
+ </select>
+ 
+   <!-- 总分 -->
+  <select id="getTodayScoreByUserId" resultType="java.lang.Long"   >
+   select ifnull(sum(score),0) from  ${tableName}
+   where archive = false 
+   and user_id =  #{userId}
+   and type in('TryPlayScore','ApprenticeScore','SUBSCRIBE') and   to_days(`created_at`) = to_days(now());
+  </select>
+
+
+    <!-- 获取明细 -->
+    <select id="selectList" resultMap="BaseResultMap"  parameterType="Map" >
+        select <include refid="Base_Column_List"/> from ${tableName}
+        where archive = false
+        and user_id = #{userId}
+        <if test="type != null ">
+            and type = #{type}
+        </if>
+        order by id desc limit 50
+    </select>
+ 
+</mapper>
+

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>我的夺宝记录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/_resources/css/style.css" />
+
+</head>
+<body class="personalCenterBody">
+    <div class="">
+
+        <table style="width: 100%;">
+            <tr   style="font-size: 12px;"> 
+                <th align="left"  style="white-space: nowrap;">商品</th>
+                <th align="left" >名称</th>
+                <th align="left"  style="white-space: nowrap;">价值</th>
+                <th align="left"  style="white-space: nowrap;">参与期数</th>
+                <th align="left"  style="white-space: nowrap;">夺宝号码</th>
+            </tr>
+            <tr    style="font-size: 10px;" th:if="${userDuobaoList!=null}" th:each="userDuobao : ${userDuobaoList}">
+                <td align="left"  style="white-space: nowrap;">
+                    <img th:src="${userDuobao.duobao.imageUrl}" width="30px;" />
+                </td>
+                <td align="left" th:text="${userDuobao.duobao.title}"></td>
+                <td align="left"   style="white-space: nowrap;"><span th:text="${userDuobao.duobao.totalScore}"></span>夺宝币</td>
+                <td align="left"  style="white-space: nowrap;"><span  th:text="${userDuobao.score}"></span></td>
+                <td align="left"  style="white-space: nowrap;"><span  th:text="${userDuobao.id}"></span></td>
+            </tr>
+    </table>
+        <div  align="center"   style="color: red;background-color: #ddd;"  th:text="${errorMessage}"></div>
+    
+    </div>
+</body>
+</html>

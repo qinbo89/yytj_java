@@ -1,0 +1,195 @@
+body {padding:0;margin:0;}
+
+.bodyWrapper {position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;}
+
+/*应用列表*/
+.appItem {display:table;width:100%;padding:15px 0;background:#fff;}
+.appItem:nth-child(2n) {background:#fafafa;}
+.appItem  > div {display:table-cell;vertical-align:top;}
+.aiIcon {width:26%;padding:0px 5%;}
+
+.aiInfo {width:54%;position:relative;}
+.aiInfo01 {position:absolute;top:0;font-size:14px;color:#000;}
+.aiInfo02 {position:absolute;top:30%;font-size:12px;color:#bababa;line-height:20px;}
+.aiInfo03 {position:absolute;bottom:5%;font-size:12px;color:#6cd5bc;}
+.aiInfo04 {position:absolute;bottom:25%;font-size:12px;color:#6cd5bc;}
+.appItem .aiBtn {width:20%;vertical-align:middle;}
+.aiBtn > a {display:inline-block;font-size:12px;color:#fff;/*padding:6px 12px;*/width:55px;height:22px;line-height:22px;text-align:center;border-radius:20px;background:#ad4054;}
+.aiBtnNum {padding-left:2px;}
+.appNotOpen > a {position:fixed;bottom:0px;right:0px;font-size:14px;color:#ad4054;padding:20px;width:20%;}
+.appOpened > a {position:fixed;bottom:0px;right:0px;font-size:14px;color:#ad4054;padding:20px;width:20%;}
+
+/*试用列表*/
+.topFixed {position:fixed;top:0;left:0;width:100%;z-index:10;}
+.mask {position:absolute;top:0;left:0;width:100%;height:100%;z-index:9;background:rgba(0,0,0,0.5);}
+.confirmDialog {position:absolute;top:30%;left:20%;z-index:10;background:#fff;border-radius:5px;font-size:14px;color:#333;}
+.cdContent {width:260px;text-align:center;padding:30px 0;}
+.cdBtns {font-size:0;width:100%;}
+.cdBtns > a {display:inline-block;width:50%;font-size:14px;color:#4a90e2;text-align:center;padding:15px 0;border-top:1px solid #d5d5d5;}
+.cdBtns > a:first-child {width:99.5%;border-right:1px solid #979797;}
+
+/*应用详情*/
+.appDetail {background:#fff;}
+.appTitle {width:40%;margin:20px 30% 30px 30%;background:url("../images/bg01.jpg") no-repeat;background-size:100% 100%;-webkit-background-size:100% 100%;text-align:center;padding:25px 0;color:#ad4054;font-size:18px;-webkit-user-select:element;}
+.someDesc {font-size:14px;color:#666;line-height:22px;text-align:center;}
+.stepDesc {padding:20px 10px;border-bottom:1px solid #f7f7f7;}
+.stepTitle {color:#444;font-size:14px;line-height:25px;}
+.stepInfo {color:#7f7f7f;font-size:14px;line-height:25px;}
+.ruleDesc {font-size:14px;color:#ad4054;text-align:center;padding:20px 0;}
+.arrowUnfold {width:6%;margin:10px 47% 0 47%;}
+.downloadMask {display:none;position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10;}
+.downloadMask img {position:absolute;right:5%;top:5%;width:40%;}
+
+/*试玩记录*/
+.aiInfoOther {width:25%;}
+.appItem .aiTime {width:26%;vertical-align:middle;font-size:14px;color:#b2b2b2;}
+.aiInfoOther {font-size:14px;}
+.aiInfoOther02 {font-size:14px;color:#6cd5bc;line-height:25px;}
+.appItem  .aiStatus {vertical-align:middle;font-size:14px;color:#ad4054;}
+
+/*个人中心*/
+.personalCenterBody {background:#f8f8f8;}
+.userInfo {margin-bottom:20px;border-top:1px solid #dadada;border-bottom:1px solid #dadada;}
+.userInfo:nth-of-type(1) {margin-top:20px;}
+.userInfoItem {font-size:0;margin-left:5%;width:90%;padding:15px 5% 15px 0;border-top:1px solid #f7f7f7;} 
+.userInfoItem:nth-of-type(1) {border-top:none;}
+.userInfoItem > div:nth-of-type(1) {display:inline-block;width:35%;vertical-align:middle;}
+.userInfoItem > div:nth-of-type(2) {display:inline-block;width:65%;vertical-align:middle;}
+.userLabel {font-size:14px;color:#333;}
+.userInfoItem > div.userHead {width:75%;}
+.userInfoItem > div.userImg {width:25%;}
+.userInfoItem .userImg img {border-radius:50%;}
+.userText {font-size:14px;color:#999;text-align:right;}
+.userInfo {background:#fff;}
+.addCashMethod a {display:block;padding:15px 0;font-size:14px;color:#34c5a3;text-align:center;background:#fff;font-weight:bold;} 
+.recordsInfo .userInfoItem {display:block;}
+.recordsInfo .userInfoItem > div{display:inline-block;width:47%;}
+.arrowHref {float:right;width:2.5%;}
+.addCashMethod .arrowHref {margin-right:5%;}
+.crashInfo  .userInfoItem .userLabel {width:30%;}
+.crashInfo  .userInfoItem .userText {width:63%;}
+.crashInfo a {display:inline-block;}
+
+/*添加提现信息*/
+.aiPay {margin:20px 0;padding-left:5%;background:#fff;border-top:1px solid #dadada;border-bottom:1px solid #dadada;}
+.payItem {padding:15px 0;font-size:0;border-top:2px solid #f7f7f7;}
+.payItem:first-child {border-top:none;}
+.payItem > div {display:inline-block;}
+.payLabel {width:35%;font-size:14px;color:#444;}
+.payDetail {width:65%;}
+.payDetail input {font-size:14px;color:#d8d8d8;border:none;outline:none;}
+.payDetail input:focus {color:#444;}
+.payNote {font-size:12px;color:#ad4054;padding:0 0 10px 5%;}
+.submitBtn a{display:block;width:90%;margin:20px 5%;background:#ad4054;border-radius:50px;font-size:14px;color:#fff;text-align:center;padding:15px 0;} 
+.bindingPop {position:absolute;top:30%;left:27%;width:30%;padding:8%;background:rgba(255,255,255,1);border-radius:5px;font-size:0;color:#444;} 
+.bindingPop > div {display:inline-block;font-size:14px;vertical-align:middle;}
+.bindSucIcon {width:20%;padding-right:5%;}
+
+/*提现信息*/
+.accountInfoItem {display:block;margin:20px 0;padding:15px 5%;background:#fff;border-top:1px solid #dadada;border-bottom:1px solid #dadada;font-size:0;}
+.accountInfoItem > div {display:inline-block;vertical-align:middle;}
+.accountIcon {width:15%;}
+.accountDetail {width:79%;padding-left:3%;font-size:14px;color:#444;}
+.accountInfoItem .arrowHref {float:none;}
+.accountUser {padding-bottom:5px;}
+.addAccountItem .accountIcon {width:6%;}
+.addAccountItem .accountUser {padding-bottom:0;}
+
+/*提现记录*/
+.cashRecord {width:100%;border:none;border-collapse:collapse;}
+.cashRecord th:nth-of-type(1) {width:45%;padding-left:5%;text-align:left;}
+.cashRecord th:nth-of-type(2) {width:25%;text-align:left;}
+.cashRecord th:nth-of-type(3) {width:20%;padding-right:5%;text-align:right;}
+.cashRecord th {font-size:14px;color:#85ddc8;padding:10px 0;}
+.cashRecord td {font-size:14px;padding:15px 0;}
+.cashRecord tr td:nth-of-type(1) {width:50%;padding-left:5%;text-align:left;color:#444;}
+.cashRecord tr td:nth-of-type(2) {width:24%;text-align:left;color:#a5a5a5;}
+.cashRecord tr td:nth-of-type(3) {width:20%;padding-right:5%;text-align:right;color:#85ddc8;font-weight:bold;}
+.cashRecord tr:nth-of-type(even) {background:#f5f5f5;}
+
+/*收入查询*/
+.availableRevenue {color:#85ddc8;}
+
+/*邀请记录*/
+.inviteRecordItem {width:90%;padding:0 5%;}
+.inviteRecordItem:nth-of-type(even) {background:#f5f5f5;}
+.briefRecord {font-size:0;padding:15px 0;}
+.briefRecord  > div {display:inline-block;vertical-align:middle;}
+.inviteUser {width:40%;font-size:14px;color:#444;}
+.inviteTime {width:30%;font-size:14px;color:#b2b2b2;}
+.inviteStatus {width:30%;font-size:0;color:#444;}
+.inviteStatusSuccess {color:#20c09a;}
+.inviteStatus > span {display:inline-block;font-size:14px;}
+.inviteStatusText {width:80%;margin-right:5%;text-align:right;}
+.inviteArrow {width:15%;}
+.detailedRecordItem {font-size:0;}
+.detailedRecordItem > div {display:inline-block;vertical-align:top;font-size:12px;}
+.inviteStatusImg {width:2.5%;margin:0 0.25%;}
+.inviteStatusDetail {width:92%;padding-left:5%;color:#b2b2b2;}
+.inviteStatusDetail > div {padding-bottom:5px;}
+.inviteSuccess .inviteStatusImg {width:3%;margin:0;}
+.inviteSuccess .inviteStatusDetail {width:92%;padding-left:5%;color:#20c09a;}
+.modifiedBriefRecord .inviteUser {width:12%;margin-right:8%;}
+.modifiedBriefRecord .inviteUser img {border-radius:5px;}
+.modifiedBriefRecord .inviteUserName {width: 32%;font-size: 12px;}
+.modifiedBriefRecord .inviteTime {  width: 25%;font-size: 12px;}
+.modifiedBriefRecord .inviteStatus {  width: 23%;}
+.modifiedBriefRecord .inviteStatus > span {font-size: 12px;}
+/*申请提现*/
+.applyCashInfo a {display:block;}
+.applyCashInfo .userInfoItem > div:nth-of-type(1) {width:30%;}
+.noteDot {width:5px;height:5px;border-radius:50%;background:#ad4054;margin-right:5px;}
+.applyCashPayNote > span {display:inline-block;vertical-align:middle;}
+.applyCashPayNote {padding: 0 0 5px 5%;}
+.queryBtn a {display:block;width:90%;margin:20px 5%;background:#fff;border-radius:50px;font-size:14px;color:#ad4054;text-align:center;padding:15px 0;border:2px solid #dadada;}
+.sel_wrap {position:relative;}
+.payMethodSelect {border:none;background:transparent;color:#999;position:absolute;top:0;right:0;opacity:0;}
+.applyCashSubmitBtn a, .applyCashQueryBtn a {margin: 10px 5%;}
+
+/*加载失败，空白页面*/
+.loadFail {position:absolute;top:30%;left:20%;width:60%;}
+.empty {position:absolute;top:25%;left:30%;width:40%;}
+.emptyText {position:absolute;top:60%;width:100%;text-align:center;font-size:16px;color:#59dbc4;}
+
+/*邀请好友*/
+.inviteRule {position:absolute;bottom:0;left:0;width:80%;padding:2% 10%;font-size:14px;color:#fff;background:#ad4054;line-height:22px;}
+.inviteRuleLabel {padding-bottom:5px;}
+.inviteRuleItem {padding-bottom:5px;}
+.whiteDot {display:inline-block;vertical-align:middle;width:5px;height:5px;border-radius:50%;background:#fff;margin-right:5px;}
+/*iphone4s小屏手机的样式调整*/
+@media only screen and (max-device-height : 960px) {
+	.inviteRuleImg {width:80%;margin:0 10%;}
+} 
+
+
+/*关于我们*/
+.aboutUsBg {width:100%;height:100%;background:url("../images/bg01.png")no-repeat;background-size:100% 100%;-webkit-background-size:100% 100%;}
+.geniusIcon  img{width:23%;margin:19% 38.5% 2% 38.5%;}
+.appRealName {font-size:16px;color:#e3f8f1;text-align:center;}
+.appVersion {font-size:14px;color:#e3f8f1;text-align:center;padding-top:5%;letter-spacing:1px;}
+.contract {position:absolute;bottom:7%;width:100%;text-align:center;}
+.contract span {display:inline-block;font-size:14px;color:#fff;} 
+.contract .contractLabel {font-size:14px;color:#e3f8f1;} 
+
+/*app下载*/
+.downloadBg {width:100%;height:100%;background:url("../images/download-bg.jpg")no-repeat;background-size:100% 100%;-webkit-background-size:100% 100%;}
+.appDownloadBtn a{display:block;width:50%;padding:15px 0;margin:10% 25%;font-size:18px;color:#fff;text-align:center;background:#000;border-radius:40px;}
+/*********弹层******/
+.downloadMask {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);overflow:hidden;}
+
+
+.questionInfo .userInfoItem {display:block;}
+.questionInfo  .userInfoItem .labelIcon {width:6%;margin-right:3%;}
+
+/***常见问题***/
+.switchTab {background:#ddd;padding:0 12.5%;width:75%;font-size:0;}
+.oneTab {display:inline-block;width:17%;margin:0 8%;padding:10px 0;font-size:14px;color:#000;text-align:center;border-bottom:4px solid transparent;}
+.oneTab.curTab {color:#ad4054;border-color:#ad4054;}
+.singleInfo {font-size:0;padding:10px 5%;width:90%;border-bottom:1px solid #eee;}
+.singleInfo > div {display:inline-block;vertical-align:middle;}
+.singleTag {position:relative;width:7%;}
+.singleAvator {width:15%;margin:0 3%;}
+.singleNick {width:30%;font-size:14px;color:#000;}
+.singleMoney {width:42%;font-size:14px;color:#ad4054;text-align:right;font-weight:bold;letter-spacing:1px;}
+.singleIndex {position:absolute;top:0;width:100%;text-align:center;font-size:14px;color:#fff;
+

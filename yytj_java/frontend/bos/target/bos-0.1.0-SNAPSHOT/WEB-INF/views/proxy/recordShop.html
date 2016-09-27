@@ -1,0 +1,544 @@
+#set( $layout = "include/header_footer.html" )
+#set( $page_title = "商户录入" )
+<div>
+
+<form id="recordShopForm">
+
+
+    <div style="font-size: 24px; color: #333333;margin-top: 20px;">商户录入</div>
+    <div style="border-top: 1px solid #DADADA;margin-top: 20px;"></div>
+   
+     <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">所在地区</span><span style="margin-left: 10px;">
+        <select name="province" onchange="selectCity(this);">
+        <option value="" selected="selected">省份</option>
+        #foreach( $province in $provinces )
+        
+           #if($province.id==$shopProvinceZoneId)
+                 <option selected="selected"  value="$province.id">$province.name</option>
+           #else
+                 <option value="$province.id">$province.name</option>
+            #end
+            
+        #end
+        </select>
+        <select onchange="selectArea(this);"   style="margin-left: 4px;"  name="city"  class="{required:true,messages:{required:'请选择城市'}}">
+        <option value="">城市</option>
+         #foreach( $city in $cities )
+           #if($city.id==$shopCityZoneId)
+                 <option selected="selected"  value="$city.id">$city.name</option>
+           #else
+                    <option   value="$city.id">$city.name</option>
+            #end
+        #end
+        </select>
+        <select  style="margin-left: 4px;"   name="zoneId" class="{required:true,messages:{required:'请选择区县'}}" onchange="checkExistShop();">
+        <option  value=""  >区县</option>
+         #foreach( $area in $areas )
+           #if($area.id==$shopAreaZoneId)
+                 <option selected="selected"  value="$area.id">$area.name</option>
+           #else  
+                    <option   value="$area.id">$area.name</option>
+            #end
+        #end
+        
+        </select></span>
+    </div>
+    
+    
+    
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">详细地址</span>
+        <span style="margin-left: 10px;">
+            <div style="display: inline-block;">
+            <input type="text" style="width: 440px;" placeholder="例如街道名称，门牌号码等" name="address"  value="$!{shop.address}"   class="{required:true,messages:{required:'请输入详细地址'}}">
+            <div id="autoTip" style="border: 2px; text-align: left;position: absolute;"></div>
+            </div>
+            <style type="text/css">
+            #autoTip li:HOVER {
+               background-color: #ddd !important;
+            }
+            </style>
+        </span>
+        
+        
+        <div class="alert alert-info" style="display: inline-block;">
+          <button type="button" class="close" data-dismiss="alert" onclick="$(this).parent().hide();">&times;</button>
+          输入地址后，必须先在下方选择对应位置，然后可以对详细地址的描述进行调整
+        </div>
+
+    </div>
+     <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">商户名称</span>
+        <span style="margin-left: 10px;"> <input type="text" style="width: 240px;" name="name" value="$!{shop.name}"   class="{required:true,messages:{required:'请输入商户名称'}}" onblur="checkExistShop();">
+        </span>
+        
+        <span style="margin-left: 10px;display: none;"  id="showExistShopWrap"   ><a  id="showExistShopId"  class="anormalLink"  target="_blank">查看</a><font color="gray">(该区域存在<span  id="showExistShopCount"  ></span>同名商户)</font></span>
+    </div>
+    
+     <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">分类</span>
+        <span style="margin-left: 10px;">
+            <select   onchange="selectCat(this);" >
+            <option value="">分类一</option>
+            #foreach( $shopcat in $shopcats )
+                      #if($shopcat.id==$level1ShopCatId)
+                         <option selected="selected"  value="$shopcat.id">$shopcat.name</option>
+                   #else
+                           <option value="$shopcat.id">$shopcat.name</option>
+                    #end
+            #end
+            </select>
+            
+            <select  style="margin-left: 4px;" name="catId"  class="{required:true,messages:{required:'请选择分类'}}">
+            <option value="">分类二</option>
+              #foreach( $shopcat in $level2ShopCats )
+                      #if($shopcat.id==$shop.catId)
+                         <option selected="selected"  value="$shopcat.id">$shopcat.name</option>
+                   #else
+                           <option value="$shopcat.id">$shopcat.name</option>
+                    #end
+            #end
+            </select>
+            
+        </span>
+    </div>
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">营业时间</span>
+        <span style="margin-left: 10px;">
+         <select  name="startTimeH"  >
+            <option value="00">时</option>
+            #foreach($num in [0..23])
+                #if($number.format('00',$num)==$!{startTimeH})
+                    <option selected="selected" value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                  #else  
+                         <option value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                 #end  
+            #end
+         </select>
+         <select  style="margin-left: 4px;"  name="startTimeM"   >
+            <option value="00">分</option>
+             #foreach($num in [0..59])
+                    #if($number.format('00',$num)==$!{startTimeM})
+                            <option selected="selected" value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                          #else  
+                                 <option value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                         #end  
+            #end
+         </select><span style="margin: auto 8px;color: #848484;">至</span>
+         <select  style="margin-left: 4px;"   name="endTimeH"  >
+             <option value="00">时</option>
+             #foreach($num in [0..23])
+                    #if($number.format('00',$num)==$!{endTimeH})
+                            <option selected="selected" value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                          #else  
+                                 <option value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                         #end  
+            #end
+         </select>
+         <select  style="margin-left: 4px; "    name="endTimeM" >
+            <option value="00" >分</option>
+             #foreach($num in [0..59])
+                          #if($number.format('00',$num)==$!{endTimeM})
+                            <option selected="selected" value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                          #else  
+                                 <option value="$number.format('00',$num)"  >$number.format('00',$num)</option>
+                         #end  
+            #end
+         </select>
+        
+        </span>
+    </div>
+     <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">停车位</span><span style="margin-left: 10px;"><label style="cursor: pointer;"> 
+        
+                         #if('1'==$!{shop.parkingSpace})
+                               <input type="radio" checked="checked" name="parkingSpace" style="width: auto;" value="1" >
+                          #else  
+                                    <input type="radio" name="parkingSpace" style="width: auto;" value="1" >
+                         #end  
+        <span style="margin: 0 5px;">有</span></label> <label style="cursor: pointer;margin-left: 20px;">
+        
+        
+                          #if('0'==$!{shop.parkingSpace})
+                                     <input type="radio"  checked="checked"   value="0"  name="parkingSpace"  style="width: auto;"  >
+                          #else  
+                                     <input type="radio"  value="0"  name="parkingSpace"  style="width: auto;"  >
+                         #end  
+       
+        
+        <span style="margin: 0 5px;">无</span>  </label></span>
+    </div>
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">商家电话</span><span style="margin-left: 10px;"> <input type="text" style="width: 240px;" name="tel"  value="$!{shop.mobile}"  ></span>
+    </div>
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">人均 (元)</span><span style="margin-left: 10px;"> #set ( $_custFee= $shop.custFee / 100 ) <input type="text" style="width: 240px;" value="$!{_custFee}"   name="custFee" class="{number:true,messages:{number:'请输入正确的数字'}}"></span>
+    </div>
+   
+   
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">促销手续费（%）</span>
+        <span style="margin-left: 10px;">
+                 <input type="text" style="width: 240px;" value="$!{shop.promotion}"   name="promotion" class="{required:true,number:true,min:2,max:100,digits:true,messages:{required:'请输入促销手续费',digits:'必须是整数',number:'请输入正确的数字',min:'促销手续费不低于2%',max:'促销手续费最高100'}}">
+        </span>
+    </div>
+    
+
+  <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">营业执照</span>
+        <span style="margin-left: 10px;">
+                     <div style="display: inline-block;position: relative;" class="imagePreviewWrap">
+                     
+                           #if($!{shop.code} && $!{shop.code}!="")
+                                <img  class="deleteImg"     onclick="delPreviewImg(this,false);" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;" >
+                                <img class="previewImg" src="$!{shop.code}" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                          #else  
+                                  <img   class="deleteImg"    onclick="delPreviewImg(this,false);"  src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;display: none;" >
+                                <img class="previewImg" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/add.png" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                         #end  
+                         
+                        <input class="previewFile"   name="codeImg"  type="file"   style="opacity: 0; width: 100%; position: absolute; top: 0px; height: 100%; left: 0px;" onchange="showPreviewImg(this,false);" >
+                        <input class="previewFileUrl"    name="codeImgUrl"  type="hidden"   value="$!{shop.code}" >
+                    </div>
+        </span>
+    </div>
+    
+    
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">店面图片</span>
+        <span style="margin-left: 10px;">
+                     <div style="display: inline-block;position: relative;" class="imagePreviewWrap">
+                     
+                           #if($!{shop.img} && $!{shop.img}!="")
+                                <img  class="deleteImg"   onclick="delPreviewImg(this,false);"  src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;" >
+                                <img class="previewImg" src="$!{shop.img}" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                          #else  
+                                <img  class="deleteImg"   onclick="delPreviewImg(this,false);"  src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;display: none;" >
+                                <img class="previewImg" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/add.png" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                         #end  
+                         
+                        <input class="previewFile"   name="masterImg"  type="file"   style="opacity: 0; width: 100%; position: absolute; top: 0px; height: 100%; left: 0px;" onchange="showPreviewImg(this,false);" >
+                        <input class="previewFileUrl"    name="masterImgUrl"  type="hidden"   value="$!{shop.img}" >
+                    </div>
+        </span>
+    </div>
+    
+    
+    <div style="margin-top: 20px;">
+        <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;">环境图片</span>
+        <span style="margin-left: 10px;">
+        
+        
+              #foreach( $img in $hjImg )
+                        <div style="display: inline-block;position: relative;margin-right: 10px;" class="imagePreviewWrap" >
+                            <img  class="deleteImg"  onclick="delPreviewImg(this,true);" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;" >
+                            <img class="previewImg" src="$!{img.img}" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                            <input class="previewFile"    name="hjImg[0]"  type="file"   style="opacity: 0; width: 100%; position: absolute; top: 0px; height: 100%; left: 0px;" onchange="showPreviewImg(this,true,'imagePreviewTemplateId');sortNameIndex('hjImg');" >
+                            <input class="previewFileUrl"    name="hjImgUrl[0]"  type="hidden"   value="$!{img.img}" >
+                         </div>
+            #end
+            
+                    <div style="display: none;" id="imagePreviewTemplateId">
+                            <div style="display: inline-block;position: relative;margin-right: 10px;" class="imagePreviewWrap imagePreviewTemplate" >
+                                <img   class="deleteImg"  onclick="delPreviewImg(this,true);" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/delete.png"style="width: 25px;height: 25px; position: absolute; right: -10px; top: -10px; cursor: pointer;display: none;" >
+                                <img class="previewImg" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/add.png" style="vertical-align: top;cursor: pointer;width: 90px;height: 90px;" >
+                                <input class="previewFile"    name="hjImg[0]"  type="file"   style="opacity: 0; width: 100%; position: absolute; top: 0px; height: 100%; left: 0px;" onchange="showPreviewImg(this,true,'imagePreviewTemplateId');sortNameIndex('hjImg');" >
+                                <input class="previewFileUrl"    name="hjImgUrl[0]"  type="hidden"    >
+                            </div>
+                    </div>
+        </span>
+    </div>
+    <div style="margin-top: 20px;">
+    
+     <span style="color: #848484;min-width: 60px;text-align: right;display: inline-block;"></span><span style="margin-left: 10px;">  <input type="button"  class="btn btn-danger btn-large" style="width: 240px;height: 40px;font-size: 16px;" value="保存" onclick="recordShop()" ></span>
+     
+       
+    </div>
+    
+    
+    <input type="hidden" name="id"   value="$!{shop.id}">
+    <input type="hidden" name="lon" value="$!{shop.lon}">
+    <input type="hidden" name="lat" value="$!{shop.lat}">
+    </form>
+</div>
+<script type="text/javascript">
+window.delPreviewImg = function (m,hasNext) {
+	$thiz = $(m);
+	if(hasNext){
+	    	$thiz.closest(".imagePreviewWrap").remove();
+	}else{
+		 $(m).closest(".imagePreviewWrap").find(".deleteImg").hide();
+		 $(m).closest(".imagePreviewWrap").find(".previewImg").attr("src","$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/add.png");
+	}
+}
+window.showPreviewImg = function (m, hasNext, templateId) {
+    var file = $(m).get(0).files[0];
+    if (file) {
+        $(m).closest(".imagePreviewWrap").removeClass(
+                "imagePreviewTemplate");
+        if (hasNext && templateId && $(".imagePreviewTemplate").size() < 2) {
+            $(m).closest(".imagePreviewWrap").after(
+                    $("#" + templateId).tmpl({}));
+        }
+       /*  var reader = new FileReader();
+        reader.onload = function(evt) {
+            $(m).closest(".imagePreviewWrap").find(".previewImg").get(0).src = evt.target.result;
+        }
+        reader.readAsDataURL(file); */
+        YTLib.ajaxMultiForm({
+            url : "$!{velocityCommonUtil.getAbsoluteURL()}/resUpload",
+            data : {res:file},
+            loading:true
+        }, function(res) {
+        	
+        	 $(m).closest(".imagePreviewWrap").find(".deleteImg").eq(0).show();
+        	 $(m).closest(".imagePreviewWrap").find(".previewImg").eq(0).attr("src",res.data);
+            $(m).closest(".imagePreviewWrap").find(".previewFileUrl").eq(0).val(res.data);
+            sortNameIndex("hjImgUrl");
+        });
+    }
+}
+
+
+$(function(){
+	$("#imagePreviewTemplateId").after($("#imagePreviewTemplateId").tmpl({}));
+	 $("#recordShopForm").validate({});
+	 $("body").click(function(){
+		 $("#autoTip").html('');
+	 });
+     $("#recordShopForm [name=address]").keyup(function(){
+    	 
+    	 $("#autoTip").html('');
+    	 
+    	    //根据选择的输入提示关键字查询
+         map.plugin(["AMap.PlaceSearch"], function() {       
+              var msearch = new AMap.PlaceSearch();  //构造地点查询类
+              AMap.event.addListener(msearch, "complete", function(result){
+                  var autoTip = [];
+                  if(result  && result.poiList && result.poiList.pois){
+                	  
+                	  autoTip.push("<ul>");
+                       $.each( result.poiList.pois,  function(   index,d) {   
+                           console.log(d);
+                           autoTip.push("<li   lat='"+d.location.lat +"'  lng='"+d.location.lng+"' onclick='javascript:searchSelect(this);' style= 'overflow: hidden;height: 22px;border-bottom: 1px solid gray;background-color: white;line-height: 25px;width: 100%;color: rgb(85, 85, 85);font-size: 14px;padding-left: 5px; padding-top: 2px;padding-bottom: 2px;'   >"+  d.address +"-"+ d.name + "</li>")
+                       });
+                       autoTip.push("</ul>");
+                       $("#autoTip").html(autoTip.join(''));
+                  }
+              }); 
+             var searchaddress = $("#recordShopForm [name=province] :selected").text() + $("#recordShopForm [name=city] :selected").text() + $("#recordShopForm [name=zoneId] :selected").text() + $("#recordShopForm [name=address]").val() ;
+              console.log(searchaddress);
+              //searchaddress = "浙江省杭州市优盘时代";
+              msearch.search(searchaddress);  //关键字查询查询
+         });
+     });
+     
+     sortNameIndex("hjImgUrl");
+     sortNameIndex("hjImg");
+     
+})
+
+function checkExistShop(){
+	$("#showExistShopWrap").hide();
+	
+	 var name = $("#recordShopForm [name=name]").val();
+	 var zoneId = $("#recordShopForm [name=zoneId]").val();
+	 var id = $("#recordShopForm [name=id]").val();
+	 
+	 if(!name){
+		 return;
+	 }
+	 if(!zoneId){
+         return;
+     }
+	 
+	 YTLib.doAjaxRequest({
+         url : "$!{velocityCommonUtil.getAbsoluteURL()}/checkExistShop",
+          data : {
+        	  name : name,
+        	  id : id,
+			  zoneId:zoneId
+			},
+			loading : true
+		}, function(res) {
+		    if(res.data.exist =="1"){
+		    	$("#showExistShopWrap").show();
+		    	$("#showExistShopId").attr("href","$!{velocityCommonUtil.getAbsoluteURL()}/proxy/shopList?name=" + name + "&zoneId="+zoneId + "&id="+id);
+		    	$("#showExistShopCount").text(res.data.exist + "个");
+		    }
+		});
+
+	}
+
+	function searchSelect(me) {
+		var thiz = $(me);
+		var cityCode = thiz.attr("adcode");
+		var lat = thiz.attr("lat");
+		var lng = thiz.attr("lng");
+		var text = thiz.text();
+		$("#autoTip").html('');
+
+		$("#recordShopForm [name=address]").val(thiz.text());
+		$("#recordShopForm [name=lon]").val(lng);
+		$("#recordShopForm [name=lat]").val(lat);
+	}
+
+	function selectArea(w) {
+		YTLib.doAjaxRequest({
+			url : "$!{velocityCommonUtil.getAbsoluteURL()}/getArea",
+			data : {
+				cityId : $(w).val()
+			},
+			loading : true
+		}, function(res) {
+
+			$("#recordShopForm [name=zoneId]").html('');
+			var thiz = $(w);
+			var arrayHtml = [];
+			$.each(res.data, function(i, d) {
+				arrayHtml.push("<option value='"+d.id+"'>" + d.name
+						+ "</option>");
+			});
+			$("#recordShopForm [name=zoneId]").html(arrayHtml.join(''));
+		});
+	}
+
+	function selectCity(w) {
+		YTLib
+				.doAjaxRequest(
+						{
+							url : "$!{velocityCommonUtil.getAbsoluteURL()}/getCities",
+							data : {
+								provinceId : $(w).val()
+							},
+							loading : true
+						},
+						function(res) {
+
+							$("#recordShopForm [name=city]").html('');
+							$("#recordShopForm [name=zoneId]").html(
+									'<option>请选择区县</option>');
+							var thiz = $(w);
+							var arrayHtml = [];
+
+							arrayHtml
+									.push('<option value="" selected="selected">请选择城市</option>');
+
+							$.each(res.data, function(i, d) {
+								arrayHtml.push("<option value='"+d.id+"'>"
+										+ d.name + "</option>");
+							});
+							$("#recordShopForm [name=city]").html(
+									arrayHtml.join(''));
+						});
+	}
+
+	function selectCat(w) {
+		YTLib.doAjaxRequest({
+			url : "$!{velocityCommonUtil.getAbsoluteURL()}/getShopcatChildren",
+			data : {
+				id : $(w).val()
+			},
+			loading : true
+		}, function(res) {
+
+			$("#recordShopForm [name=catId]").html('');
+			var thiz = $(w);
+			var arrayHtml = []
+			$.each(res.data, function(i, d) {
+				arrayHtml.push("<option value='"+d.id+"'>" + d.name
+						+ "</option>");
+			});
+			$("#recordShopForm [name=catId]").html(arrayHtml.join(''));
+		});
+	}
+
+	function recordShop() {
+		if ($("#recordShopForm").valid()) {
+
+			var dataSerializeArray = $("#recordShopForm").serializeArray();
+			var data = {};
+			$.each(dataSerializeArray, function(i, d) {
+				data[d.name] = d.value;
+			});
+			data['startTime'] = data.startTimeH + ":" + data.startTimeM;
+			data['endTime'] = data.endTimeH + ":" + data.endTimeM;
+			if (!data.lon || !data.lat) {
+				layer.alert('未能获取商户地理位置信息，请重新输入。')
+				return;
+			}
+
+			var masterImg = null;
+			if( $("#recordShopForm [name=masterImg]").size()>0){
+			    masterImg = $("#recordShopForm [name=masterImg]").get(0).files[0];
+			}
+			if (masterImg) {
+				data['masterImg'] = masterImg;
+			}
+
+			$("#recordShopForm [name^=hjImg]").each(
+					function(i, d) {
+						var filesDom = $(d).get(0);
+						if (filesDom && filesDom.files
+								&& filesDom.files.length > 0
+								&& filesDom.files[0]) {
+							data['hjImg[' + i + ']'] = filesDom.files[0];
+						}
+					});
+
+			YTLib
+					.ajaxMultiForm(
+							{
+								url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/recordShop",
+								data : data,
+								loading : true
+							},
+							function(res) {
+								if (res.success) {
+									if (data.id) {
+										layer.msg('修改商户成功', 2, {
+											type : 1
+										})
+									} else {
+										layer.msg('录入商户成功', 2, {
+											type : 1
+										})
+									}
+									location.href = "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/recordShopList.html"
+								}
+							});
+
+		}
+	}
+
+	function sortNameIndex(name) {
+		$("[name^='" + name + "[']").each(function(i, d) {
+			$(d).attr("name", name + "[" + i + "]");
+		});
+	}
+</script>
+<script src='http://webapi.amap.com/maps?v=1.3&key=5297f4ef150e1e4023f842ff090bf745'></script>
+<script type="text/javascript">
+    $(function(){
+         //加载地图，调用浏览器定位服务
+         window.map = new AMap.Map('mapContainer', {
+             resizeEnable : true
+         });
+             //根据选择的输入提示关键字查询
+           map.plugin(["AMap.PlaceSearch"], function() {       
+                var msearch = new AMap.PlaceSearch();  //构造地点查询类
+                AMap.event.addListener(msearch, "complete", function(result){
+                    var autoTip = [];
+                    if(result  && result.poiList && result.poiList.pois){
+                         $.each( result.poiList.pois,  function(   index,d) {   
+                             console.log(d);
+                         });
+                    }
+                }); //查询成功时的回调函数
+                msearch.search("浙江省杭州市优盘时代");  //关键字查询查询
+           });
+            
+                    
+    });
+</script>

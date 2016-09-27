@@ -1,0 +1,536 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no" />
+<title>应用淘金</title>
+<style>
+html {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	font-family: "Microsoft YaHei", "Tahoma";
+}
+
+body {
+	margin: 0;
+}
+
+img {
+	width: 100%;
+}
+
+p {
+	padding: 0;
+	margin: 0;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	clear: both;
+}
+
+.clearfix {
+	zoom: 1;
+}
+
+.pageWrapper {
+	background: #fff;
+}
+
+.topTip {
+	background: #f8f8f8;
+	border-bottom: 1px solid #dedede;
+	display: none;
+}
+
+.tipInfo {
+	margin: 12px 4%;
+	text-align: center;
+	background: #f8f3e1;
+	color: #e23723;
+	font-size: 12px;
+	padding: 10px 0;
+	border-radius: 5px;
+}
+
+.tipInfo a {
+	color: #2a9dec;
+	padding-left: 3px;
+}
+
+.appBox {
+	display: table;
+	width: 92%;
+	padding: 8px 4%;
+	border-bottom: 1px solid #dedede;
+}
+
+.boxGray.appBox {
+	background: #f0f0f0;
+}
+
+.appBox>div {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.boxIcon {
+	width: 15%;
+}
+
+.boxInfo {
+	position: relative;
+	top: 0;
+	left: 5%;
+	width: 60%;
+}
+
+.boxBtn {
+	width: 20%;
+}
+
+.boxBtn a {
+	display: block;
+	width: 100%;
+	background: #e23723;
+	border-radius: 3px;
+	text-align: center;
+	font-size: 12px;
+	color: #fff;
+	padding: 5px 0;
+}
+
+.btnGreen.boxBtn a {
+	background: #7bc44e;
+}
+
+.btnGray.boxBtn a {
+	background: #bfbfbf;
+}
+
+.boxName {
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 14px;
+	color: #000;
+}
+
+.boxStatus {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.boxStatus>div {
+	float: left;
+	font-size: 12px;
+}
+
+.colorYellow {
+	color: #ffd030;
+}
+
+.colorGray {
+	color: #ccc;
+}
+
+.grayIcon {
+	display: inline-block;
+	width: 16%;
+	vertical-align: middle;
+	margin-right: 3px;
+	margin-left: 10px;
+}
+
+.waitLabel {
+	border-bottom: 1px solid #dedede;
+}
+
+.waitLabelContent {
+	display: inline-block;
+	margin: 15px 0;
+	background: #2a9dec;
+	font-size: 14px;
+	color: #fff;
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+	padding: 8px 15px;
+}
+
+/*赚钱步骤 begin*/
+.earnSteps {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:
+		url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/maskBg.png")
+		center;
+	-webkit-background-size: 100% 100%;
+}
+/*.earnStepMask {position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.7;}*/
+.earnStepContent {
+	margin: 5% 5% 0 5%;
+	padding: 0 5% 5% 5%;
+	background: #fff;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.stepLabel {
+	font-size: 16px;
+	color: #2a9dec;
+	padding: 10px 0;
+}
+
+.stepInfo {
+	font-size: 12px;
+	color: #999;
+}
+
+.appstoreIcon {
+	display: inline-block;
+	width: 10%;
+	vertical-align: middle;
+}
+
+.stepColorRed {
+	color: #e23723;
+}
+
+.keyWords {
+	padding: 5px 0;
+}
+
+.keyWords a {
+	display: inline-block;
+	text-align: center;
+	padding: 10px 30px;
+	border: 1px dotted #00a9fa;
+	font-size: 14px;
+	color: #000;
+}
+
+.appStoreTip {
+	padding: 5px 0;
+}
+
+.earnAppIcon {
+	display: inline-block;
+	width: 20%;
+	padding: 10px 0;
+}
+
+.earnStepBtn a {
+	display: inline-block;
+	width: 60%;
+	background: #e23723;
+	font-size: 14px;
+	color: #fff;
+	padding: 10px;
+	border-radius: 3px;
+}
+
+/*浏览器打开提示 beigin*/
+.explorTips {
+	position: fixed;
+	top: 2%;
+	right: 4%;
+	z-index: 100;
+	text-align: right;
+	display: none;
+}
+
+.explorTipsArrow {
+	display: inline-block;
+	margin-right: 10px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #000;
+	opacity: 0.7;
+}
+
+.explorTipsContent {
+	background:
+		url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/maskBg.png")
+		center;
+	-webkit-background-size: 100% 100%;
+	border-radius: 5px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+.explorTipsBox {
+	font-size: 0;
+	padding-bottom: 15px;
+}
+
+.explorTipsBox>div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.explorIcon {
+	width: 14%;
+	margin-right: 5px;
+}
+
+.explorDesc {
+	font-size: 14px;
+	color: #fff;
+}
+/*浏览器打开提示 end*/
+
+/*赚钱步骤 end*/
+@media only screen and (min-device-height : 480px) {
+}
+</style>
+</head>
+<body>
+	<div class="pageWrapper">
+		<div class="topTip">
+			<div class="tipInfo">
+				请打开任务助手保持后台在线，请<a>安装助手</a>
+			</div>
+		</div>
+		<div class="content">
+			#foreach( $tryApp in $tryList )
+			<div class="appBox try" alt="$tryApp.id">
+				<div class="boxIcon">
+					<img src="$!{tryApp.appImg}" />
+				</div>
+				<div class="boxInfo">
+					<div class="boxName">$!{tryApp.appName}</div>
+					<div class="boxStatus clearfix">
+						<div class="colorYellow boxTop">$!{tryApp.desc}</div>
+						<div class="colorGray boxBottom">
+							<div class="grayIcon">
+								<img
+									src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p3_0.png" />
+							</div>
+							剩余$!{tryApp.num}份
+						</div>
+					</div>
+				</div>
+				<div class="boxBtn">
+					<a>+$velocityCommonUtil.fen2Yuan($tryApp.score)元</a>
+				</div>
+			</div>
+			#end
+			<div class="waitLabel">
+				<div class="waitLabelContent">已经完结的任务</div>
+			</div>
+			#foreach( $tryApp in $notStartTryList)
+			<div class="appBox boxGray">
+				<div class="boxIcon">
+					<img src="$!{tryApp.appImg}" />
+				</div>
+				<div class="boxInfo">
+					<div class="boxName">$!{tryApp.appName}</div>
+					<div class="boxStatus clearfix">
+						<div class="colorGray boxTop">$!{tryApp.desc}</div>
+						<div class="colorGray boxBottom">
+							<div class="grayIcon">
+								<img
+									src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p3_0.png" />
+							</div>
+							抢光啦
+						</div>
+					</div>
+				</div>
+				<div class="boxBtn btnGreen">
+					<a>成功</a>
+				</div>
+			</div>
+			#end
+
+		</div>
+		<!--赚钱步骤 begin-->
+		<div class="earnSteps" style="display: none;">
+			<div class="earnStepContent">
+				<div class="stepLabel">第一步</div>
+				<div class="stepInfo">长按虚线框拷贝关键词</div>
+				<div class="keyWords">
+					<a id="kw"></a>
+				</div>
+				<div class="stepLabel">第二步</div>
+				<div class="stepInfo">
+					到AppStore
+					<div class="appstoreIcon">
+						<img
+							src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p3_6.jpg" />
+					</div>
+					粘贴关键词搜索
+				</div>
+				<div class="appStoreTip">
+					<img
+						src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p3_7.jpg" />
+				</div>
+				<div class="stepInfo" id="stepInfo">
+					找到该图标(<span class="stepColorRed">第一位</span>左右)，<span
+						class="stepColorRed">首次</span>获取安装打开应用，试用<span
+						class="stepColorRed">3分钟</span>
+				</div>
+				<div class="earnAppIcon">
+					<img
+						src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p3_1.jpg" />
+				</div>
+				<div class="earnStepBtn">
+					<a id="doTask">开始任务</a>
+				</div>
+			</div>
+		</div>
+		<!--赚钱步骤 end-->
+
+		<!--浏览器打开提示 beigin-->
+		<div class="explorTips">
+			<div class="explorTipsArrow"></div>
+			<div class="explorTipsContent">
+				<div class="explorTipsBox ">
+					<div class="explorIcon">
+						<img
+							src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p10_1.png" />
+					</div>
+					<div class="explorDesc">1、点击右上角图标</div>
+				</div>
+				<div class="explorTipsBox">
+					<div class="explorIcon">
+						<img id="appIcon"
+							src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p10_2.png" />
+					</div>
+					<div class="explorDesc">2、在Safari中打开</div>
+				</div>
+			</div>
+		</div>
+		<!--浏览器打开提示 end-->
+	</div>
+
+	<script type="text/javascript" charset="utf-8"
+		src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+	<script>
+	
+	 function doLocation(url) {
+			var a = document.createElement("a");
+	     if (!a.click) {
+	         window.location = url;
+	         return;
+	     }
+	     a.setAttribute("href", url);
+	     a.style.display = "none";
+	     document.body.appendChild(a);
+	     a.click();
+	 }
+	 
+	 var testWeixin=function(){  
+		    var ua = navigator.userAgent.toLowerCase();  
+		    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+		        return true;  
+		    } else {  
+		        return false;  
+		    }  
+		};
+
+	    
+		$(function() {
+			
+			
+			//判断助手是否开启
+			var isHelpActive = false;  //TODO tangshengshan  从后台判断
+			if(isHelpActive){
+				$(".topTip").show();
+			}
+
+
+			
+			$(".appBox.try").bind("click", function() {  //click item
+
+				//是否是否助手开启，没有就提示开启或者下载 TODO tangshengshan
+				isHelpActive = true;
+				if(!isHelpActive){
+					alert("请开启助手");
+					return;
+				}
+
+				id = $(this).attr("alt")
+				$.ajax({
+					url : '/innerPage/appInfo',
+					type : 'post',
+					data : {
+						id : id
+					},
+					async : true, //默认为true 异步
+					dataType : 'json',
+					error : function() {
+						alert('error');
+					},
+					success : function(data) {
+						//弹出步骤
+						$(".earnSteps").show();
+						$("#kw").html(data.keyWord)
+						$("#stepInfo").html(data.description);
+						$("#appIcon").attr("src",data.appImg);
+					}
+				});
+
+			});
+
+			//弹出小黑、跳到appstore
+			$("#doTask").bind("click", function() {
+				if(testWeixin()==true){  //TODO 暂时屏蔽
+					$(".explorTips").show();
+				$.ajax({
+					url : '/innerPage/copyRedirect',
+					type : 'get',
+					data : {
+						id : id
+					},
+					async : true, //默认为true 异步
+					dataType : 'json',
+					error : function() {
+						alert('error');
+					},
+					success : function(data) {
+						
+						//alert("打开按上面提示打开")
+					}
+				});
+				
+				
+			}
+		});
+		
+		});
+        
+		
+		 
+		 
+		 
+		
+		if(testWeixin()==false){
+		
+			var agent_str = navigator.userAgent;
+			if(agent_str.indexOf("iPhone") > -1 ){
+			  document.write('<meta content="width=device-width,initial-scale=0.5,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">');
+			}else if(agent_str.indexOf("iPad") >-1){
+			  document.write('<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">');
+			}else if(agent_str.indexOf("iPod") >-1){
+			  document.write('<meta content="width=device-width,initial-scale=0.5,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">');
+			}else if(agent_str.indexOf("android") >-1){
+			  document.write('<meta content="width=device-width,initial-scale=0.5,maximum-scale=1.0,user-scalable=no" id="viewport" name="viewport">');
+			} 
+	       doLocation('https://itunes.apple.com/WebObjects/MZStore.woa/wa/search?mt=8&submit=edit');
+		}
+		
+	</script>
+
+</body>
+</html>

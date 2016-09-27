@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+
+//    $(document).ready(function(){
+//        $(".nav li").click(function(){
+//            //alert(11);
+//        });
+//        $(".nav").find("li").each(function(index,item){
+//
+//        });
+//    });
+    function goPage(type){
+        if(type == "P"){
+            $("#mainFrame").attr("src","/proxy/admin/province");
+        }else  if(type == "C"){
+            $("#mainFrame").attr("src","/proxy/admin/city");
+        }else if(type == "A"){
+            $("#mainFrame").attr("src","/proxy/admin/area");
+        }else if(type == "L"){
+            $("#mainFrame").attr("src","/proxy/admin/enterLogin");
+        }else if(type == "U"){
+            $("#mainFrame").attr("src","/proxy/admin/enterAudit");
+        }
+    }
+</script>
+</body>
+<p>代理商管理</p>
+<ul class="nav nav-pills">
+    <li><a href="javascript:goPage('L')">代理商登录</a></li>
+    <li><a href="javascript:goPage('P')">创建省级代理</a></li>
+    <li><a href="javascript:goPage('C')">创建市级代理</a></li>
+    <li><a href="javascript:goPage('A')">创建区县代理</a></li>
+    <li><a href="javascript:goPage('U')">审核区县代理</a></li>
+</ul>
+<iframe src="/proxy/admin/enterLogin" style="width:100%;height: 100%" id="mainFrame" />
+</html>

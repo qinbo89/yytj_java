@@ -1,0 +1,100 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "商户修改" )
+<script>
+    function setBizFun(json){
+        $("#address").val(json.addr);
+        $("#lon").val(json.lon);
+        $("#lat").val(json.lat);
+    }
+
+    function getBizPoint(){
+        return {lng:$("#lon").val(),lat:$("#lat").val()}
+    }
+
+    //自定订正
+    function btnAutoModify(){
+        setBizValueForMarker();
+    }
+
+    //确认地址
+    function btnAddrConfirm(){
+        var key = $("#address").val();
+        if(!key){
+            alert("请输入地址");
+            return;
+        }
+        addrConfirm(key);
+    }
+
+    function bntOpenAddr(){
+        $("#mapContainer").show();
+//        $("#mapContainer").css("top",$(this).css("top"));
+//        $("#mapContainer").css("left",$(this).css("left"));
+    }
+
+    $(document).ready(function(){
+        settings = {
+            options : {
+                lng:$("#lon").val(),  //经度
+                lat:$("#lat").val(),  //纬度
+                lngId:"lon",  //经度
+                latId:"lat",  //纬度
+                addrId:"address"   //修改后的地址id
+            }
+        }
+    });
+
+</script>
+
+<div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!domain.id">
+            <input type="hidden" name="lon" id="lon" value="$!domain.lon">
+            <input type="hidden" name="lat" id="lat" value="$!domain.lat">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>商户名称：</td>
+                    <td><input type="text" name="name" id="name" value="$!domain.name"/></td>
+                </tr>
+                <!--<tr>-->
+                    <!--<td>联系方式：</td>-->
+                    <!--<td><input type="text" name="mobile" id="mobile" value="$!domain.mobile" readonly="true"/></td>-->
+                <!--</tr>-->
+                <tr>
+                    <td>折扣：</td>
+                    <td><input type="text" name="promotion" id="promotion" value="$!domain.promotion"/></td>
+                </tr>
+                <tr>
+                    <td>原来地址：</td>
+                    <td>
+                        <input type="text"  value="$!domain.address" readonly="true" style="width: 500px"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>修改后地址：</td>
+                    <td>
+                        <input type="text" name="address" id="address" style="width: 500px"/>
+                        <!--<input type="button" onclick="bntOpenAddr()" class="btn btn-danger" value="弹出地图" style="width: 150px;height: 35px">-->
+                        <input type="button" onclick="btnAddrConfirm()" class="btn btn-danger" value="确认地址" style="width: 150px;height: 35px">
+                    </td>
+                </tr>
+                <tr>
+                    <td>选择地址：</td>
+                    <td>#parse("shop/addrSel.html")</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="button" id="btnUpdateAddr" class="btn-danger" value="修改" style="width: 150px;height: 35px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/shop.js"></script>
+
+
+
+
+

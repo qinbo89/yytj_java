@@ -1,0 +1,42 @@
+#set( $page_title = "用户修改" )
+<div>
+    <div style="font-size: 24px; color: #333333;">用户修改</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!domain.id">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>账号：</td>
+                    <td colspan="3"><input type="text" name="mobile" id="mobile" value="$!domain.mobile" /></td>
+                </tr>
+                <tr>
+                    <td>用户类型：</td>
+                    <td colspan="3">
+                        <select id="type" name="type">
+                            <option value="6" #if($!domain.type == 6)selected="true"#end>系统管理员</option>
+                            <option value="7" #if($!domain.type == 7)selected="true"#end>客服</option>
+                            <option value="8" #if($!domain.type == 8)selected="true"#end>财务</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>姓名：</td>
+                    <td colspan="3"><input type="text" name="userName" id="userName" value="$!domain.userName" /></td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <input type="button" id="btnUpdate" class="btn btn-danger" value="修改" style="width: 150px;height: 35px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/user.js"></script>
+
+
+
+
+

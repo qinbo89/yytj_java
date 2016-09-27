@@ -1,0 +1,56 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>个人中心 个人信息</title>
+    <style>
+        html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+        body{margin:0;background:#f8f8f8;}
+        img {width:100%;}
+        p {margin:0;padding:0;}
+        ul, li {list-style:none;margin:0;padding:0;}
+        .clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }
+        .clearfix { zoom:1; }
+
+        .pageWrapper {background:#fff;}
+        .content {}
+
+
+        .quesLinkBox {display:block;width:90%;padding:0 5%;height:50px;line-height:50px;font-size:14px;color:#8a8a8a;border-bottom:1px solid #dedede;}
+        .personalInfo {margin-top:20px;border-top:1px solid #dedede;}
+        .linkValue {float:right;color:#000;padding-right:10px;}
+        .userImg {float:right;width:12%;margin-top:7px;}
+        .userImg img {border-radius:50%;}
+
+        @media only screen
+        and (min-device-height : 480px){
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="pageWrapper">
+
+    <div class="content">
+        <div class="questionLinks personalInfo">
+            <a class="quesLinkBox clearfix">个人信息
+
+                <div class="userImg"><img src="$!{user.picUri}" /></div>
+            </a>
+            <a class="quesLinkBox clearfix">用户名<div class="linkValue">$!{user.nickname}</div></a>
+            <a class="quesLinkBox clearfix">ID账号<div class="linkValue">$!{user.id}</div></a>
+            <a class="quesLinkBox clearfix">性别<div class="linkValue">#if("$!{user.sex}"=="1") 男 #else 女 #end</div></a>
+            <a class="quesLinkBox clearfix">所在地<div class="linkValue">$!{user.city}</div></a>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

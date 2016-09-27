@@ -1,0 +1,101 @@
+#set( $layout = "include/content_tpl.html" )
+<div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!domain.id">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>图片：</td>
+                    <td colspan="3">
+                        #if($!domain.img)
+                          <img src="$!domain.img" style="width: 90px;height: 65px;" />
+                        #end
+                        <input type="file" name="imgFile" id="imgFile" value="修改文件"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>名称：</td>
+                    <td colspan="3"><input type="text" name="name" id="name" value="$!domain.name" style="width:650px"/></td>
+                </tr>
+                <tr>
+                    <td>概述：</td>
+                    <td colspan="3"><input type="text" name="title" id="title" value="$!domain.title"  style="width:650px"></td>
+                </tr>
+                <tr>
+                    <td>价值(元)：</td>
+                    <td><input type="text" name="yuanCost" id="yuanCost" value="$!velocityCommonUtil.fen2Yuan($!domain.cost)" /></td>
+                    <td>数量：</td>
+                    <td><input type="text" name="num" id="num" value="$!domain.num" /></td>
+                </tr>
+                <tr>
+                    <td>开始时间（yyyy-MM-dd）：</td>
+                    <td><input type="text" name="startTime" id="startTime" value="$!date.format('yyyy-MM-dd',$!domain.startTime)"/></td>
+                    <td>结束时间（yyyy-MM-dd）：</td>
+                    <td><input type="text" name="endTime" id="endTime" value="$!date.format('yyyy-MM-dd',$!domain.endTime)"/></td>
+                </tr>
+                <tr>
+                    <td colspan="4">红包规则
+                        <input type="button" id="btnAddRule" value="添加">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table id="tbRuleItem">
+                            #foreach($ruleItem in $!hongbaoRuleDescs)
+                            <tr id="trRuleItem">
+                                <td colspan="4">
+                                    <input type="text" name="hongbaoRule[0].descs" id="descs" value="$!ruleItem"  style="width:650px">
+                                    <input type="button" id="btnDelRule" value="删除" style="width:60px">
+                                </td>
+                            </tr>
+                            #end
+
+                            <tr id="trRuleItem">
+                                <td colspan="4">
+                                    <input type="text" name="hongbaoRule[0].descs" id="descs" value=""  style="width:650px">
+                                    <input type="button" id="btnDelRule" value="删除" style="width:60px">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <input type="button" id="btnUpdate" class="btn-primary" value="修改">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/hongbao.js"></script>
+<script>
+    $(document).ready(function(){
+
+        //添加规则
+        $("#btnAddRule").click(function(){
+            var html = $("#tbRuleItem").find("tr:first").clone();
+            $(html).find("input:first").val("");
+            $("#tbRuleItem").append(html);
+        });
+
+        //删除规则
+        $(document).on('click', '#btnDelRule', function() {
+            if($("#tbRuleItem tr").length == 1){
+                alert("必须保留一行");
+                return ;
+            }
+            $(this).parent().parent("tr").remove();
+        });
+
+
+    });
+
+</script>
+
+
+
+
+

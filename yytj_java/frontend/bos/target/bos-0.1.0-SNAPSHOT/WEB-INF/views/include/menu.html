@@ -1,0 +1,42 @@
+<div id="bos_menu" align="left"  style="border-right: 1px solid #e7e7e7;width: 220px;">
+        #if(${currentUser.type} == 8)  ##财务
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/jygl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">交易管理</span><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/up.png"  style="height: 5px;width: 8px;vertical-align: middle;  margin-left: 30px;"/></div>
+        <div  class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/payOrderRefund.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/payOrderRefund.html">买单退款</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/hongbaoRefund.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/hongbaoRefund.html">红包退款</a></div>
+
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/sjgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">商家管理</span></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/cashout/list.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/cashout/list.html">商户提现</a></div>
+        #elseif(${currentUser.type} == 7)  ##客服
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/sjgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">商家管理</span></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shop/list.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/shop/list.html">入驻审核</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shop/updateShopList.html")  bosmenu_current   #end '><a href="${velocityCommonUtil.getAbsoluteURL()}/shop/updateShopList.html">商户修改</a></div>
+        <div class='bosmenu bosmenu_one #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/hongbao/list.html")  bosmenu_current   #end'><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/hbgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+                <span style="margin-left: 12px;"><a href="$!{velocityCommonUtil.getAbsoluteURL()}/hongbao/list.html?from=menu">红包管理</a></span>
+        </div>
+        #else
+        <div class='bosmenu bosmenu_one #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/user/list.html")  bosmenu_current   #end'><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/yjfk.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+                <span style="margin-left: 12px;"><a href="$!{velocityCommonUtil.getAbsoluteURL()}/user/list.html">用户管理</a></span>
+        </div>
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/tj.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">统计</span></div>
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/jygl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">交易管理</span><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/up.png"  style="height: 5px;width: 8px;vertical-align: middle;  margin-left: 30px;"/></div>
+        <div  class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/payOrderRefund.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/payOrderRefund.html">买单退款</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/hongbaoRefund.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/hongbaoRefund.html">红包退款</a></div>
+
+        <div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/sjgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/><span style="margin-left: 12px;">商家管理</span></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/cashout/list.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/cashout/list.html">商户提现</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shop/list.html")  bosmenu_current   #end '><a href="$!{velocityCommonUtil.getAbsoluteURL()}/shop/list.html">入驻审核</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shop/restoreList.html")  bosmenu_current   #end '><a href="${velocityCommonUtil.getAbsoluteURL()}/shop/restoreList.html">商户恢复</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shop/updateShopList.html")  bosmenu_current   #end '><a href="${velocityCommonUtil.getAbsoluteURL()}/shop/updateShopList.html">商户修改</a></div>
+        <div class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/shopRecordStatistic.html")  bosmenu_current   #end '><a href="${velocityCommonUtil.getAbsoluteURL()}/shopRecordStatistic.html">录入统计</a></div>
+        <div class='bosmenu bosmenu_one #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/hongbao/list.html")  bosmenu_current   #end'><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/hbgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+                <span style="margin-left: 12px;"><a href="$!{velocityCommonUtil.getAbsoluteURL()}/hongbao/list.html?from=menu">红包管理</a></span>
+        </div>
+        <div class='bosmenu bosmenu_one #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/proxy/list.html")  bosmenu_current   #end'><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/dlsgl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+            <span style="margin-left: 12px;"><a href="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/list.html">代理商管理</a></span>
+        </div>
+        <div class='bosmenu bosmenu_one #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/suggest/list.html")  bosmenu_current   #end'><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/yjfk.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>
+            <span style="margin-left: 12px;"><a href="$!{velocityCommonUtil.getAbsoluteURL()}/suggest/list.html">意见反馈</a></span>
+        </div>
+        #end
+
+</div>

@@ -1,0 +1,110 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "新增APP" )
+
+<div>
+    <div style="margin-top: 20px;">
+        <form id="frm">
+            <input type="hidden" name="id" id="id" value="$!domain.id">
+            <table class="table" cellPadding="0" cellSpacing="0" style="width: 90%;">
+                <tr>
+                    <td>app名称：</td>
+                    <td colspan="3"><input type="text" name="appName" id="appName" value="$!tryApp.appName"/></td>
+                </tr>
+                <tr>
+                    <td>app图片：</td>
+                    <td colspan="3"><input type="text" name="appImg" id="appImg" value="$!tryApp.appImg"/></td>
+                </tr>
+                <tr>
+                    <td>app链接：</td>
+                    <td colspan="3"><input type="text" name="appUrl" id="appUrl" value="$!tryApp.appUrl" style="width:380px"/></td>
+                </tr>
+                <tr>
+                    <td>schema：</td>
+                    <td><input type="text" name="schema" id="schema" value="$!tryApp.schema" /></td>
+                    <td>关键字：</td>
+                    <td><input type="text" name="keyWord" id="keyWord" value="$!tryApp.keyWord" /></td>
+                </tr>
+                <tr>
+                    <td>TAG：</td>
+                    <td><input type="text" name="tag" id="tag" value="$!tryApp.tag" /></td>
+                    <td>成功状态：</td>
+                    <td><input type="text" name="successStatus" id="successStatus" value="$!tryApp.successStatus" /></td>
+                </tr>
+                <tr>
+                    <td>分值：</td>
+                    <td><input type="text" name="score" id="score" value="$!tryApp.score" /></td>
+                    <td>父分值：</td>
+                    <td><input type="text" name="parentScore" id="parentScore" value="$!tryApp.parentScore" /></td>
+                </tr>
+                <tr>
+                    <td>点击URL：</td>
+                    <td colspan="3"><input type="text" name="clickCallUrl" id="clickCallUrl" value="$!tryApp.clickCallUrl" style="width:380px" /></td>
+                </tr>
+                <tr>
+                    <td>回调URL：</td>
+                    <td colspan="3"><input type="text" name="callBackUrl" id="callBackUrl" value="$!tryApp.callBackUrl" style="width:380px" /></td>
+                </tr>
+                <tr>
+                    <td>描述：</td>
+                    <td colspan="3"><input type="text" name="description" id="description" value="$!tryApp.description" style="width:380px" /></td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <input type="button" id="btnUpdateZk" class="btn btn-danger" value="保存" style="width: 150px;height: 30px">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<!--<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/shop.js"></script>-->
+<script>
+
+    //获得提交表单数据
+    function getFormParams(id){
+        var sel = id || "form";
+        var paramsArray = $(sel).serializeArray();
+        var params = {};
+        while(paramsArray.length > 0){
+            var data = paramsArray.pop();
+            var oldValue = params[data.name]
+            if(typeof(oldValue) != "undefined"){  //存在数据
+                if(typeof(oldValue) == "object"){
+                    oldValue.push(data.value); //add
+                }else{
+                    var arr = new Array();
+                    arr.push(oldValue);
+                    arr.push(data.value);
+                    oldValue = arr;
+                }
+                params[data.name] = oldValue;
+            }else{
+                params[data.name] = data.value;
+            }
+
+        }
+        return params;
+    }
+
+    $(document).ready(function(){
+        $("#btnUpdateZk").click(function(){
+            var url = "save";
+            var params = getFormParams();
+            $.post(url,params,function(data){
+                if(data.success){
+                    alert("保存成功！");
+                    $("form:first",parent.document).submit();
+                }
+            },"json");
+        });
+
+
+
+    });
+
+</script>
+
+
+
+

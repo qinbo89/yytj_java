@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.AppVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.AppVersion">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="md5" property="md5" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="os" property="os" jdbcType="VARCHAR" />
+    <result column="app" property="app" jdbcType="VARCHAR" />
+    <result column="force_update" property="forceUpdate" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="os_min_ver" property="osMinVer" jdbcType="VARCHAR" />
+</resultMap>
+
+<sql id="Base_Column_List">
+  	  id, name, msg, version, file_size, md5,url,created_at,updated_at,force_update,os,os_min_ver,app
+</sql>
+  
+<insert id="addAppVersion" parameterType="com.hongbao.dal.model.AppVersion">
+  		<selectKey resultType="long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+  	insert into vdlm_app_version (name, msg, version, file_size, md5,url,created_at,updated_at,force_update,os,os_min_ver,app)
+  	values(
+  		#{name,jdbcType=VARCHAR},#{msg,jdbcType=VARCHAR},
+	  	#{version,jdbcType=VARCHAR},#{fileSize,jdbcType=BIGINT},
+	  	#{md5,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},
+	  	now(),now(),#{forceUpdate,jdbcType=BIGINT},#{os,jdbcType=VARCHAR},#{osMinVer,jdbcType=VARCHAR},
+	  	#{appType,jdbcType=VARCHAR}
+  	)
+  </insert>
+  <update id="updateAppVersion" parameterType="com.hongbao.dal.model.AppVersion">
+  	update vdlm_app_version set 
+  	name=#{name,jdbcType=VARCHAR},
+  	msg=#{msg,jdbcType=VARCHAR},
+	version=#{version,jdbcType=VARCHAR},
+	file_size=#{fileSize,jdbcType=BIGINT},
+	md5=#{md5,jdbcType=VARCHAR},
+	url=#{url,jdbcType=VARCHAR},
+	force_update=#{forceUpdate,jdbcType=BIGINT},
+	os=#{os,jdbcType=VARCHAR},
+	os_min_ver=#{osMinVer,jdbcType=VARCHAR},
+	app = 	#{appType,jdbcType=VARCHAR},
+	updated_at=now()
+	 where id = #{id}
+  </update>
+  
+  <select id="getById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />  from vdlm_app_version  
+    where id = #{id}
+  </select>
+  <select id="findCurrentVersion" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from vdlm_app_version   where  os = #{os} and  app=#{appType} order by  version desc limit 1
+  </select>
+  
+  <select id="getAppVersionListCount" resultType="java.lang.Integer">
+  	select count(*) from vdlm_app_version
+  </select>
+  
+  
+  <select id="getAppVersionList" resultMap="BaseResultMap">
+  select 
+	<include refid="Base_Column_List" />
+	from vdlm_app_version    order by updated_at desc 
+	limit #{page.offset}, #{page.size}
+  </select>
+  
+   
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserMessage">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="messageId" property="messageId" jdbcType="BIGINT" />
+    <result column="userId" property="userId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="createdAt" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updatedAt" property="updatedAt" jdbcType="TIMESTAMP" />
+</resultMap>
+
+  <sql id="Base_Column_List">
+	id,messageId,userId,status,createdAt,updatedAt
+  </sql>
+  <sql id="Base_Table_Name">
+      UserMessage
+  </sql>
+  
+  <sql id="Base_Where">
+	    <if test="id != null">and  id = #{id} </if>
+	    <if test="messageId != null">and  messageId = #{messageId} </if>
+	    <if test="userId != null">and  userId = #{userId} </if>
+	    <if test="status != null">and  status = #{status} </if>
+	    <if test="createdAt != null">and  createdAt = #{createdAt} </if>
+	    <if test="updatedAt != null">and  updatedAt = #{updatedAt} </if>
+  </sql>
+  
+	 <select id="findListByCondition" parameterType="Map" resultMap="BaseResultMap">
+	    SELECT <include refid="Base_Column_List" /> from <include refid="Base_Table_Name" />
+	    <where>
+	        <include refid="Base_Where"/>
+	    </where>
+	    order by createdAt desc
+	     <if test="pageInfo != null ">
+	          limit #{pageInfo.offset}, #{pageInfo.pageSize}
+	    </if>
+	</select>
+
+	<select id="findCountByCondition" parameterType="Map" resultType="java.lang.Integer">
+	    SELECT count(*) from <include refid="Base_Table_Name" />
+	    <where>
+	        <include refid="Base_Where"/>
+	    </where>
+	</select>
+
+   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hongbao.dal.model.UserMessage">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into
+        <include refid="Base_Table_Name" />
+        (messageId,userId,status,createdAt,updatedAt)
+        values
+        (#{messageId},#{userId},#{status},now(),now())
+    </insert>
+    
+   <insert id="insertIfNotExsist"  parameterType="com.hongbao.dal.model.UserMessage">
+        insert into
+        <include refid="Base_Table_Name" />
+        (messageId,userId,status,createdAt,updatedAt)
+       SELECT #{messageId},#{userId},#{status},now(),now() FROM DUAL
+		WHERE NOT EXISTS(
+		      SELECT *
+		      FROM <include refid="Base_Table_Name" />
+		    where messageId = #{messageId} and userId = #{userId}
+		)
+    </insert>
+    
+   <update id="updateStatus">
+       update  <include refid="Base_Table_Name" /> set status = #{status} where messageId = #{messageId} and userId = #{userId}
+   </update>
+   
+</mapper>

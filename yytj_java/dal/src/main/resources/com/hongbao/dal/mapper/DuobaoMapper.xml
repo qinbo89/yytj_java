@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.hongbao.dal.mapper.DuobaoMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.Duobao" >
+	<id column="id" property="id" jdbcType="BIGINT"   />
+	<result column="title" property="title"  jdbcType="VARCHAR"   />
+	<result column="imageUrl" property="imageUrl"  jdbcType="VARCHAR"   />
+	<result column="totalScore" property="totalScore" jdbcType="INTEGER" />
+	<result column="currentScore" property="currentScore" jdbcType="INTEGER" />
+	<result column="onceScore" property="onceScore" jdbcType="INTEGER" />
+	<result column="status" property="status" jdbcType="INTEGER" />
+	<result column="archive" property="archive" jdbcType="BIT" />
+	<result column="created_at" property="createdAt"  jdbcType="TIMESTAMP" />
+	<result column="updated_at" property="updatedAt"  jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+	    id, title,imageUrl,totalScore,currentScore,onceScore,status,created_at,updated_at
+  </sql>
+  <select id="duobaoList"  resultMap="BaseResultMap">
+  select * from Duobao 
+  where archive  = 0
+  order by status asc ,created_at desc
+  </select>
+  <select id="findById"  resultMap="BaseResultMap">
+  select * from Duobao 
+  where id = #{id}
+  </select>
+  
+  <update id="updateStatus">
+  update Duobao set status = #{status} where id = #{id}
+  </update>
+  <update id="addCurrentScore">
+  update Duobao set currentScore = ifnull(currentScore,0) + #{score} where id = #{id}
+  </update>
+</mapper>

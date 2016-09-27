@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.AppCtrMapper">
+	<resultMap type="com.hongbao.dal.model.AppCtr" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+		<result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+		<result column="num" property="num" jdbcType="BIGINT" />
+		<result column="app_id" property="appId" jdbcType="DECIMAL" />
+	</resultMap>
+	<!-- 字段集合 -->
+	<sql id="Base_Column_List">
+		id,start_time,end_time,created_at,updated_at,num
+	</sql>
+	
+	  
+
+ 
+ <insert id="insert" parameterType="com.hongbao.dal.model.AppCtr">
+ 		<selectKey resultType="int" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+ 	insert into app_ctr (start_time,end_time,created_at,updated_at,num) values(
+ 		#{startTime},#{endTime},now(),now(),#{num})
+ </insert>
+ 
+	
+<select id="getLastAppCtr" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from app_ctr where app_id=#{appId} order by start_time desc limit 0, 1
+</select>
+	
+
+	
+</mapper>

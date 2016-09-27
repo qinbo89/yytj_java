@@ -1,0 +1,339 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>提现</title>
+    <style>
+        html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+        body{margin:0;background:#f8f8f8;}
+        img {width:100%;}
+        p {margin:0;padding:0;}
+        ul, li {list-style:none;margin:0;padding:0;}
+        .clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }
+        .clearfix { zoom:1; }
+
+        .pageWrapper {background:#f8f8f8;}
+        .totalMoney {font-size:12px;color:#000;width:90%;padding:15px 5%;background:#f8f3e1;border-bottom:1px solid #ededed;}
+        .moneyNum span {font-size:20px;color:#de3e22;padding-left:5px;}
+        .moneyDesc {color:#999;}
+
+        .withdrawals a {display:block;padding:15px 5%;width:90%;border-bottom:1px solid #ededed;}
+        .LinkLabel {float:left;font-size:12px;color:#999;}
+        .LinkValue {float:right;font-size:14px;color:#000;}
+        .colorRed {color:#e23723;}
+        .colorGray {color:#999;}
+        .notes {font-size:12px;color:#ffd030;padding:5px 0 5px 5%;}
+        .moneyBtnRed {text-align:center;padding-top:20px;}
+        .moneyBtnRed a {display:inline-block;width:90%;background:#e23723;font-size:14px;color:#fff;text-align:center;padding:10px 0;border-radius:3px;}
+        .moneyBtnGray {text-align:center;padding-top:20px;}
+        .moneyBtnGray a {display:inline-block;width:90%;background:#bfbfbf;font-size:14px;color:#fff;text-align:center;padding:10px 0;border-radius:3px;}
+        .linkArrow {width: 10%;display: inline-block;vertical-align: middle;margin-left:5px;}
+
+
+        /*weixin alipay提现 begin*/
+        .wallet {position:fixed;top:0;left:0;width:100%;height:100%;background:url("/_resources/images/maskBg.png") center;-webkit-background-size:100% 100%;display: none}
+        .walletContent {width:90%;margin:10% 5% 0 5%;background:#fff;border-radius:3px;padding-bottom:20px;}
+        .walletName {font-size:16px;color:#000;padding:15px 0;text-align:center;}
+        .walletInput {width:90%;margin:0 5%;padding:10px 0 10px 5px;font-size:12px;color:#000;border:none;outline:none;background:#f2f2f2;border_radius:3px;}
+        .walletBtns {padding-top:20px;}
+        .walletBtns .moneyBtnRed {padding-top:0px;padding-bottom:10px;}
+        .walletBtns .moneyBtnGray {padding-top:0px;padding-bottom:10px;}
+        /*weixin alipay 提现 end*/
+
+        @media only screen
+        and (min-device-height : 480px){
+
+        }
+
+        /*select start*/
+        .button {
+            border: 1px solid #bbb;
+            border-radius: 1px;
+            box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+            /*width: 300px;*/
+            background: #f3f3f3;
+            background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5));
+            background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+            background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+            background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%);
+            background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+        }
+        /* --------------  */
+        /*  custom-select  */
+        /* --------------  */
+        .custom-select {
+            position: relative;
+        }
+        .custom-select select {
+            width:100%;
+            margin:0;
+            background:none;
+            border: 1px solid transparent;
+            outline: none;
+            /* Prefixed box-sizing rules necessary for older browsers */
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            /* Remove select styling */
+            appearance: none;
+            -webkit-appearance: none;
+            /* Font size must the 16px or larger to prevent iOS page zoom on focus */
+            /* General select styles: change as needed */
+            font-family: helvetica, sans-serif;
+            font-weight: bold;
+            color: #444;
+            padding: .2em 1.9em .5em .2em;
+            line-height:1.3;
+        }
+        .custom-select::after {
+            content: "";
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            top: 50%;
+            right: 8px;
+            margin-top:-4px;
+            border:8px solid #929497;
+            border-width: 8px 5px 8px;
+            border-color: #929497 transparent transparent transparent;
+            z-index: 2;
+            pointer-events:none;
+        }
+        /* Hover style */
+        .custom-select:hover {
+            border:1px solid #888;
+        }
+        /* Focus style */
+        .custom-select select:focus {
+            outline:none;
+            box-shadow: 0 0 1px 3px rgba(180,222,250, 1);
+            background-color:transparent;
+            color: #222;
+            border:1px solid #aaa;
+        }
+        /* Set options to normal weight */
+        .custom-select option {
+            font-weight:normal;
+        }
+        x:-o-prefocus, .custom-select::after {
+            display:none;
+        }
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            .custom-select select::-ms-expand {
+                display: none;
+            }
+            .custom-select select:focus::-ms-value {
+                background: transparent;
+                color: #222;
+            }
+        }
+        @-moz-document url-prefix() {
+            .custom-select {
+                overflow: hidden;
+            }
+            .custom-select select {
+                width: 120%;
+                width: -moz-calc(100% + 3em);
+                width: calc(100% + em);
+            }
+
+        }
+        .custom-select select:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #000;
+        }
+
+        /*end*/
+    </style>
+</head>
+<body>
+<div class="pageWrapper">
+
+    <div class="content">
+        <div class="totalMoney">
+            <input type="hidden" id="cashApplyScore" value="$!{velocityCommonUtil.longFen2Yuan($!cashApplyScore)}">
+            <div class="moneyNum">我的余额<span>$!{velocityCommonUtil.longFen2Yuan($!cashApplyScore)}</span></div>
+            <div class="moneyDesc">提现金额需大于10.00元，均可申请提现</div>
+        </div>
+        <div class="withdrawals">
+            <a class="clearfix">
+                <span class="LinkLabel">提现到</span>
+                <span class="LinkValue">
+                    <div class="button custom-select">
+                            <select id="channel">
+                            </select>
+                    </div>
+                    <!--<span class="linkArrow"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p6_4.png" /></span></span>-->
+            </a>
+            <a class="clearfix">
+                <span class="LinkLabel">提现金额</span>
+                <span class="LinkValue colorRed">
+                    <div class="button custom-select">
+                    <select id="applyAmount" >
+                        <option value="10">10元</option>
+                        <option value="50">50元</option>
+                        <option value="100">100元</option>
+                    </select>
+                    </div>
+                    <!--<span class="linkArrow"><img src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p6_4.png" /></span></span>-->
+            </a>
+            <a class="clearfix">
+                <span class="LinkLabel">预计到账时间</span>
+                <span class="LinkValue colorGray">24小时之内</span>
+            </a>
+        </div>
+        <div class="notes">双休节假日不处理提现业务</div>
+        <div class="moneyBtnRed" id="btnApply"><a>提交</a></div>
+        <div class="moneyBtnGray"><a  href="/innerPage/getMyCashApplyRecords">历史提现</a></div>
+
+    </div>
+
+    <div class="wallet" id="walletWeixin">
+        <div class="walletContent">
+            <div style="font-size:14px;color:#000;padding-left:2px;padding-top: 2px;cursor: pointer;color:red" id="btnSwitchAliPay"><a>绑定支付宝</a></div>
+            <div class="walletName">微信钱包</div>
+            <input class="walletInput" type="text" placeholder="请输入微信钱包绑定的真实姓名" id="weixinRealName" />
+            <div class="walletBtns">
+                <div class="moneyBtnRed" id="btnWxBind"><a>确定</a></div>
+                <div class="moneyBtnGray" id="btnWxCancel"><a>取消</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wallet" id="walletAlipay">
+        <div class="walletContent">
+            <div style="font-size:14px;color:#000;padding-left:2px;padding-top: 2px;cursor: pointer;color:red" id="btnSwitchWeixin"><a>绑定微信钱包</a></div>
+            <div class="walletName">支付宝钱包</div>
+            <input class="walletInput" type="text" placeholder="请输入支付宝钱包收款人实名姓名" id="aliRealName" />
+            <input class="walletInput" type="text" placeholder="请输入支付宝实名认证账号"  id="aliAccountNo"/>
+            <div class="walletBtns">
+                <div class="moneyBtnRed" id="btnAliBind"><a>确定</a></div>
+                <div class="moneyBtnGray"  id="btnAliCancel"><a>取消</a></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" charset="utf-8" src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        //get account list
+        var url = "/innerPage/getMyAccountList";
+        $.post(url,{},function(result){
+            if(!result.success){
+                alert(result.message);
+                return;
+            }
+            var dataList = result.data;
+            if(!dataList || dataList.length == 0){
+                return;
+            }
+            //set to page
+            for(var i = 0; i < dataList.length; i++){
+                var data = dataList[i];
+                var text = data.accountNo+"["+data.realName+"]";
+                var val = data.id;
+                $("#channel").append("<option value=\""+val+"\">"+data.realName+"</option>");
+            }
+        });
+        //cash apply
+        $("#btnApply").click(function(){
+
+            //judge is bind cash apply account
+            var url = "/innerPage/isApplyBindAccount"
+            $.post(url,{},function(result){
+                if(!result){  //not bind
+                    $("#walletWeixin").show();   //默认weixin
+                    return;
+                }
+                var applyUrl = "/innerPage/doApply";
+                var accountIdVal = $("#channel").val();
+                var cashVal = $("#applyAmount").val();
+                $.post(applyUrl,{accountId:accountIdVal,cash:cashVal},function(applyResult){
+                    if(!applyResult.success){
+                        alert(applyResult.message);
+                    }else{
+                        alert("提现成功");
+                        window.location = window.location;
+                    }
+                });
+            });
+        });
+
+        //weixin alipay bind start
+        //bind
+        $("#btnWxBind").click(function(){
+            var url = "/innerPage/addUserAccountInfo";
+            var accountNo = "微信钱包";
+            var realName = $("#weixinRealName").val();
+            if(!realName){
+                alert("请输入微信钱包绑定的真实姓名");
+                return;
+            }
+            $.post(url,{accountNo:accountNo,realName:realName,type:"WEIPAY"},function(result){
+                if(!result.success){
+                    alert(result.message);
+                    return;
+                }else{
+                    alert("绑定成功");
+                    $("#btnWxCancel").trigger("click");
+                    window.location = window.location;
+                }
+            });
+
+        });
+        $("#btnAliBind").click(function(){
+            var url = "/innerPage/addUserAccountInfo";
+            var accountNo = $("#aliAccountNo").val();
+            var realName = $("#aliRealName").val();
+            if(!realName){
+                alert("请输入支付宝钱包收款人实名姓名");
+                return;
+            }
+            if(!accountNo){
+                alert("请输入支付宝实名认证账号");
+                return;
+            }
+            $.post(url,{accountNo:accountNo,realName:realName,type:"ALIPAY"},function(result){
+                if(!result.success){
+                    alert(result.message);
+                    return;
+                }else{
+                    alert("绑定成功");
+                    $("#btnAliCancel").trigger("click");
+                    window.location = window.location;
+                }
+            });
+
+        });
+
+        //switch alipay
+        $("#btnSwitchAliPay").click(function(){
+           $("#walletAlipay").show();
+           $("#walletWeixin").hide();
+        });
+        //switch weixin
+        $("#btnSwitchWeixin").click(function(){
+           $("#walletWeixin").show();
+           $("#walletAlipay").hide();
+        });
+
+
+
+        //cancel
+        $("#btnWxCancel").click(function(){
+            $("#walletWeixin").hide();
+        });
+        $("#btnAliCancel").click(function(){
+            $("#walletAlipay").hide();
+        });
+        //end
+    });
+</script>
+</body>
+</html>

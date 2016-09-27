@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+
+    <title>地图显示</title>
+
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css" />
+    <script src="http://webapi.amap.com/maps?v=1.3&key=5297f4ef150e1e4023f842ff090bf745"></script>
+</head>
+
+<body>
+<div id="mapContainer" style="width:100%;height:600px;display: block;position:relative"></div>
+
+<script>
+
+    var addrConfirm = function(){};
+
+    $(document).ready(function(){
+        if(!settings){
+            settings =  {
+                options : {
+                    lng:116.405467,  //经度
+                    lat:39.907761,  //纬度
+                    addrId:"address"   //修改后的地址id
+                }
+            };
+        }
+        lng = settings.options.lng;
+        lat = settings.options.lat;
+        addrId = settings.options.addrId;
+
+        var map = new AMap.Map('mapContainer', {
+            // 设置中心点
+            center: [lng, lat],
+
+            // 设置缩放级别
+            zoom: 18
+        });
+
+        //在地图中添加ToolBar插件
+        map.plugin(["AMap.ToolBar"], function () {
+            toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+        });
+
+        //add 标记
+        createMarker();
+
+        AMap.service('AMap.Geocoder',function(){//回调函数
+            //实例化Geocoder
+            geocoder = new AMap.Geocoder({
+                city: "全国"//城市，默认：“全国”
+            });
+            //TODO: 使用geocoder 对象完成相关功能
+        });
+
+        //地址确认
+        addrConfirm = function(){
+            //地理编码
+            var key = $("#"+addrId).val();
+            var startIndex = key.indexOf("省");
+            var endIndex = key.indexOf("市")
+            if(startIndex == -1 || endIndex == -1){
+                alert("输入地址格式不对，必须是[xxx省xxx市xxx区xxx街道xxx门牌号]");
+                return;
+            }
+            var city = key.substring(startIndex+1,endIndex);
+            console.log("city="+city);
+            geocoder.setCity(city);
+            geocoder.getLocation(key, function(status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                    //TODO:获得了有效经纬度，可以做一些展示工作
+                    var lnglat = result.geocodes[0].location;
+                    //marker.setPosition(lnglat);
+                    //移动mark
+//                    marker.moveTo(lnglat,100,function(e){
+//
+//                    });
+                    lng = lnglat.getLng();
+                    lat = lnglat.getLat();
+                    marker.setMap(null);
+                    createMarker();
+                    console.log(lnglat.getLng()+" "+lnglat.getLat());
+                }else{
+                    //获取经纬度失败
+                    console.error("get lng lat failed!  ");
+                }
+            });
+        }
+
+        function createMarker(){
+            marker = new AMap.Marker({
+                icon: "http://webapi.amap.com/images/marker_sprite.png",
+                draggable: true,
+                position: [lng,lat]
+            });
+            marker.setMap(map);
+
+            map.setFitView(); // 调整到合理视野
+
+            //拖移事件
+            marker.on( 'dragend', function(e) {
+                settings.options.lng = e.lnglat.getLng();
+                settings.options.lat = e.lnglat.getLat();
+                $("#"+settings.options.lngId).val(settings.options.lng);
+                $("#"+settings.options.latId).val(settings.options.lat);
+                var lnglatXY=[e.lnglat.getLng(), e.lnglat.getLat()];//地图上所标点的坐标
+                geocoder.getAddress(lnglatXY, function(status, result) {
+                    if (status === 'complete' && result.info === 'OK') {
+                        //获得了有效的地址信息:
+                        $("#"+addrId).val(result.regeocode.formattedAddress);
+                    }else{
+                        console.error("get address from lng lat failed!");
+                    }
+                });
+            });
+        }
+
+
+    });
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+
+</html>

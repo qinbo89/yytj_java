@@ -1,0 +1,62 @@
+#set( $page_title = "用户列表" )
+<div>
+    <div style="font-size: 24px; color: #333333;">用户列表</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/user/list.html" method="get">
+             <span style="color: #747474;">账号：</span><input type="text" name="mobileLike"  value="$!{query.mobileLike}"   style="width: 280px;">
+             <span style="color: #747474;">类别：</span>
+             <select name="type">
+                 <option value="" >所有</option>
+                 #foreach($item in $!userType.values())
+                 <option value="$!item.code" #if($!item.code == $!{query.type})selected="true"#end>$!item.description</option>
+                 #end
+             </select>
+             <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+             <input type="button" class="btn   btn-danger" id="btnEnterNew" value="新增" style="height: 30px; width: 60px;" />
+         </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 6%;">账号</th>
+                    <th style="width: 6%;">创建时间</th>
+                    <th style="width: 5%;">类型</th>
+                    <th style="width: 5%;">用户名称</th>
+                    <th style="width: 5%;">父ID</th>
+                    <th style="width: 4%;">区域ID</th>
+                    <th style="width: 4%;">邀请用户ID</th>
+                    <th style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!item.mobile</td>
+                    <td >$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.userType.description</td>
+                    <td >$!item.userName</td>
+                    <td >$!item.parentId</td>
+                    <td >$!item.zoneId</td>
+                    <td >$!item.inviteUserId</td>
+                    <td>
+                        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/user/enterEdit.html?id=$!item.id" target="_blank" >修改</a><br/>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/module/user.js"></script>
+
+
+
+
+

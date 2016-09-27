@@ -1,0 +1,182 @@
+#set( $layout = "include/header_footer.html" )
+#set( $page_title = "已录入商户" )
+<div>
+     <div style="border-top: 1px solid #DADADA;margin-top: 20px;"></div>
+     <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 30%;">商户名称</th>
+                    <th style="width: 10%;">省</th>
+                    <th style="width: 10%;">市</th>
+                    <th style="width: 10%;">区</th>
+                    <th style="width: 40%;">地址</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($shop in $shopList)
+                <tr>
+                    <th style="width: 30%;">$!{shop.name}</th>
+                    <th style="width: 10%;">$!{shop.province.name}</th>
+                    <th style="width: 10%;">$!{shop.city.name}</th>
+                    <th style="width: 10%;">$!{shop.area.name}</th>
+                    <th style="width: 40%;">$!{shop.address}</th>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($pageInfo)
+         </div>
+         
+         
+         
+         <div  id="id_table_ppshop"  >
+         </div>
+         
+         
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+$(function(){
+	
+});
+function bindShop(shopId){
+	$.layer({
+        type : 1,
+        title : "绑定商户",
+        page : {
+            html : "<div align='center'  style='width:320px;margin-top:10px;'><input type='text'   id='shopMobile'   placeholder='请输入商户手机号' /></div>",
+            ok : function(datas) {
+            }
+        },
+        btn : [ '确定', '取消' ],
+        area : [ '320px', '140px' ],
+        btns : 1,
+        close: function(index){
+            layer.close(index);
+        },
+        yes : function(index) {
+        	var mobile = $("#shopMobile").val();
+        	if(!!!mobile){
+        		layer.alert('请输入商户手机号！',2, {type:3})
+        		return false;
+        	}
+        	YTLib.doAjaxRequest({
+                url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/bindShop",
+                data : {
+                	shopId:shopId,
+                    mobile : mobile
+                }
+            }, function(res) {
+            	if(res.success){
+            	   layer.msg('绑定商户成功！',2, {type:1})
+            	   layer.close(index);
+            	   location.reload(true);
+            	}
+            });
+        }
+    });
+}
+function bindSaleMan(shopId){
+	
+	$('#id_table_ppshop').flexigrid({
+        url : '$!{velocityCommonUtil.getAbsoluteURL()}/proxy/salemanList',
+        dataType : 'json',
+        colModel : [ {
+            name : "",
+            display : "序号",
+            width:30,
+            process : function(el, v) {
+                var tableId = "id_table_ppshop";
+                var colIndexId = tableId + "_index";
+                var colIndexEl = $("#" + colIndexId);
+                if(colIndexEl.size()==0){
+                	$("body").append("<input type='hidden'  id='"+colIndexId+"'  />");
+                	colIndexEl = $("#" + colIndexId);
+                }
+                var index = parseInt(colIndexEl.val());
+                if (!index) {
+                    index = 0;
+                }
+                index = index + 1;
+                colIndexEl.val(index);
+                $(el).text(index);
+            }
+        }, {
+            display : '',
+            name : 'userId',
+            hide : true,
+            process : function(el, v) {
+                $(el).attr("col_key_userId", $(el).text());
+            }
+        },{
+            display : '手机号',
+            name : 'tel',
+        },{
+            display : '姓名',
+            name : 'name',
+        }],
+       // rpOptions : [ 10, 20, 30, 50 ],
+        width : '580',
+         height : '250',
+        rp : 10,
+        usepager : true, //是否显示分页
+        useRp : false,
+        //minwidth : 100,
+        singleSelect : true,
+        striped : true,
+        resizable : false,
+        nowrap : true,
+        showToggleBtn : false,
+        pagestat : '开始显示{from} 到 {to}， 共 {total} 条',
+        procmsg : '正在处理数据，请稍候 ...',
+        nomsg : '没有符合条件的记录存在',
+        itemtext : '页',
+        pagetext : '第',
+        outof : '页 /共'
+    });
+	
+	$.layer({
+        type : 1,
+        title : "绑定业务员",
+        page : {
+            dom : ".flexigrid",
+            ok : function(datas) {
+            	   
+            }
+        },
+        btn : [ '确定', '取消' ],
+        area : [ '580px', '400px' ],
+        btns : 1,
+        close: function(index){
+            layer.close(index);
+        },
+        yes : function(index) {
+            
+        var salemanUserId = $("#id_table_ppshop .trSelected [col_key_userid]").attr("col_key_userid");
+            
+            
+            YTLib.doAjaxRequest({
+                url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/bindSaleman",
+                data : {
+                	shopId:shopId,
+                	salemanUserId : salemanUserId
+                }
+            }, function(res) {
+            	if(res.success){
+                    layer.msg('绑定业务员成功！',2, {type:1})
+                    layer.close(index);
+                    location.reload(true);
+            	}
+            });
+        }
+    });
+}
+</script>
+

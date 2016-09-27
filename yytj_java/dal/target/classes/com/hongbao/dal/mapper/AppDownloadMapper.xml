@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.AppDownloadMapper">
+	<resultMap id="BaseResultMap" type="com.hongbao.dal.model.AppDownload">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- app下载维护字段 -->
+	<sql id="Base_Column_List">
+		id, download_url, app_name
+	</sql>
+	
+	<select id="findNewDownload" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"/>
+		from vdlm_app_download where  
+		archive=false and type = '1' ORDER BY  updated_at DESC limit 0,1
+	</select>
+</mapper>

@@ -1,0 +1,13 @@
+<div id="bos_menu" align="left"  style="border-right: 1px solid #e7e7e7;width: 220px;">
+        <!--<div class="bosmenu bosmenu_one"><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/jygl.png"  style="height: 16px;width: 16px;vertical-align: middle;"/>-->
+                <!--<span style="margin-left: 12px;">试玩列表</span><img src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/up.png"  style="height: 5px;width: 8px;vertical-align: middle;  margin-left: 30px;"/>-->
+        <!--</div>-->
+        <div  class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/tryapp/list.html")  bosmenu_current   #end '>
+                <a href="$!{velocityCommonUtil.getAbsoluteURL()}/tryapp/list.html">试玩管理</a>
+        </div>
+        <div  class='bosmenu bosmenu_two  #if("${rc.getRequestUri()}" =="$!{rc.getContextPath()}/tryapp/list.html")  bosmenu_current   #end '>
+                <a href="$!{velocityCommonUtil.getAbsoluteURL()}/payOrderRefund.html">会员管理</a>
+        </div>
+
+
+</div>

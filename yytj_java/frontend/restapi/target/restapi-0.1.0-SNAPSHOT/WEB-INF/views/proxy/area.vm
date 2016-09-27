@@ -1,0 +1,155 @@
+<html>
+<head>
+<meta charset="UTF-8"/>
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form style="margin: 10px 15px" role="form" id="aForm" enctype="multipart/form-data" method="post" onsubmit="return formInit()" action="/proxy/areaSave">
+    <input type="hidden" name="zoneId" id="zoneId">
+    <input type="hidden" name="zoneText" id="zoneText">
+    <input type="hidden" name="cityZoneId" id="cityZoneId">
+    <div class="form-group">
+     区域：<select id="selProvince"></select>
+     <select id="selCity"></select>
+     <select id="selArea"></select>
+    </div>
+    <div class="form-group">
+        姓名：<input type="text"  id="name" name="name" placeholder="请输入姓名">
+    </div>
+    <div class="form-group">
+        密码：<input type="text" name="password" />
+    </div>
+    <div class="form-group">
+        手机号码：<input type="text" name="tel" />
+    </div>
+    <div class="form-group">
+        身份证号：<input type="text" name="cardNo" />
+    </div>
+    <div class="form-group">
+        营业执照：<input type="file" name="licenseImgFile" />
+    </div>
+    <button type="submit" class="btn btn-primary">创建区县级代理商</button>
+
+</form>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+
+        eventNoTify();
+
+        $.ajaxSetup({
+            async: false   //同步
+        });
+
+        //获取已经创建好的省级代理商列表
+        $.post("/proxy/admin/getProxyList?level=1", function (data) {
+            var itemList = data.data;
+            for (var i = 0; i < itemList.length; i++) {
+                var item = itemList[i];
+                $("#selProvince").append("<option value='" + item.zoneId + "'>" + item.zoneText + "</option>")
+            }
+        },"json");
+
+        //获取已经创建好的市级代理商列表
+        $.post("/proxy/admin/getProxyList?level=2", function (data) {
+            var itemList = data.data;
+            for (var i = 0; i < itemList.length; i++) {
+                var item = itemList[i];
+                $("#selCity").append("<option value='" + item.zoneId + "'>" + item.zoneText + "</option>")
+            }
+        },"json");
+
+        //获取已经创建好的市级代理商列表
+        cityProxyList = [];
+        $.post("/proxy/admin/getProxyList?level=2", function (data) {
+            var itemList = data.data;
+            for (var i = 0; i < itemList.length; i++) {
+                cityProxyList.push(itemList[i].zoneId);
+            }
+        });
+
+        //初始化触发事件
+        $("#selProvince").trigger("change");
+
+
+        //save
+//        $("#btnA").click(function () {
+//            var params = $("#aForm").serialize();
+//            var cityZoneId = $("#selCity").val();
+//            var zoneId = $("#selArea").val();
+//            var zoneText = $("#selArea").find("option:selected").text()
+//            params += "&zoneId=" + zoneId + "&zoneText=" + zoneText+"&cityZoneId="+cityZoneId;
+//            $.post("/proxy/areaSave?" + params, function (data) {
+//                if (data.success) {
+//                    alert("创建区县级代理成功");
+//                } else {
+//                    alert("创建区县级代理失败 " + data.message);
+//                }
+//            });
+//        });
+    });
+    //
+    function eventNoTify() {
+        $("#selProvince").change(function () {
+            var provinceId = $(this).val();
+            $("#selCity").empty();
+
+            //初始化市级
+            $.post("/m/getCities", {provinceId: provinceId}, function (data) {
+                var jsonArr = data.data;
+                for (var i = 0; i < jsonArr.length; i++) {
+                    var jsonObj = jsonArr[i];
+                    var contain = false;
+                    for (var j = 0; j < cityProxyList.length; j++) {
+                        if (cityProxyList[j] == jsonObj.id) {
+                            contain = true;
+                            break;
+                        }
+                    }
+                    if (contain) {  //如果存在，才添加
+                        $("#selCity").append("<option value='" + jsonObj.id + "'>" + jsonObj.name + "</option>")
+                    }
+                }
+            }, "json");
+
+            $("#selCity").trigger("change");
+
+        });
+
+        $("#selCity").change(function(){
+            $("#selArea").empty();
+            var cityId = $(this).val();
+            //初始化区县级
+            $.post("/m/getArea",{cityId:cityId},function(data){
+                var jsonArr = data.data;
+                for(var i = 0; i < jsonArr.length; i++){
+                    var jsonObj = jsonArr[i];
+                    $("#selArea").append("<option value='"+jsonObj.id+"'>"+jsonObj.name+"</option>")
+                }
+            },"json");
+        });
+
+    }
+
+    function formInit(){
+        var cityZoneId = $("#selCity").val();
+        var zoneId = $("#selArea").val();
+        var zoneText = $("#selArea").find("option:selected").text();
+        $("#zoneId").val(zoneId);
+        $("#zoneText").val(zoneText);
+        $("#cityZoneId").val(cityZoneId);
+        return true;
+    }
+</script>
+</body>
+</html>

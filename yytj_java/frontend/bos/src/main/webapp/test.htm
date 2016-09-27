@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+
+    <title>地图显示</title>
+
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css" />
+    <script src="http://webapi.amap.com/maps?v=1.3&key=5297f4ef150e1e4023f842ff090bf745"></script>
+</head>
+
+<body>
+<div id="mapContainer"></div>
+
+<script>
+    var lng = 116.405467;
+    var lat = 39.907761;
+    //业务处理，获取业务中的经纬度，有则处理，没有则用默认北京
+    if(typeof getBizPoint == "function"){
+        var pointJson = getBizPoint();
+        lng = pointJson.lng;
+        lat = pointJson.lat;
+    }
+    var map = new AMap.Map('mapContainer', {
+        // 设置中心点
+        center: [lng, lat],
+
+        // 设置缩放级别
+        zoom: 16
+    });
+
+    //在地图中添加ToolBar插件
+    map.plugin(["AMap.ToolBar"], function () {
+        toolBar = new AMap.ToolBar();
+        map.addControl(toolBar);
+    });
+
+    //add 标记
+    marker = new AMap.Marker({
+        icon: "http://webapi.amap.com/images/marker_sprite.png",
+        draggable: true,
+        position: [lon,lat]
+    });
+    marker.setMap(map);
+
+    //拖移事件
+    marker.on( 'dragend', function(e) {
+        alert(e.lnglat.getLng()+" "+ e.lnglat.getLat());
+    });
+
+
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.CityMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.City">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+     <result column="level" property="level" jdbcType="INTEGER" />
+     <result column="path" property="path" jdbcType="VARCHAR" />
+</resultMap>
+
+  <sql id="Base_Column_List">
+	id, name,zip_code,parent_id,level,path
+  </sql>
+  <sql id="Base_Table_Name">
+      zone
+  </sql>
+  
+  <sql id="Base_Where">
+      <if test="id != null">and  id = #{id} </if>
+        <if test="name != null">and  name = #{name} </if>
+        <if test="zip_code != null">and  zip_code = #{zip_code} </if>
+        <if test="parent_id != null">and  parent_id = #{parent_id} </if>
+        <if test="level != null">and  level = #{level} </if>
+        <if test="path != null">and  path = #{path} </if>
+  </sql>
+  
+     <select id="findListByCondition" parameterType="Map" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> from <include refid="Base_Table_Name" />
+        <where>
+            <include refid="Base_Where"/>
+        </where>
+    
+        <if test="orderColumn != null ">
+            order by #{orderColumn} desc
+      </if>
+      <if test="orderColumn == null ">
+            order by createdAt desc
+      </if>
+      
+     <if test="pageInfo != null ">
+          limit #{pageInfo.offset}, #{pageInfo.pageSize}
+    </if>
+    </select>
+    
+    <select id="findCountByCondition" parameterType="Map" resultType="java.lang.Integer">
+        SELECT count(*) from <include refid="Base_Table_Name" />
+        <where>
+            <include refid="Base_Where"/>
+        </where>
+    </select>
+    
+    <update id="updatePath">
+        update  <include refid="Base_Table_Name" /> set path=#{path} where  id = #{id}
+    </update>
+    
+    <update id="updateLevel">
+    update  <include refid="Base_Table_Name" /> set level=#{level} where id = #{id}
+    </update>
+    
+    
+    <delete id="deleteById">
+          delete
+        from
+        <include refid="Base_Table_Name" />
+        where id = #{id}
+    </delete>
+    
+      <select id="cityMatch" resultMap="BaseResultMap"  >
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="Base_Table_Name" />
+        where 
+        level = 3 and 
+         <foreach collection="zones" item="item" index="index" separator="and">
+           path like  concat('%',#{item},'%')
+        </foreach>
+    </select>
+    
+      
+      <select id="getByParentId" resultMap="BaseResultMap"  >
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="Base_Table_Name" />
+        where parent_id = #{parentId}
+    </select>
+
+    <select id="findById"   resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        from <include refid="Base_Table_Name" />
+        where id = #{id}
+    </select>
+    <select id="findByParntIdsAndNameLike"   resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        from <include refid="Base_Table_Name" />
+        where parent_id  in 
+            (
+                <foreach collection="parentIds" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            )
+        and name like concat(#{name},'%')
+    </select>
+</mapper>

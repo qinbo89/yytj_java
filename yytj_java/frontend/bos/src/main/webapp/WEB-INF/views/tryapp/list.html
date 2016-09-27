@@ -1,0 +1,84 @@
+#set( $page_title = "试玩列表" )
+<div>
+    <div style="font-size: 24px; color: #333333;">试玩列表</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/tryapp/list.html" method="get">
+             <span style="color: #747474;">账号：</span><input type="text" name="tel"  value="$!{query.tel}"   style="width: 280px;">
+             <span style="color: #747474;">状态：</span>
+                    <select name="status">
+                        <option value="">所有</option>
+                        #foreach($eitem in $!suggestStatus.values())
+                           <option value="$!eitem.code" #if($!eitem.code == $!query.status)selected="true"#end>$!eitem.description</option>
+                        #end
+                    </select>
+                    <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+                    
+                    <input type="button" class="btn   btn-danger" id="newBnt"  value="新增" style="height: 30px; width: 60px;" />
+                </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 5%;">名称</th>
+                    <th style="width: 16%;">创建时间</th>
+                    <th style="width: 6%;">包名</th>
+                    <th style="width: 5%;">关键词</th>
+                    <th style="width: 7%;">TAG</th>
+                    <th style="width: 4%;">描述</th>
+                    <th style="width: 4%;">状态</th>
+                    <th style="width: 3%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!item.appName</td>
+                    <td>$!date.format('yyyy-MM-dd HH:mm',$!item.createdAt)</td>
+                    <td >$!item.schema</td>
+                    <td >$!item.keyWord</td>
+                    <td >$!item.tag</td>
+                    <td >$!item.description</td>
+                    <td >$!item.status</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script type="text/javascript" src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/js/lhgdialog/lhgdialog.min.js"></script>
+
+<script type="text/javascript">
+function openSelectTopWin(title,url,scale_width,scale_height){
+    var width = document.body.clientWidth * scale_width;
+    var height = document.body.clientHeight * scale_height;
+    openWinObj = $.dialog({
+        id:"hframeId",
+        title: title,
+        lock: true,
+        width: width,
+        height: height,
+        max: false,
+        min: false,
+        content: 'url:'+url
+    });
+}
+//弹出区域查询
+$("#newBnt").click(function(){
+    var url = basePath+'/tryapp/newTry.html';
+    openSelectTopWin("新增",url,0.65,0.85);
+});
+
+
+</script>
+
+
+
+
+

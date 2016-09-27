@@ -1,0 +1,73 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>历史提现</title>
+    <style>
+        html{height: 100%;padding: 0px;margin: 0px;font-family:"Microsoft YaHei","Tahoma";}
+        body{margin:0;background:#f8f8f8;}
+        img {width:100%;}
+        p {margin:0;padding:0;}
+        ul, li {list-style:none;margin:0;padding:0;}
+        .clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }
+        .clearfix { zoom:1; }
+
+        .pageWrapper {background:#f8f8f8;}
+        .content {padding-bottom:100px;}
+        .topTab {background:#fff;}
+        .topTab li {float:left;width:33.3%;text-align:center;padding:10px 0;font-size:14px;color:#000;border-bottom:2px solid #fff;}
+        .topTab li.curTab {color:#db2e23;border-color:#db2e23;}
+
+        .payDetail {background:#fff;border-top:1px solid #ededed;margin-top:20px;}
+        .payBox {position:relative;border-bottom:1px solid #ededed;width:90%;padding:10px 5%;}
+        .payFrom {font-size:14px;color:#000;padding-bottom:8px;}
+        .payTime {font-size:12px;color:#999;}
+        .payNum {position:absolute;right:5%;bottom:5%;font-size:14px;color:#e44431;}
+        .moneyStatus {position:absolute;top:8%;right:5%;font-size:12px;}
+
+        .colorYellow {color:#ffd030;}
+        .colorGreen{color:#88ca5f;}
+        .colorGray {color:#999;}
+
+        @media only screen
+        and (min-device-height : 480px){
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="pageWrapper">
+    <ul class="topTab clearfix">
+        <a href="/innerPage/getMyCashApplyRecords"><li #if(!$!{query.type})class="curTab"#end>全部</li></a>
+        <a href="/innerPage/getMyCashApplyRecords?type=WEIPAY"><li #if("$!{query.type}"=="WEIPAY")class="curTab"#end>微信钱包</li></a>
+        <a href="/innerPage/getMyCashApplyRecords?type=ALIPAY"><li #if("$!{query.type}"=="ALIPAY")class="curTab"#end>支付宝钱包</li></a>
+    </ul>
+    <div class="content">
+        <div class="payDetail">
+            #foreach($item in $!dataList)
+            <div class="payBox">
+                <div class="payFrom">$!item.accountNo</div>
+                <div class="payTime">$!date.format('MM月dd日 HH:mm',$!item.createdAt)</div>
+                <div class="payNum">+$!{item.cash} 元</div>
+                #if("$item.status" == "APPLY")
+                <div class="moneyStatus colorYellow">提现中</div>
+                #elseif("$item.status" == "SUCCESS")
+                <div class="moneyStatus colorGreen">提现成功</div>
+                #elseif("$item.status" == "FAIL")
+                <div class="moneyStatus colorGray">提现失败</div>
+                #end
+            </div>
+            #end
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

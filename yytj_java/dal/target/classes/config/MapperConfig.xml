@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- <plugins>
+        <plugin interceptor="com.vdlm.dal.interceptor.MyBatisInterceptor">
+        </plugin>
+    </plugins> -->
+
+    <mappers>
+        <mapper resource="com/hongbao/dal/mapper/UserMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserAccountMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/AppDownloadMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/CashApplyMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserStatMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserScoreMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserAppMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserRelationMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/TryAppMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/ClickLogMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserLocusMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserBindMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/AppVersionMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/AppCtrMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/DuobaoMapper.xml" />
+        <mapper resource="com/hongbao/dal/mapper/UserDuobaoMapper.xml" />
+    </mappers>
+
+</configuration>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.UserLocusMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.UserLocus" >
+   	<id column="id" property="id" jdbcType="BIGINT" />
+	<id column="userId" property="userId" jdbcType="BIGINT"  />
+	<id column="deviceType" property="deviceType" jdbcType="VARCHAR" />
+	<id column="sigin" property="sigin" jdbcType="VARCHAR" />
+	<id column="deviceId" property="deviceId" jdbcType="VARCHAR" />
+	<id column="loginTime" property="loginTime" jdbcType="TIMESTAMP" />
+	<id column="archive" property="archive" jdbcType="VARCHAR" />
+	<id column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+	<id column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 	 <sql id="Base_Column_List">
+		id, userId,deviceType,deviceId,loginTime,sigin,created_at,updated_at
+	</sql>
+
+	<insert id="addUserLocus" parameterType="com.hongbao.dal.model.UserLocus">
+		<selectKey resultType="long" keyProperty="id">
+				SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into vdlm_login_locus(userId,deviceType,deviceId,loginTime,sigin,archive,created_at,updated_at) 
+		values(
+		#{userId},#{deviceType,jdbcType=VARCHAR},#{deviceId,jdbcType=VARCHAR},now(),#{sigin,jdbcType=VARCHAR},false, now(),now()
+		)
+	</insert>
+	
+	 <select id="getUserLocusByUserId" resultMap="BaseResultMap">
+  	select 
+	<include refid="Base_Column_List" />
+	from vdlm_login_locus where archive=false and userid=#{userId}  and deviceType='IOS'
+ </select>
+ 
+ <select id="getUserLocusByUserIdLimit" resultMap="BaseResultMap">
+	select DISTINCT deviceId,userId
+	from vdlm_login_locus where archive=false and userid=#{userId} and deviceType='IOS'  limit 0,5
+ </select> 
+ 
+  <select id="getLastLoginLocusByUserId" resultMap="BaseResultMap">
+	select 
+	<include refid="Base_Column_List" />
+	from vdlm_login_locus where archive=false and userid=#{userId}  and deviceType='IOS'  order by id desc limit 0,1
+ </select>
+ 
+
+ 
+	
+	<!-- 根据uuid 查询uuid个数 -->
+	<select id="findByUuid" resultType="Integer">
+		select
+		count(1)
+		from vdlm_login_locus
+		where archive=false
+		and deviceId =#{deviceId,jdbcType=VARCHAR}
+	</select>
+	
+	
+</mapper>

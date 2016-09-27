@@ -1,0 +1,247 @@
+#set( $layout = "include/header_footer.html" )
+#set( $page_title = "商户列表" )
+<div>
+     <div style="font-size: 24px; color: #333333;margin-top: 20px;">
+            已录入商户
+            <div style="text-align: right;display: inline-block;float: right;">
+            <form action="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/recordShopList.html" method="get">
+            
+                        <a  href="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/recordShop.html"  class="btn btn-danger btn-large" style="width: 100px;height: 30px;font-size: 12px;line-height: 30px;" >添加商户 </a>
+                         <input type="text"  style="width: 180px; " placeholder="请输入商户名称"  name="name" value="$!{name}">
+                         <input  class="btn" type="submit" style="background:url('$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/bigger.png' ) no-repeat center;width: 30px;margin-left: -39px;height: 30px;" value="">
+            </form>
+            </div>
+    </div>
+     <div style="border-top: 1px solid #DADADA;margin-top: 20px;"></div>
+    
+     <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 20%;">商户名称</th>
+                    <th style="width: 20%;">录入时间</th>
+                    <th style="width: 15%;">已绑定的商户手机号</th>
+                    <th style="width: 15%;">已绑定的业务员</th>
+                    <th style="width: 15%;">操作</th>
+                    <th  style="width: 15%;">状态</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($shop in $shops)
+                <tr>
+                    <th style="
+                    
+                    width: 20%;
+                    #if($shop.sameNameCount>0)
+                    color:red;
+                    #end
+                    
+                    ">$!shop.name</th>
+                    <th style="width: 20%;">$date.format('yyyy-MM-dd HH:mm:ss',$shop.createdAt)</th>
+                      <th style="width: 15%;">
+                        <span  style="color: green;"> $!{shop.user.mobile}</span>
+                      </th>
+                      <th style="width: 15%;">
+                        <span   style="color: green;">  $!{shop.salemanInfo.name}<br/>#if($!{shop.salemanInfo.tel}) ($!{shop.salemanInfo.tel}) #end</span>
+                      </th>
+                    <th style="width: 15%;">
+                        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/proxy/recordShop.html?shopId=$!shop.id"  style="margin-right: 10px; display: inline-block;"  class="anormalLink">修改信息</a>
+                        <a href="javascript:void(0);"   shopId="$!shop.id"    shopname="$!shop.name"  style="margin-right: 10px;display: inline-block;"  class="anormalLink deleteshopbtn">删除</a>                        
+                        <!-- 
+                        #if(!$!{shop.userId})
+                        <a  href="javascript:void(0)"   style="margin-right: 10px;width: 80px; display: inline-block;" onclick="bindShop('$!shop.id');" class="anormalLink">绑定商户</a>
+                        #end
+                        #if(!$!{shop.saleUserId})
+                        <a  href="javascript:void(0)"  style="margin-right: 10px;width: 80px; display: inline-block;"   onclick="bindSaleMan('$!shop.id');" class="anormalLink">绑定业务员</a>
+                        #end -->
+                        </th>
+                        <th style="width: 15%;">$velocityBizUtil.shopStatus($!shop.status)</th>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($pageInfo)
+         </div>
+         
+         
+         
+         <div  id="id_table_ppshop"  >
+         </div>
+         
+         
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+$(function(){
+    $(".deleteshopbtn").click(function(){
+    	   $thiz = $(this);
+    	    var shopId = $thiz.attr("shopId");
+    	    var shopname = $thiz.attr("shopname");
+    	 
+    	     $.layer({
+    	        shade: [0],
+    	        area: ['auto','auto'],
+    	        dialog: {
+    	            msg: '确认删除店铺' + shopname,
+    	            btns: 2,                    
+    	            type: 4,
+    	            yes: function(index){
+    	            	YTLib.doAjaxRequest({
+    	                    url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/delBindShop",
+    	                    data : {
+    	                        shopId:shopId
+    	                    },
+    	                    loading:true
+    	                }, function(res) {
+    	                    if(res.success){
+    	                       location.reload(true);
+    	                    }
+    	                });
+    	            }, no: function(){
+    	            }
+    	        }
+    	    }); 
+    	    
+    	    
+    });
+});
+function bindShop(shopId){
+	$.layer({
+        type : 1,
+        title : "绑定商户",
+        page : {
+            html : "<div align='center'  style='width:320px;margin-top:10px;'><input type='text'   id='shopMobile'   placeholder='请输入商户手机号' /></div>",
+            ok : function(datas) {
+            }
+        },
+        btn : [ '确定', '取消' ],
+        area : [ '320px', '140px' ],
+        btns : 1,
+        close: function(index){
+            layer.close(index);
+        },
+        yes : function(index) {
+        	var mobile = $("#shopMobile").val();
+        	if(!!!mobile){
+        		layer.alert('请输入商户手机号！',2, {type:3})
+        		return false;
+        	}
+        	YTLib.doAjaxRequest({
+                url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/bindShop",
+                data : {
+                	shopId:shopId,
+                    mobile : mobile
+                }
+            }, function(res) {
+            	if(res.success){
+            	   layer.msg('绑定商户成功！',2, {type:1})
+            	   layer.close(index);
+            	   location.reload(true);
+            	}
+            });
+        }
+    });
+}
+function bindSaleMan(shopId){
+	
+	$('#id_table_ppshop').flexigrid({
+        url : '$!{velocityCommonUtil.getAbsoluteURL()}/proxy/salemanList',
+        dataType : 'json',
+        colModel : [ {
+            name : "",
+            display : "序号",
+            width:30,
+            process : function(el, v) {
+                var tableId = "id_table_ppshop";
+                var colIndexId = tableId + "_index";
+                var colIndexEl = $("#" + colIndexId);
+                if(colIndexEl.size()==0){
+                	$("body").append("<input type='hidden'  id='"+colIndexId+"'  />");
+                	colIndexEl = $("#" + colIndexId);
+                }
+                var index = parseInt(colIndexEl.val());
+                if (!index) {
+                    index = 0;
+                }
+                index = index + 1;
+                colIndexEl.val(index);
+                $(el).text(index);
+            }
+        }, {
+            display : '',
+            name : 'userId',
+            hide : true,
+            process : function(el, v) {
+                $(el).attr("col_key_userId", $(el).text());
+            }
+        },{
+            display : '手机号',
+            name : 'tel',
+        },{
+            display : '姓名',
+            name : 'name',
+        }],
+       // rpOptions : [ 10, 20, 30, 50 ],
+        width : '580',
+         height : '250',
+        rp : 10,
+        usepager : true, //是否显示分页
+        useRp : false,
+        //minwidth : 100,
+        singleSelect : true,
+        striped : true,
+        resizable : false,
+        nowrap : true,
+        showToggleBtn : false,
+        pagestat : '开始显示{from} 到 {to}， 共 {total} 条',
+        procmsg : '正在处理数据，请稍候 ...',
+        nomsg : '没有符合条件的记录存在',
+        itemtext : '页',
+        pagetext : '第',
+        outof : '页 /共'
+    });
+	
+	$.layer({
+        type : 1,
+        title : "绑定业务员",
+        page : {
+            dom : ".flexigrid",
+            ok : function(datas) {
+            	   
+            }
+        },
+        btn : [ '确定', '取消' ],
+        area : [ '580px', '400px' ],
+        btns : 1,
+        close: function(index){
+            layer.close(index);
+        },
+        yes : function(index) {
+            
+        var salemanUserId = $("#id_table_ppshop .trSelected [col_key_userid]").attr("col_key_userid");
+            
+            
+            YTLib.doAjaxRequest({
+                url : "$!{velocityCommonUtil.getAbsoluteURL()}/proxy/bindSaleman",
+                data : {
+                	shopId:shopId,
+                	salemanUserId : salemanUserId
+                }
+            }, function(res) {
+            	if(res.success){
+                    layer.msg('绑定业务员成功！',2, {type:1})
+                    layer.close(index);
+                    location.reload(true);
+            	}
+            });
+        }
+    });
+}
+</script>
+

@@ -1,0 +1,115 @@
+#set( $layout = "include/content_tpl.html" )
+#set( $page_title = "日志管理" )
+<div>
+    <div style="margin:15px 5px;text-align: left; font-size: 24px; color: #333333;">系统管理 &gt; 日志管理</div>
+    <div style="border-top: 1px solid #e7e7e7; margin: 20px 5px;text-align: right;">
+        <a href="$!{velocityCommonUtil.getAbsoluteURL()}/manager/list.html">缓存管理</a>
+    </div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/log/list.html" method="get">
+             <div>
+                 <span style="color: #747474;">应用名称：</span>
+                 <select name="appName">
+                     <option value="">所有</option>
+                     <option value="proxy" #if($!{query.appName} == "proxy") selected="true" #end >proxy</option>
+                     <option value="biz" #if($!{query.appName} == "biz") selected="true" #end >biz</option>
+                     <option value="user" #if($!{query.appName} == "user") selected="true" #end >user</option>
+                     <option value="bos" #if($!{query.appName} == "bos") selected="true" #end >bos</option>
+                 </select>
+                 <span style="color: #747474;">用户Id：</span><input type="text" name="userId"  value="$!{query.userId}"   style="width: 180px;">
+                 <span style="color: #747474;">手机账号：</span><input type="text" name="mobileLike"  value="$!{query.mobileLike}"   style="width: 180px;">
+             </div>
+             <div style="padding-top: 5px">
+                 <span style="color: #747474;">状态：</span><input type="text" name="status"  value="$!{query.status}"   style="width: 180px;">
+                 <span style="color: #747474;">类型：</span>
+                 <select name="type">
+                     <option value="">所有</option>
+                     #foreach($eitem in $!types)
+                     <option value="$!eitem.name()" #if($!eitem.name() == $!query.type)selected="true"#end>$!eitem.name()</option>
+                     #end
+                 </select>
+                 <span style="color: #747474;">耗时排序：</span>
+                 <select name="takeTimeOrder">
+                     <option value="">无</option>
+                     <option value="desc" #if($!{query.takeTimeOrder} == "desc") selected="true" #end>从大到小</option>
+                     <option value="asc" #if($!{query.takeTimeOrder} == "asc") selected="true" #end>从小到大</option>
+                 </select>
+             </div>
+             <div style="padding-top: 5px">
+                 <span style="color: #747474;">请求URL：</span><input type="text" name="urlLike"  value="$!{query.urlLike}"   style="width: 280px;">
+                 <input type="submit" class="btn   btn-danger"  value="搜索" style="height: 30px; width: 60px;" />
+             </div>
+         </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 4%;">应用名称</th>
+                    <th style="width: 4%;">IP</th>
+                    <th style="width: 6%;">stackId</th>
+                    <th style="width: 5%;">时间</th>
+                    <th style="width: 6%;">用户ID</th>
+                    <th style="width: 5%;">手机账号</th>
+                    <th style="width: 5%;">请求URL</th>
+                    <th style="width: 5%;">状态</th>
+                    <th style="width: 5%;">级别</th>
+                    <th style="width: 5%;">耗时</th>
+                    <th style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($item in $!dataList)
+                <tr>
+                    <td >$!item.appName</td>
+                    <td >$!item.ip</td>
+                    <td >$!item.stackId</td>
+                    <td >$!item.time</td>
+                    <td >
+                        <div>$!item.userId</div>
+                        <div style="color:green;font-weight: bold">$!item.name</div>
+                    </td>
+                    <td >$!item.mobile</td>
+                    <td >$!item.url</td>
+                    <td >$!item.status</td>
+                    <td >
+                        <div #if($!{item.type} != "INFO") style="color:red" #end>$!item.type</div>
+                        <div style="color:red;font-weight: bold">$!item.errMsg</div>
+                    </td>
+                    <td >$!item.takeTime</td>
+                    <td>
+                        <a href="javascript:void(0)" id="enterMsg" data-id="$!item.stackId">消息</a>
+                        <a href="javascript:void(0)" id="enterFormatMsg" data-id="$!item.stackId">格式化消息</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($!pageInfo)
+         </div>
+         
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var basePath = $("#basePath").val();
+        //进入消息
+        $("a[id='enterMsg']").click(function(){
+            var url = basePath+'/log/enterMsg.html?stackId='+$(this).attr("data-id");
+            openSelectTopWin("消息列表",url,0.85,0.7);
+        });
+
+        //进入消息
+        $("a[id='enterFormatMsg']").click(function(){
+            var url = basePath+'/log/enterFormatMsg.html?stackId='+$(this).attr("data-id");
+            openSelectTopWin("消息列表",url,0.85,0.7);
+        });
+    });
+</script>
+
+
+
+
+

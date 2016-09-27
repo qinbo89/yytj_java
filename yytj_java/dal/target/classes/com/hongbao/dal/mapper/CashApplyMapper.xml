@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hongbao.dal.mapper.CashApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.hongbao.dal.model.CashApply" >
+    <id column="id" property="id"  jdbcType="BIGINT"  />
+    <result column="user_id" property="userId" jdbcType="BIGINT"   />
+    <result column="account_no" property="accountNo"   jdbcType="VARCHAR" />
+    <result column="real_name" property="realName"  jdbcType="VARCHAR" />
+    <result column="cash" property="cash"  jdbcType="DECIMAL" />
+    <result column="type" property="type"   jdbcType="VARCHAR" />
+    <result column="status" property="status"   jdbcType="VARCHAR" />
+      <result column="object_id" property="objectId" jdbcType="BIGINT"   />
+    <result column="audit_id" property="auditId"  jdbcType="BIGINT"  />
+    <result column="audit_login_name" property="auditLoginName"   jdbcType="VARCHAR" />
+    <result column="reason" property="reason"   jdbcType="VARCHAR" />
+    <result column="archive" property="archive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id,user_id,account_no,real_name,cash,type,status,object_id,audit_id,audit_login_name,reason,created_at, updated_at
+  </sql>
+  
+ <sql id="sql_where">
+   <if test="map.startDate !=null and map.startDate!=''">
+    and created_at &gt;=#{map.startDate}
+    </if>
+ 	<if test="map.endDate!=null and map.endDate!=''">
+ 	 and created_at &lt;=#{map.endDate}
+ 	</if>
+ 	<if test="map.status!=null and map.status!=''">
+ 	 and status=#{map.status}
+ 	</if>
+ 	<if test="map.type!=null and map.type!=''">
+ 	 	 and type=#{map.type}
+ 	</if>
+ </sql>
+ 
+ <!-- 注：此时没有插入审核人信息 -->
+  <insert id="insert" parameterType="com.hongbao.dal.model.CashApply" >
+    <selectKey resultType="long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+	    insert into vdlm_cash_apply ( user_id,account_no,real_name,cash,type,status,object_id,archive, created_at, updated_at)
+	    values (
+	    #{userId},#{accountNo,jdbcType=VARCHAR},
+	    #{realName,jdbcType=VARCHAR},#{cash,jdbcType=DECIMAL},  #{type,jdbcType=VARCHAR},
+	    #{status,jdbcType=VARCHAR},#{objectId},0, now(), now())
+  </insert>
+  
+   <select id="selectById" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_cash_apply
+    where id = #{id}
+  </select>
+  
+   <select id="getCashApplyListByUserId" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_cash_apply
+    where archive=false and  user_id = #{userId} 
+  </select>
+  
+  
+  
+  
+  <select id="getCashApplyListByUserIdAndStatus" resultMap="BaseResultMap"  >
+   select 
+    <include refid="Base_Column_List" />
+    from vdlm_cash_apply
+    where archive=false and  user_id = #{userId} 
+    and status = #{applyStatus,jdbcType=VARCHAR} ORDER BY created_at DESC
+  </select>
+ 
+ <update id="updateAuditInfo" parameterType="com.hongbao.dal.model.CashApply" >
+ 	update vdlm_cash_apply set 
+ 	audit_id=#{auditId},
+ 	audit_login_name=#{auditLoginName, jdbcType=VARCHAR},
+ 	reason=#{reason, jdbcType=VARCHAR},
+ 	status=#{status, jdbcType=VARCHAR},
+ 	updated_at=now()
+ 	where archive=false 
+    and id =#{id}
+ </update>
+ 
+
+
+   <select id="getCashApplyListByUserIdNew" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from vdlm_cash_apply
+    where archive=false and  user_id = #{userId} 
+    and status='SUCCESS'
+    ORDER BY created_at DESC limit 0,1 
+  </select>
+ 
+ 
+ 
+ 
+ <select id="getCashApplyListCount" resultType="java.lang.Integer">
+ 	select count(*) from vdlm_cash_apply
+    where archive=false
+  <include refid="sql_where"/>
+ </select>
+ 
+ <select id="getCashApplyList" resultMap="BaseResultMap">
+ 	select <include refid="Base_Column_List"/> from vdlm_cash_apply
+    where archive=false
+ <include refid="sql_where"/>
+ limit #{page.offset}, #{page.size}
+ </select>
+
+
+  <select id="selectList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from vdlm_cash_apply
+        where archive=false
+        and user_id = #{userId}
+        <if test="type != null ">
+            and type = #{type}
+        </if>
+        order by id desc limit 50
+    </select>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</mapper>

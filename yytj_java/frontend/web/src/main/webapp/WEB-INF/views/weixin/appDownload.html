@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no" />
+<title>应用淘金助手下载</title>
+<style>
+html {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	font-family: "Microsoft YaHei", "Tahoma";
+}
+
+body {
+	margin: 0;
+}
+
+img {
+	width: 100%;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	clear: both;
+}
+
+.clearfix {
+	zoom: 1;
+}
+
+.content {
+	text-align: center;
+	padding-top: 20%;
+}
+
+.icon {
+	display: inline-block;
+	width: 16%;
+	margin-bottom: 10px;
+}
+
+.noTask p {
+	font-size: 14px;
+	color: #999;
+	line-height: 30px;
+}
+
+.homeBtn {
+	padding-top: 20px;
+}
+
+.homeBtn a {
+	display: inline-block;
+	font-size: 14px;
+	color: #fff;
+	padding: 10px 20px;
+	background: #e23723;
+	border-radius: 2px;
+}
+
+/*浏览器打开提示 beigin*/
+.explorTips {
+	position: fixed;
+	top: 2%;
+	right: 4%;
+	z-index: 100;
+	text-align: right;
+	display: none;
+}
+
+.explorTipsArrow {
+	display: inline-block;
+	margin-right: 10px;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #000;
+	opacity: 0.7;
+}
+
+.explorTipsContent {
+	background:
+		url("$!{velocityCommonUtil.getStaticUrl()}/_resources/images/maskBg.png")
+		center;
+	-webkit-background-size: 100% 100%;
+	border-radius: 5px;
+	text-align: center;
+	padding-top: 15px;
+}
+
+.explorTipsBox {
+	font-size: 0;
+	padding-bottom: 15px;
+}
+
+.explorTipsBox>div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.explorIcon {
+	width: 14%;
+	margin-right: 5px;
+}
+
+.explorDesc {
+	font-size: 14px;
+	color: #fff;
+}
+/*浏览器打开提示 end*/
+@media only screen and (min-device-height : 480px) {
+}
+</style>
+</head>
+<body>
+	<div class="pageWrapper">
+
+		<div class="content">
+			<div class="icon">
+				<img
+					src="$!{velocityCommonUtil.getAbsoluteURL()}/_resources/images/p2_1.jpg" />
+			</div>
+			<div class="homeBtn" id="btnIndex">
+				<a href="${appDownload.downloadUrl}">下载应用淘金助手</a>
+			</div>
+		</div>
+	</div>
+
+	<!--浏览器打开提示 beigin-->
+	<div class="explorTips">
+		<div class="explorTipsArrow"></div>
+		<div class="explorTipsContent">
+			<div class="explorTipsBox ">
+				<div class="explorIcon">
+					<img
+						src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p10_1.png" />
+				</div>
+				<div class="explorDesc">1、点击右上角图标</div>
+			</div>
+			<div class="explorTipsBox">
+				<div class="explorIcon">
+					<img id="appIcon"
+						src="$!{velocityCommonUtil.getStaticUrl()}/_resources/images/p10_2.png" />
+				</div>
+				<div class="explorDesc">2、在Safari中打开</div>
+			</div>
+		</div>
+	</div>
+	<!--浏览器打开提示 end-->
+	<script type="text/javascript" charset="utf-8"
+		src="$!{velocityCommonUtil.getStaticUrl()}/_resources/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">
+		function isInWeiXin() {
+			return (/MicroMessenger/i).test(navigator.userAgent);
+		}
+
+		$(function() {
+			//alert(isInWeiXin())
+			if (isInWeiXin()) {
+				
+				$(".explorTips").show();
+			}
+		});
+	</script>
+</body>
+</html>

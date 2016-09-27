@@ -1,0 +1,49 @@
+#set( $page_title = "商户录入统计" )
+<div>
+    <div style="font-size: 24px; color: #333333;">商户录入统计</div>
+    <div style="border-top: 1px solid #e7e7e7; margin-top: 20px;"></div>
+    <div style="margin-top: 20px;">
+         <form action="$!{velocityCommonUtil.getAbsoluteURL()}/shopRecordStatistic.html" method="get">
+                    <span style="color: #747474;border: 1px solid #dadada;height:20px;display: inline-block;padding: 5px;vertical-align: middle;">当前商家录入总数：${shopRecordCount}</span>
+                    <input type="text" name="nb" value="$!{nb}"  placeholder="输入账号/姓名搜索" /> 
+                    <input type="submit" class="btn   btn-danger"    value="搜索" style="height: 30px; width: 60px;" />
+           </form>
+    </div>
+    <div style="margin-top: 20px;">
+        <table class="table" cellPadding="0" cellSpacing="0" style="width: 100%;">
+            <thead style="font-size: 14px;">
+                <tr>
+                    <th style="width: 33%;">账号</th>
+                    <th style="width: 33%;">姓名</th>
+                    <th style="width: 33%;">录入总数</th>
+                </tr>
+            </thead>
+          <tbody  style="font-size: 12px;">
+               #foreach ($recordShop in $recordShops)
+                <tr>
+                    <th style="width: 13%;">$!recordShop.proxyTel</th>
+                    <th style="width: 13%;">$!recordShop.proxyName</th>
+                    <th style="width: 10%;"><a  href="$!{velocityCommonUtil.getAbsoluteURL()}/shopRecordStatisticList.html?areaUserId=$!{recordShop.areaUserId}" target="_blank"  class="anormalLink" >$!recordShop.count</a></th>
+                </tr>
+                #end
+                
+                 #if($recordShops.size()==0)
+                    <tr>
+                        <th colspan="3" align="center" style="text-align: center;" >暂无数据</th>
+                    </tr>
+                #end
+                
+            </tbody>
+        </table>
+        
+         <div  align="right">
+                $velocityCommonUtil.pageInfo($pageInfo)
+         </div>
+         
+    </div>
+</div>
+
+
+
+
+
